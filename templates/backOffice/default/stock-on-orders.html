@@ -1,0 +1,205 @@
+{extends file="admin-layout.tpl"}
+{default_translation_domain domain='stockonorder.bo.default'}
+
+{block name="no-return-functions"}
+    {$admin_current_location = 'tools'}
+{/block}
+
+{block name="page-title"}{intl l='StockOnOrder'}{/block}
+
+{block name="check-resource"}admin.module{/block}
+{block name="check-access"}view{/block}
+{block name="check-module"}StockOnOrder{/block}
+
+{block name="main-content"}
+    <div id="wrapper" class="container">
+
+        {if $general_error}
+            <div class="alert alert-danger">
+                {$general_error}
+            </div>
+        {/if}
+
+        <!-- StockOnOrder list -->
+        <div class="general-block-decorator">
+            <div class="table-responsive">
+                <table class="table table-striped table-condensed" id="stock_on_order-table">
+                    <caption class="clearfix">
+                        {intl l="Stock on order"}
+
+                        {loop name="auth-create" type="auth" role="ADMIN" resource="admin.module" access="CREATE" module="StockOnOrder"}
+                            <div class="pull-right">
+                                <a class="btn btn-default btn-primary" title="{intl l='Create a new StockOnOrder entry' d='stockonorder.bo.default'}" data-target="#stock_on_order-create" data-toggle="modal">
+                                    <i class="glyphicon glyphicon-plus-sign"></i>
+                                </a>
+                            </div>
+                        {/loop}
+                    </caption>
+
+                    <thead>
+                    <tr>
+                        <th>
+                            {admin_sortable_header
+                                current_order=$order
+                                order='order_id'
+                                reverse_order='order_id-reverse'
+                                path={url path='/admin/module/StockOnOrder/stock_on_order' target='stock_on_order-table'}
+                                label="{intl l='OrderId' d='stockonorder.bo.default'}"
+                            }
+                        </th>
+                        <th>
+                            {admin_sortable_header
+                                current_order=$order
+                                order='isStockDecreased'
+                                reverse_order='isStockDecreased-reverse'
+                                path={url path='/admin/module/StockOnOrder/stock_on_order' target='stock_on_order-table'}
+                                label="{intl l='IsStockDecreased' d='stockonorder.bo.default'}"
+                            }
+                        </th>
+                        <th>
+                            {intl l="Actions"}
+                        </th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    {loop name="stock-on-order-list" type="stock-on-order" order=$order}
+                        <tr>
+                            <td>
+                                {$ORDER_ID}
+                            </td>
+                            <td>
+                                <div class="make-switch switch-small" data-id="{$ID}" data-on="success" data-off="danger" data-on-label="<i class='glyphicon glyphicon-ok'></i>" data-off-label="<i class='glyphicon glyphicon-remove'></i>">
+                                    <input type="checkbox" disabled readonly {if $ISSTOCKDECREASED}checked="checked"{/if} />
+                                </div>
+                            </td>
+                            {* Actions *}
+                            <td>
+                                <div class="btn-group">
+                                    {loop name="auth-edit" type="auth" role="ADMIN" resource="admin.module" access="UPDATE" module="StockOnOrder"}
+                                        <a class="btn btn-default btn-xs" title="{intl l='Edit this StockOnOrder' d='stockonorder.bo.default'}"  href="{url path='/admin/module/StockOnOrder/stock_on_order/edit' stock_on_order_id=$ID}">
+                                            <i class="glyphicon glyphicon-edit"></i>
+                                        </a>
+                                    {/loop}
+                                    {loop name="auth-delete" type="auth" role="ADMIN" resource="admin.module" access="DELETE" module="StockOnOrder"}
+                                        <a class="btn btn-default btn-xs stock_on_order-delete" title="{intl l='Delete this StockOnOrder' d='stockonorder.bo.default'}" data-target="#stock_on_order-delete" data-toggle="modal" data-id="{$ID}">
+                                            <i class="glyphicon glyphicon-trash"></i>
+                                        </a>
+                                    {/loop}
+                                </div>
+                            </td>
+                        </tr>
+                    {/loop}
+                    {elseloop rel="stock-on-order-list"}
+                        <tr>
+                            <td colspan="1000">
+                                <div class="alert alert-info">
+                                    {intl l="There is no StockOnOrder" d="stockonorder.bo.default"}
+                                </div>
+                            </td>
+                        </tr>
+                    {/elseloop}
+                    </tbody>
+
+                    {ifloop rel="stock-on-order-list"}
+                    <tfoot>
+                        <tr>
+                            <td colspan="7">
+                                {include
+                                file           = "includes/pagination.html"
+
+                                loop_ref       = "stock-on-order-list"
+                                max_page_count = 20
+                                page_url       = "{url path="/admin/module/StockOnOrder/stock_on_order" order=$order target='stock_on_order-table'}"
+                                }
+                            </td>
+                        </tr>
+                    </tfoot>
+                    {/ifloop}
+
+                </table>
+            </div>
+        </div>
+    </div>
+
+
+    {* CREATE Modal *}
+
+    {form name="stock_on_order.create"}
+    {capture "stock_on_order_create"}
+        {form_hidden_fields form=$form}
+
+
+        {render_form_field form=$form field="success_url" value={url path='/admin/module/StockOnOrder/stock_on_order/edit?stock_on_order_id=_ID_'}}
+
+        {form_field form=$form field="order_id"}
+            <div class="form-group">
+                <label class="control-label" for="{$label_attr.for}">
+                    {$label}
+                    {if $required}<span class="required">*</span>{/if}
+                </label>
+
+                {form_error form=$form field="order_id"}{$message}{/form_error}
+
+                <input type="integer" class="form-control" name="{$name}" id="{$label_attr.for}" value="{$ORDER_ID}" placeholder="{intl l='The StockOnOrder order_id'}" />
+            </div>
+        {/form_field}
+        {form_field form=$form field="isStockDecreased"}
+            <div class="form-group">
+                <label class="control-label" for="{$label_attr.for}">
+                    {$label}
+                    {if $required}<span class="required">*</span>{/if}
+                </label>
+
+                {form_error form=$form field="isStockDecreased"}{$message}{/form_error}
+
+                <input type="checkbox" name="{$name}" id="{$label_attr.for}" {if $ISSTOCKDECREASED}checked{/if} placeholder="{intl l='The StockOnOrder isStockDecreased'}" />
+            </div>
+        {/form_field}
+    {/capture}
+
+    {include file="includes/generic-create-dialog.html"
+
+
+        dialog_id       = "stock_on_order-create"
+        dialog_title    = {intl l="Create an entry of StockOnOrder" d="stockonorder.bo.default"}
+        dialog_body     = {$smarty.capture.stock_on_order_create nofilter}
+
+        dialog_ok_label     = {intl l="Create"}
+        dialog_cancel_label = {intl l="Cancel"}
+
+        form_action        = {$current_url}
+        form_enctype       = {form_enctype form=$form}
+    }
+    {/form}
+
+
+    {* DELETE modal *}
+
+    {capture "stock_on_order_delete"}
+        {intl l="Do you really want to delete this StockOnOrder entry ?" d="stockonorder.bo.default"}
+        <input type="hidden" name="stock_on_order_id" id="stock_on_order_delete_id" value="" />
+    {/capture}
+
+    {include file="includes/generic-confirm-dialog.html"
+
+        dialog_id       = "stock_on_order-delete"
+        dialog_title    = {intl l="Delete an entry of StockOnOrder" d="stockonorder.bo.default"}
+        dialog_message  = {$smarty.capture.stock_on_order_delete nofilter}
+
+        dialog_ok_label     = {intl l="Delete"}
+        dialog_cancel_label = {intl l="Cancel"}
+
+        form_action         = {token_url path='/admin/module/StockOnOrder/stock_on_order/delete'}
+    }
+{/block}
+
+{block name="javascript-initialization"}
+    <script>
+        $(function() {
+            $('a.stock_on_order-delete').click(function(ev) {
+                $('#stock_on_order_delete_id').val($(this).data('id'));
+            });
+        });
+    </script>
+{/block}
