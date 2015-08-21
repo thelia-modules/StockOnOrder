@@ -7,6 +7,8 @@
     </loops>
 
     <forms>
+        <form name="stock_on_order_config" class="StockOnOrder\Form\StockOnOrderConfigForm"/>
+
         <form name="stock_on_order_config.create" class="StockOnOrder\Form\StockOnOrderConfigCreateForm"/>
         <form name="stock_on_order_config.update" class="StockOnOrder\Form\StockOnOrderConfigUpdateForm"/>
         <form name="stock_on_order.create" class="StockOnOrder\Form\StockOnOrderCreateForm"/>

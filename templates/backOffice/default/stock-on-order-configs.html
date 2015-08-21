@@ -18,58 +18,62 @@
                     </caption>
 
                     <thead>
-                    <tr>
-                        <th>
-                            {admin_sortable_header
-                            current_order=$order
-                            order='id'
-                            reverse_order='id-reverse'
-                            path={url path='/admin/module/StockOnOrder/stock_on_order_config' target='stock_on_order_config-table'}
-                            label="{intl l='ID' d='stockonorder'}"
-                            }
-                        </th>
-                        <th>
-                            {admin_sortable_header
-                            current_order=$order
-                            order='module_id'
-                            reverse_order='module_id-reverse'
-                            path={url path='/admin/module/StockOnOrder/stock_on_order_config' target='stock_on_order_config-table'}
-                            label="{intl l='Payment module' d='stockonorder'}"
-                            }
-                        </th>
-                        <th>
-                            {admin_sortable_header
-                            current_order=$order
-                            order='is_default'
-                            reverse_order='is_default-reverse'
-                            path={url path='/admin/module/StockOnOrder/stock_on_order_config' target='stock_on_order_config-table'}
-                            label="{intl l='Modified behavior' d='stockonorder'}"
-                            }
-                        </th>
-                    </tr>
+                        <tr>
+                            <th>
+                                {admin_sortable_header
+                                current_order=$order
+                                order='module_id'
+                                reverse_order='module_id-reverse'
+                                path={url path='/admin/module/StockOnOrder/stock_on_order_config' target='stock_on_order_config-table'}
+                                label="{intl l='ID' d='stockonorder'}"
+                                }
+                            </th>
+                            <th>
+                                {admin_sortable_header
+                                current_order=$order
+                                order='module_id'
+                                reverse_order='module_id-reverse'
+                                path={url path='/admin/module/StockOnOrder/stock_on_order_config' target='stock_on_order_config-table'}
+                                label="{intl l='Payment module' d='stockonorder'}"
+                                }
+                            </th>
+                            <th>
+                                {admin_sortable_header
+                                current_order=$order
+                                order='is_default'
+                                reverse_order='is_default-reverse'
+                                path={url path='/admin/module/StockOnOrder/stock_on_order_config' target='stock_on_order_config-table'}
+                                label="{intl l='Behavior' d='stockonorder'}"
+                                }
+                            </th>
+                        </tr>
                     </thead>
 
                     <tbody>
-                    {loop type='module' name='payment-modules' module_type='3'}
-                        <tr>
-                            <td>
-                                {$ID}
-                            </td>
-                            <td>
-                                <a href="{url path='/admin/module/StockOnOrder/viewModule/%id' id=$ID}">{$CODE}</a>
-                            </td>
-                            <td>
-                                nope
-                                {* loop type='stock-on-order' name='modified-behavior' }
-                                {/loop *}
-                            </td>
-                        </tr>
-                    {/loop}
+                        {loop type='module' name='payment-modules' module_type='3'}
+                            <tr>
+                                <td>
+                                    {$ID}
+                                </td>
+                                <td>
+                                    <a href="{url path='/admin/module/StockOnOrder/viewModule/%id' id=$ID}">{$CODE}</a>
+                                </td>
+                                <td>
+                                    {ifloop rel='stock-on-order-config-list'}
+                                        {loop type='stock-on-order-config' name='stock-on-order-config-list' module_id=$ID exclude_behavior='default' order=$order}{/loop}
+                                        {intl l='modified' d='stockonorder'}
+                                    {/ifloop}
+                                    {elseloop rel='stock-on-order-config-list'}
+                                        {intl l='default' d='stockonorder'}
+                                    {/elseloop}
+                                </td>
+                            </tr>
+                        {/loop}
                     </tbody>
                 </table>
             </div>
         </div>
-
+{*
         <!-- StockOnOrderConfig list -->
         <div class="general-block-decorator">
             <div class="table-responsive">
@@ -146,6 +150,7 @@
                                 {$BEHAVIOR}
                             </td>
                             {* Actions *}
+                            {*
                             <td>
                                 <div class="btn-group">
                                     {loop name="auth-edit" type="auth" role="ADMIN" resource="admin.module" access="UPDATE" module="StockOnOrder"}
@@ -192,6 +197,7 @@
                 </table>
             </div>
         </div>
+        *}
     </div>
 
 

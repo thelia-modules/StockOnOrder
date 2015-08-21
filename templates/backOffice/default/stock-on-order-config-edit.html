@@ -1,7 +1,7 @@
 {extends file="admin-layout.tpl"}
 
 {block name="no-return-functions"}
-    {$admin_current_location = 'tools'}
+    {$admin_current_location = 'modules'}
 {/block}
 
 {block name="main-content"}
@@ -15,75 +15,101 @@
 
             <!-- Order status list -->
             <div class="general-block-decorator">
+
                 <div class="table-responsive">
-                    <table class="table table-striped table-condensed" id="stock_on_order_config-table">
-                        <caption class="clearfix">
-                            {intl l="Configure status action for module : " d='stockonorder'}
-                            {loop type='module' name='current-modules' module_type='3' id=3}
-                                {$CODE}
-                            {/loop}
-                        </caption>
 
-                        <thead>
-                        <tr>
-                            <th>
-                                {admin_sortable_header
-                                current_order=$order
-                                order='id'
-                                reverse_order='id-reverse'
-                                path={url path='/admin/module/StockOnOrder/stock_on_order_config_edit' target='stock_on_order_config_edit-table'}
-                                label="{intl l='ID' d='stockonorder'}"
-                                }
-                            </th>
-                            <th>
-                                {admin_sortable_header
-                                current_order=$order
-                                order='module_id'
-                                reverse_order='module_id-reverse'
-                                path={url path='/admin/module/StockOnOrder/stock_on_order_config_edit' target='stock_on_order_config_edit-table'}
-                                label="{intl l='Status' d='stockonorder'}"
-                                }
-                            </th>
-                            <th>
-                                {intl l='Do nothing' d='stockonorder'}
-                            </th>
-                            <th>
-                                {intl l='Decrease' d='stockonorder'}
-                            </th>
-                            <th>
-                                {intl l='Increase' d='stockonorder'}
-                            </th>
-                            <th>
-                                {intl l='Default' d='stockonorder'}
-                            </th>
-                        </tr>
-                        </thead>
+                    {form name='stock_on_order_config'}
+                    <form action="{url path='/admin/module/StockOnOrder/edit'}" {form_enctype form=$form} method="post">
 
-                        <tbody>
-                        {loop type='order-status' name='order-status'}
-                            <tr>
-                                <td>
-                                    {$ID}
-                                </td>
-                                <td>
-                                    {$TITLE}
-                                </td>
-                                <td>
-                                    rien
-                                </td>
-                                <td>
-                                    down
-                                </td>
-                                <td>
-                                    up
-                                </td>
-                                <td>
-                                    défaut
-                                </td>
-                            </tr>
-                        {/loop}
-                        </tbody>
-                    </table>
+                        {form_hidden_fields form=$form}
+
+
+                        <table class="table table-striped table-condensed" id="stock_on_order_config-table">
+                            <caption class="clearfix">
+                                {intl l="Configure status action for module : " d='stockonorder'}
+                                {loop type='module' name='current-modules' module_type='3' id=$moduleId}
+                                    {$CODE}
+                                {/loop}
+
+                                {form_field form=$form field="module_id"}
+                                    <input type="hidden" name="{$name}" value="{$moduleId}">
+                                {/form_field}
+
+                                <span class="pull-right">
+                                    <button type="submit" class="form-submit-button btn btn-sm btn-default btn-success" title="{intl l='Save'}">{intl l='Save'} <span class="glyphicon glyphicon-ok"></span></button>
+                                    <button type="submit" name="save_mode" value="close" class="form-submit-button btn btn-sm btn-default btn-info" title="{intl l='Save and close'}">{intl l='Save and close'} <span class="glyphicon glyphicon-remove"></span></button>
+                                    <a href="{url path='/admin/module/StockOnOrder'}" class="page-close-button btn btn-sm btn-default">{intl l='Close'} <span class="glyphicon glyphicon-remove"></span></a>
+                                </span>
+                            </caption>
+
+                            <thead>
+                                <tr>
+                                    <th>
+                                        {admin_sortable_header
+                                        current_order=$order
+                                        order='id'
+                                        reverse_order='id-reverse'
+                                        path={url path='/admin/module/StockOnOrder/stock_on_order_config_edit' target='stock_on_order_config_edit-table'}
+                                        label="{intl l='ID' d='stockonorder'}"
+                                        }
+                                    </th>
+                                    <th>
+                                        {admin_sortable_header
+                                        current_order=$order
+                                        order='module_id'
+                                        reverse_order='module_id-reverse'
+                                        path={url path='/admin/module/StockOnOrder/stock_on_order_config_edit' target='stock_on_order_config_edit-table'}
+                                        label="{intl l='Status' d='stockonorder'}"
+                                        }
+                                    </th>
+                                    <th>
+                                        {intl l='Do nothing' d='stockonorder'}
+                                    </th>
+                                    <th>
+                                        {intl l='Decrease' d='stockonorder'}
+                                    </th>
+                                    <th>
+                                        {intl l='Increase' d='stockonorder'}
+                                    </th>
+                                    <th>
+                                        {intl l='Default' d='stockonorder'}
+                                    </th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                {loop type='order-status' name='order-status'}
+                                    {form_field form=$form field='behavior' value_key=$ID}
+                                    <tr>
+                                        <td>
+                                            {$ID}
+                                        </td>
+                                        <td>
+                                            {$TITLE}
+                                        </td>
+                                        <td>
+                                            <input type="radio" name="{$name}" value="do_nothing" {if $value == 'do_nothing'}checked{/if}>
+                                        </td>
+                                        <td>
+                                            <input type="radio" name="{$name}" value="decrease" {if $value == 'decrease'}checked{/if}>
+                                        </td>
+                                        <td>
+                                            <input type="radio" name="{$name}" value="increase" {if $value == 'increase'}checked{/if}>
+                                        </td>
+                                        <td>
+                                            <input type="radio" name="{$name}" value="default" {if $value == 'default'}checked{/if}>
+                                        </td>
+                                    </tr>
+                                    {/form_field}
+                                {/loop}
+                            </tbody>
+                        </table>
+                    </form>
+                    {/form}
+                </div>
+
+                <div class="clearfix">
+                    <button class="btn btn-primary pull-right" id="set_all_default">Set all default</button>
                 </div>
             </div>
 
@@ -167,4 +193,9 @@
 {/block}
 
 {block name="javascript-initialization"}
+<script>
+    $("#set_all_default").click(function() {
+        $("input:radio[value='default']").prop('checked', true);
+    });
+</script>
 {/block}

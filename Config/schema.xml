@@ -11,6 +11,10 @@
         <foreign-key foreignTable="order_status" name="fk_status_id_stock_on_order_config" onDelete="CASCADE">
             <reference foreign="id" local="status_id" />
         </foreign-key>
+        <unique name="module_status_id">
+            <unique-column name="module_id" />
+            <unique-column name="status_id" />
+        </unique>
         <column name="behavior" defaultValue="default" valueSet="default,do_nothing,increase,decrease" type="VARCHAR" />
     </table>
 

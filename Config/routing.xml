@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <routes xmlns="http://symfony.com/schema/routing" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://symfony.com/schema/routing http://symfony.com/schema/routing/routing-1.0.xsd">
 
-    <route id="stockonorder.config.edit_module" path="/admin/module/StockOnOrder/viewModule/{id}" methods="get">
+    <route id="stockonorder.config.view" path="/admin/module/StockOnOrder/viewModule/{id}" methods="get">
         <default key="_controller">StockOnOrder:StockOnOrderConfig:viewModule</default>
         <requirement key="id">\d+</requirement>
+    </route>
+    <route id="stockonorder.config.edit" path="/admin/module/StockOnOrder/edit" methods="post">
+        <default key="_controller">StockOnOrder:StockOnOrderConfig:edit</default>
     </route>
 
     <route id="stockonorder.stock_on_order_config.list" path="/admin/module/StockOnOrder/stock_on_order_config" methods="get">
