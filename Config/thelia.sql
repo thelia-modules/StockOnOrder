@@ -16,7 +16,7 @@ CREATE TABLE `stock_on_order_config`
     `status_id` INTEGER NOT NULL,
     `behavior` VARCHAR(255) DEFAULT 'default',
     PRIMARY KEY (`id`),
-    INDEX `FI_module_id_stock_on_order_config` (`module_id`),
+    UNIQUE INDEX `module_status_id` (`module_id`, `status_id`),
     INDEX `FI_status_id_stock_on_order_config` (`status_id`),
     CONSTRAINT `fk_module_id_stock_on_order_config`
         FOREIGN KEY (`module_id`)

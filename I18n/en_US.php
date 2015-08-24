@@ -4,11 +4,12 @@ return array(
     'ID' => 'ID',
     'Payment module' => 'Payment module',
     'Behavior' => 'Behavior',
+    'Configure status actions on stock for module: ' => 'Configure status actions on stock for module: ',
     'Status' => 'Status',
     'Do nothing' => 'Do nothing',
-    'Decrease' => 'Decrease',
-    'Increase' => 'Increase',
-    'Default' => 'Default',
+    'Decrease stock' => 'Decrease stock',
+    'Increase stock' => 'Increase stock',
+    'Thelia default behavior' => 'Thelia default behavior',
     'default' => 'default',
     'modified' => 'modified'
 );

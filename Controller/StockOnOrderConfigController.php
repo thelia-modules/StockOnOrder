@@ -3,7 +3,9 @@
 namespace StockOnOrder\Controller;
 
 use StockOnOrder\Controller\Base\StockOnOrderConfigController as BaseStockOnOrderConfigController;
+use StockOnOrder\Model\StockOnOrderConfig;
 use StockOnOrder\Model\StockOnOrderConfigQuery;
+use Symfony\Component\Config\Definition\Exception\Exception;
 use Thelia\Core\HttpFoundation\Request;
 use Thelia\Core\Security\AccessManager;
 use Thelia\Core\Security\Resource\AdminResources;
@@ -29,17 +31,20 @@ class StockOnOrderConfigController extends BaseStockOnOrderConfigController
 
         $moduleId = $request->get('id');
 
-        // Get configuration for current module
-        $conf = StockOnOrderConfigQuery::create()
+        // Get current module's configuration
+        $stockOnOrderConfigList = StockOnOrderConfigQuery::create()
             ->findByModuleId($moduleId);
 
-        $datas = $conf->getData();
+        $stockOnOrderConfigDatas = $stockOnOrderConfigList->getData();
 
         $behaviorList = [];
-        foreach ($datas as $data) {
-            $behaviorList[$data->getStatusId()] = $data->getBehavior();
+
+        /** @var StockOnOrderConfig $stockOnOrderConfig */
+        foreach ($stockOnOrderConfigDatas as $stockOnOrderConfig) {
+            $behaviorList[$stockOnOrderConfig->getStatusId()] = $stockOnOrderConfig->getBehavior();
         }
 
+        // Fill and send form into the view
         $form = $this->createForm('stock_on_order_config', 'form', [
             'module_id' => $moduleId,
             'behavior' => $behaviorList]
@@ -55,21 +60,41 @@ class StockOnOrderConfigController extends BaseStockOnOrderConfigController
      *
      * @return mixed
      */
-    public function editAction()
+    public function editAction($moduleId)
     {
         if (null !== $response = $this->checkAuth(array(AdminResources::MODULE), 'StockOnOrder', AccessManager::UPDATE)) {
             return $response;
         }
 
+        // Validate form and get its data
         $form = $this->createForm('stock_on_order_config');
 
-        $formEdit = $this->validateForm($form, 'POST');
+        try {
+            $formEdit = $this->validateForm($form, 'POST');
 
-        $datas = $formEdit->getData();
+            $formData = $formEdit->getData();
 
-        foreach ($datas as $data) {
-            $config = StockOnOrderConfigQuery::create();
+            foreach ($formData['behavior'] as $key => $behavior) {
+                StockOnOrderConfigQuery::create()
+                    ->filterByModuleId($formData['module_id'])
+                    ->filterByStatusId($key)
+                    ->update(['Behavior' => $behavior]);
+            }
+
+            // Redirect
+            if ($this->getRequest()->get('save_mode') == 'stay') {
+                return $this->generateRedirect('/admin/module/StockOnOrder/viewModule/'.$moduleId);
+            } else {
+                return $this->generateRedirect('/admin/module/StockOnOrder');
+            }
+        } catch (\Exception $e) {
+            $this->setupFormErrorContext(
+                null,
+                $e->getMessage(),
+                $form
+            );
+
+            return $this->render('stock-on-order-config-edit', ['moduleId' => $moduleId]);
         }
-        
     }
 }

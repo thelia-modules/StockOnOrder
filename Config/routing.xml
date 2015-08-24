@@ -5,7 +5,7 @@
         <default key="_controller">StockOnOrder:StockOnOrderConfig:viewModule</default>
         <requirement key="id">\d+</requirement>
     </route>
-    <route id="stockonorder.config.edit" path="/admin/module/StockOnOrder/edit" methods="post">
+    <route id="stockonorder.config.edit" path="/admin/module/StockOnOrder/edit/{moduleId}" methods="post">
         <default key="_controller">StockOnOrder:StockOnOrderConfig:edit</default>
     </route>
 

@@ -22,6 +22,10 @@
     </hooks>
 
     <services>
+        <service id="action.stockonorder.orderstatuschange" class="StockOnOrder\EventListeners\StockOnOrderEventListener" scope="request">
+            <tag name="kernel.event_subscriber"/>
+        </service>
+
         <service id="action.stockonorder.stock_on_order_config_table" class="StockOnOrder\Action\StockOnOrderConfigAction">
             <tag name="kernel.event_subscriber"/>
         </service>
