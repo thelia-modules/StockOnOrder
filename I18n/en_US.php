@@ -4,7 +4,7 @@ return array(
     'ID' => 'ID',
     'Payment module' => 'Payment module',
     'Behavior' => 'Behavior',
-    'Configure status actions on stock for module: ' => 'Configure status actions on stock for module: ',
+    'Configure stock action when you change status on orders with payment module: ' => 'Configure stock action when you change status on orders with payment module: ',
     'Status' => 'Status',
     'Do nothing' => 'Do nothing',
     'Decrease stock' => 'Decrease stock',
