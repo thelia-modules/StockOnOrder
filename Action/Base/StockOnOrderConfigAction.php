@@ -65,6 +65,10 @@ class StockOnOrderConfigAction extends BaseAction implements EventSubscriberInte
                 $model->setBehavior($behavior);
             }
 
+            if (null !== $decreaseOnOrderCreation = $event->getDecreaseOnOrderCreation()) {
+                $model->setDecreaseOnOrderCreation($decreaseOnOrderCreation);
+            }
+
             $model->save($con);
 
             $con->commit();

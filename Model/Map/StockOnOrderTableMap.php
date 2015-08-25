@@ -76,9 +76,9 @@ class StockOnOrderTableMap extends TableMap
     const ORDER_ID = 'stock_on_order.ORDER_ID';
 
     /**
-     * the column name for the ISSTOCKDECREASED field
+     * the column name for the IS_STOCK_DECREASED field
      */
-    const ISSTOCKDECREASED = 'stock_on_order.ISSTOCKDECREASED';
+    const IS_STOCK_DECREASED = 'stock_on_order.IS_STOCK_DECREASED';
 
     /**
      * The default string format for model objects of the related table
@@ -92,11 +92,11 @@ class StockOnOrderTableMap extends TableMap
      * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        self::TYPE_PHPNAME       => array('OrderId', 'Isstockdecreased', ),
-        self::TYPE_STUDLYPHPNAME => array('orderId', 'isstockdecreased', ),
-        self::TYPE_COLNAME       => array(StockOnOrderTableMap::ORDER_ID, StockOnOrderTableMap::ISSTOCKDECREASED, ),
-        self::TYPE_RAW_COLNAME   => array('ORDER_ID', 'ISSTOCKDECREASED', ),
-        self::TYPE_FIELDNAME     => array('order_id', 'isStockDecreased', ),
+        self::TYPE_PHPNAME       => array('OrderId', 'IsStockDecreased', ),
+        self::TYPE_STUDLYPHPNAME => array('orderId', 'isStockDecreased', ),
+        self::TYPE_COLNAME       => array(StockOnOrderTableMap::ORDER_ID, StockOnOrderTableMap::IS_STOCK_DECREASED, ),
+        self::TYPE_RAW_COLNAME   => array('ORDER_ID', 'IS_STOCK_DECREASED', ),
+        self::TYPE_FIELDNAME     => array('order_id', 'is_stock_decreased', ),
         self::TYPE_NUM           => array(0, 1, )
     );
 
@@ -107,11 +107,11 @@ class StockOnOrderTableMap extends TableMap
      * e.g. self::$fieldKeys[self::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        self::TYPE_PHPNAME       => array('OrderId' => 0, 'Isstockdecreased' => 1, ),
-        self::TYPE_STUDLYPHPNAME => array('orderId' => 0, 'isstockdecreased' => 1, ),
-        self::TYPE_COLNAME       => array(StockOnOrderTableMap::ORDER_ID => 0, StockOnOrderTableMap::ISSTOCKDECREASED => 1, ),
-        self::TYPE_RAW_COLNAME   => array('ORDER_ID' => 0, 'ISSTOCKDECREASED' => 1, ),
-        self::TYPE_FIELDNAME     => array('order_id' => 0, 'isStockDecreased' => 1, ),
+        self::TYPE_PHPNAME       => array('OrderId' => 0, 'IsStockDecreased' => 1, ),
+        self::TYPE_STUDLYPHPNAME => array('orderId' => 0, 'isStockDecreased' => 1, ),
+        self::TYPE_COLNAME       => array(StockOnOrderTableMap::ORDER_ID => 0, StockOnOrderTableMap::IS_STOCK_DECREASED => 1, ),
+        self::TYPE_RAW_COLNAME   => array('ORDER_ID' => 0, 'IS_STOCK_DECREASED' => 1, ),
+        self::TYPE_FIELDNAME     => array('order_id' => 0, 'is_stock_decreased' => 1, ),
         self::TYPE_NUM           => array(0, 1, )
     );
 
@@ -132,7 +132,7 @@ class StockOnOrderTableMap extends TableMap
         $this->setUseIdGenerator(false);
         // columns
         $this->addForeignKey('ORDER_ID', 'OrderId', 'INTEGER', 'order', 'ID', true, null, null);
-        $this->addColumn('ISSTOCKDECREASED', 'Isstockdecreased', 'BOOLEAN', false, 1, null);
+        $this->addColumn('IS_STOCK_DECREASED', 'IsStockDecreased', 'BOOLEAN', true, 1, null);
     } // initialize()
 
     /**
@@ -273,10 +273,10 @@ class StockOnOrderTableMap extends TableMap
     {
         if (null === $alias) {
             $criteria->addSelectColumn(StockOnOrderTableMap::ORDER_ID);
-            $criteria->addSelectColumn(StockOnOrderTableMap::ISSTOCKDECREASED);
+            $criteria->addSelectColumn(StockOnOrderTableMap::IS_STOCK_DECREASED);
         } else {
             $criteria->addSelectColumn($alias . '.ORDER_ID');
-            $criteria->addSelectColumn($alias . '.ISSTOCKDECREASED');
+            $criteria->addSelectColumn($alias . '.IS_STOCK_DECREASED');
         }
     }
 

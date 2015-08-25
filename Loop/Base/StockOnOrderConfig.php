@@ -40,6 +40,7 @@ class StockOnOrderConfig extends BaseLoop implements PropelSearchLoopInterface
                 ->set("MODULE_ID", $entry->getModuleId())
                 ->set("STATUS_ID", $entry->getStatusId())
                 ->set("BEHAVIOR", $entry->getBehavior())
+                ->set("DECREASE_ON_ORDER_CREATION", $entry->getDecreaseOnOrderCreation())
             ;
 
             $this->addMoreResults($row, $entry);
@@ -81,6 +82,7 @@ class StockOnOrderConfig extends BaseLoop implements PropelSearchLoopInterface
             Argument::createIntListTypeArgument("module_id"),
             Argument::createIntListTypeArgument("status_id"),
             Argument::createAnyTypeArgument("behavior"),
+            Argument::createBooleanOrBothTypeArgument("decrease_on_order_creation", BooleanOrBothType::ANY),
             Argument::createEnumListTypeArgument(
                 "order",
                 [
@@ -92,6 +94,8 @@ class StockOnOrderConfig extends BaseLoop implements PropelSearchLoopInterface
                     "status_id-reverse",
                     "behavior",
                     "behavior-reverse",
+                    "decrease_on_order_creation",
+                    "decrease_on_order_creation-reverse",
                 ],
                 "id"
             )
@@ -124,6 +128,10 @@ class StockOnOrderConfig extends BaseLoop implements PropelSearchLoopInterface
             $query->filterByBehavior($behavior);
         }
 
+        if (BooleanOrBothType::ANY !== $decrease_on_order_creation = $this->getDecreaseOnOrderCreation()) {
+            $query->filterByDecreaseOnOrderCreation($decrease_on_order_creation);
+        }
+
         foreach ($this->getOrder() as $order) {
             switch ($order) {
                 case "id":
@@ -149,6 +157,12 @@ class StockOnOrderConfig extends BaseLoop implements PropelSearchLoopInterface
                     break;
                 case "behavior-reverse":
                     $query->orderByBehavior(Criteria::DESC);
+                    break;
+                case "decrease_on_order_creation":
+                    $query->orderByDecreaseOnOrderCreation();
+                    break;
+                case "decrease_on_order_creation-reverse":
+                    $query->orderByDecreaseOnOrderCreation(Criteria::DESC);
                     break;
             }
         }

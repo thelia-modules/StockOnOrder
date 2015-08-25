@@ -33,14 +33,13 @@ class StockOnOrderConfigController extends BaseStockOnOrderConfigController
 
         // Get current module's configuration
         $stockOnOrderConfigList = StockOnOrderConfigQuery::create()
-            ->findByModuleId($moduleId);
-
-        $stockOnOrderConfigDatas = $stockOnOrderConfigList->getData();
+            ->findByModuleId($moduleId)
+            ->getData();
 
         $behaviorList = [];
 
         /** @var StockOnOrderConfig $stockOnOrderConfig */
-        foreach ($stockOnOrderConfigDatas as $stockOnOrderConfig) {
+        foreach ($stockOnOrderConfigList as $stockOnOrderConfig) {
             $behaviorList[$stockOnOrderConfig->getStatusId()] = $stockOnOrderConfig->getBehavior();
         }
 
@@ -58,7 +57,8 @@ class StockOnOrderConfigController extends BaseStockOnOrderConfigController
     /**
      * Update payment module configuration for each order status
      *
-     * @return mixed
+     * @param $moduleId
+     * @return mixed|\Symfony\Component\HttpFoundation\Response|\Thelia\Core\HttpFoundation\Response
      */
     public function editAction($moduleId)
     {

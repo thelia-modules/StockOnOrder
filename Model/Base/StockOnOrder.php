@@ -60,10 +60,10 @@ abstract class StockOnOrder implements ActiveRecordInterface
     protected $order_id;
 
     /**
-     * The value for the isstockdecreased field.
+     * The value for the is_stock_decreased field.
      * @var        boolean
      */
-    protected $isstockdecreased;
+    protected $is_stock_decreased;
 
     /**
      * @var        Order
@@ -348,14 +348,14 @@ abstract class StockOnOrder implements ActiveRecordInterface
     }
 
     /**
-     * Get the [isstockdecreased] column value.
+     * Get the [is_stock_decreased] column value.
      *
      * @return   boolean
      */
-    public function getIsstockdecreased()
+    public function getIsStockDecreased()
     {
 
-        return $this->isstockdecreased;
+        return $this->is_stock_decreased;
     }
 
     /**
@@ -384,7 +384,7 @@ abstract class StockOnOrder implements ActiveRecordInterface
     } // setOrderId()
 
     /**
-     * Sets the value of the [isstockdecreased] column.
+     * Sets the value of the [is_stock_decreased] column.
      * Non-boolean arguments are converted using the following rules:
      *   * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
      *   * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
@@ -393,7 +393,7 @@ abstract class StockOnOrder implements ActiveRecordInterface
      * @param      boolean|integer|string $v The new value
      * @return   \StockOnOrder\Model\StockOnOrder The current object (for fluent API support)
      */
-    public function setIsstockdecreased($v)
+    public function setIsStockDecreased($v)
     {
         if ($v !== null) {
             if (is_string($v)) {
@@ -403,14 +403,14 @@ abstract class StockOnOrder implements ActiveRecordInterface
             }
         }
 
-        if ($this->isstockdecreased !== $v) {
-            $this->isstockdecreased = $v;
-            $this->modifiedColumns[StockOnOrderTableMap::ISSTOCKDECREASED] = true;
+        if ($this->is_stock_decreased !== $v) {
+            $this->is_stock_decreased = $v;
+            $this->modifiedColumns[StockOnOrderTableMap::IS_STOCK_DECREASED] = true;
         }
 
 
         return $this;
-    } // setIsstockdecreased()
+    } // setIsStockDecreased()
 
     /**
      * Indicates whether the columns in this object are only set to default values.
@@ -452,8 +452,8 @@ abstract class StockOnOrder implements ActiveRecordInterface
             $col = $row[TableMap::TYPE_NUM == $indexType ? 0 + $startcol : StockOnOrderTableMap::translateFieldName('OrderId', TableMap::TYPE_PHPNAME, $indexType)];
             $this->order_id = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 1 + $startcol : StockOnOrderTableMap::translateFieldName('Isstockdecreased', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->isstockdecreased = (null !== $col) ? (boolean) $col : null;
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 1 + $startcol : StockOnOrderTableMap::translateFieldName('IsStockDecreased', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->is_stock_decreased = (null !== $col) ? (boolean) $col : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -686,8 +686,8 @@ abstract class StockOnOrder implements ActiveRecordInterface
         if ($this->isColumnModified(StockOnOrderTableMap::ORDER_ID)) {
             $modifiedColumns[':p' . $index++]  = 'ORDER_ID';
         }
-        if ($this->isColumnModified(StockOnOrderTableMap::ISSTOCKDECREASED)) {
-            $modifiedColumns[':p' . $index++]  = 'ISSTOCKDECREASED';
+        if ($this->isColumnModified(StockOnOrderTableMap::IS_STOCK_DECREASED)) {
+            $modifiedColumns[':p' . $index++]  = 'IS_STOCK_DECREASED';
         }
 
         $sql = sprintf(
@@ -703,8 +703,8 @@ abstract class StockOnOrder implements ActiveRecordInterface
                     case 'ORDER_ID':
                         $stmt->bindValue($identifier, $this->order_id, PDO::PARAM_INT);
                         break;
-                    case 'ISSTOCKDECREASED':
-                        $stmt->bindValue($identifier, (int) $this->isstockdecreased, PDO::PARAM_INT);
+                    case 'IS_STOCK_DECREASED':
+                        $stmt->bindValue($identifier, (int) $this->is_stock_decreased, PDO::PARAM_INT);
                         break;
                 }
             }
@@ -765,7 +765,7 @@ abstract class StockOnOrder implements ActiveRecordInterface
                 return $this->getOrderId();
                 break;
             case 1:
-                return $this->getIsstockdecreased();
+                return $this->getIsStockDecreased();
                 break;
             default:
                 return null;
@@ -797,7 +797,7 @@ abstract class StockOnOrder implements ActiveRecordInterface
         $keys = StockOnOrderTableMap::getFieldNames($keyType);
         $result = array(
             $keys[0] => $this->getOrderId(),
-            $keys[1] => $this->getIsstockdecreased(),
+            $keys[1] => $this->getIsStockDecreased(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -846,7 +846,7 @@ abstract class StockOnOrder implements ActiveRecordInterface
                 $this->setOrderId($value);
                 break;
             case 1:
-                $this->setIsstockdecreased($value);
+                $this->setIsStockDecreased($value);
                 break;
         } // switch()
     }
@@ -873,7 +873,7 @@ abstract class StockOnOrder implements ActiveRecordInterface
         $keys = StockOnOrderTableMap::getFieldNames($keyType);
 
         if (array_key_exists($keys[0], $arr)) $this->setOrderId($arr[$keys[0]]);
-        if (array_key_exists($keys[1], $arr)) $this->setIsstockdecreased($arr[$keys[1]]);
+        if (array_key_exists($keys[1], $arr)) $this->setIsStockDecreased($arr[$keys[1]]);
     }
 
     /**
@@ -886,7 +886,7 @@ abstract class StockOnOrder implements ActiveRecordInterface
         $criteria = new Criteria(StockOnOrderTableMap::DATABASE_NAME);
 
         if ($this->isColumnModified(StockOnOrderTableMap::ORDER_ID)) $criteria->add(StockOnOrderTableMap::ORDER_ID, $this->order_id);
-        if ($this->isColumnModified(StockOnOrderTableMap::ISSTOCKDECREASED)) $criteria->add(StockOnOrderTableMap::ISSTOCKDECREASED, $this->isstockdecreased);
+        if ($this->isColumnModified(StockOnOrderTableMap::IS_STOCK_DECREASED)) $criteria->add(StockOnOrderTableMap::IS_STOCK_DECREASED, $this->is_stock_decreased);
 
         return $criteria;
     }
@@ -954,7 +954,7 @@ abstract class StockOnOrder implements ActiveRecordInterface
     public function copyInto($copyObj, $deepCopy = false, $makeNew = true)
     {
         $copyObj->setOrderId($this->getOrderId());
-        $copyObj->setIsstockdecreased($this->getIsstockdecreased());
+        $copyObj->setIsStockDecreased($this->getIsStockDecreased());
         if ($makeNew) {
             $copyObj->setNew(true);
         }
@@ -1039,7 +1039,7 @@ abstract class StockOnOrder implements ActiveRecordInterface
     public function clear()
     {
         $this->order_id = null;
-        $this->isstockdecreased = null;
+        $this->is_stock_decreased = null;
         $this->alreadyInSave = false;
         $this->clearAllReferences();
         $this->resetModified();

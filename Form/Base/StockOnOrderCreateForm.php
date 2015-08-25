@@ -44,9 +44,9 @@ class StockOnOrderCreateForm extends BaseForm
 
     protected function addIsStockDecreasedField(array $translationKeys, array $fieldsIdKeys)
     {
-        $this->formBuilder->add("isStockDecreased", "checkbox", array(
-            "label" => $this->translator->trans($this->readKey("isStockDecreased", $translationKeys), [], StockOnOrder::MESSAGE_DOMAIN),
-            "label_attr" => ["for" => $this->readKey("isStockDecreased", $fieldsIdKeys)],
+        $this->formBuilder->add("is_stock_decreased", "checkbox", array(
+            "label" => $this->translator->trans($this->readKey("is_stock_decreased", $translationKeys), [], StockOnOrder::MESSAGE_DOMAIN),
+            "label_attr" => ["for" => $this->readKey("is_stock_decreased", $fieldsIdKeys)],
             "required" => false,
             "constraints" => array(
             ),
@@ -78,7 +78,7 @@ class StockOnOrderCreateForm extends BaseForm
     {
         return array(
             "order_id" => "stock_on_order_order_id",
-            "isStockDecreased" => "stock_on_order_isStockDecreased",
+            "is_stock_decreased" => "stock_on_order_is_stock_decreased",
         );
     }
 }

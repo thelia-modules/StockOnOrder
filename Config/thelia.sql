@@ -15,6 +15,7 @@ CREATE TABLE `stock_on_order_config`
     `module_id` INTEGER NOT NULL,
     `status_id` INTEGER NOT NULL,
     `behavior` VARCHAR(255) DEFAULT 'default',
+    `decrease_on_order_creation` TINYINT(1) NOT NULL,
     PRIMARY KEY (`id`),
     UNIQUE INDEX `module_status_id` (`module_id`, `status_id`),
     INDEX `FI_status_id_stock_on_order_config` (`status_id`),
@@ -37,7 +38,7 @@ DROP TABLE IF EXISTS `stock_on_order`;
 CREATE TABLE `stock_on_order`
 (
     `order_id` INTEGER NOT NULL,
-    `isStockDecreased` TINYINT(1),
+    `is_stock_decreased` TINYINT(1) NOT NULL,
     INDEX `FI_order_id_stock_on_order` (`order_id`),
     CONSTRAINT `fk_order_id_stock_on_order`
         FOREIGN KEY (`order_id`)

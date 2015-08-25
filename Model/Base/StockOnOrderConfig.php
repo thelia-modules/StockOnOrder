@@ -81,6 +81,12 @@ abstract class StockOnOrderConfig implements ActiveRecordInterface
     protected $behavior;
 
     /**
+     * The value for the decrease_on_order_creation field.
+     * @var        boolean
+     */
+    protected $decrease_on_order_creation;
+
+    /**
      * @var        Module
      */
     protected $aModule;
@@ -414,6 +420,17 @@ abstract class StockOnOrderConfig implements ActiveRecordInterface
     }
 
     /**
+     * Get the [decrease_on_order_creation] column value.
+     *
+     * @return   boolean
+     */
+    public function getDecreaseOnOrderCreation()
+    {
+
+        return $this->decrease_on_order_creation;
+    }
+
+    /**
      * Set the value of [id] column.
      *
      * @param      int $v new value
@@ -506,6 +523,35 @@ abstract class StockOnOrderConfig implements ActiveRecordInterface
     } // setBehavior()
 
     /**
+     * Sets the value of the [decrease_on_order_creation] column.
+     * Non-boolean arguments are converted using the following rules:
+     *   * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
+     *   * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
+     * Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
+     *
+     * @param      boolean|integer|string $v The new value
+     * @return   \StockOnOrder\Model\StockOnOrderConfig The current object (for fluent API support)
+     */
+    public function setDecreaseOnOrderCreation($v)
+    {
+        if ($v !== null) {
+            if (is_string($v)) {
+                $v = in_array(strtolower($v), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
+            } else {
+                $v = (boolean) $v;
+            }
+        }
+
+        if ($this->decrease_on_order_creation !== $v) {
+            $this->decrease_on_order_creation = $v;
+            $this->modifiedColumns[StockOnOrderConfigTableMap::DECREASE_ON_ORDER_CREATION] = true;
+        }
+
+
+        return $this;
+    } // setDecreaseOnOrderCreation()
+
+    /**
      * Indicates whether the columns in this object are only set to default values.
      *
      * This method can be used in conjunction with isModified() to indicate whether an object is both
@@ -557,6 +603,9 @@ abstract class StockOnOrderConfig implements ActiveRecordInterface
 
             $col = $row[TableMap::TYPE_NUM == $indexType ? 3 + $startcol : StockOnOrderConfigTableMap::translateFieldName('Behavior', TableMap::TYPE_PHPNAME, $indexType)];
             $this->behavior = (null !== $col) ? (string) $col : null;
+
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 4 + $startcol : StockOnOrderConfigTableMap::translateFieldName('DecreaseOnOrderCreation', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->decrease_on_order_creation = (null !== $col) ? (boolean) $col : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -565,7 +614,7 @@ abstract class StockOnOrderConfig implements ActiveRecordInterface
                 $this->ensureConsistency();
             }
 
-            return $startcol + 4; // 4 = StockOnOrderConfigTableMap::NUM_HYDRATE_COLUMNS.
+            return $startcol + 5; // 5 = StockOnOrderConfigTableMap::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating \StockOnOrder\Model\StockOnOrderConfig object", 0, $e);
@@ -813,6 +862,9 @@ abstract class StockOnOrderConfig implements ActiveRecordInterface
         if ($this->isColumnModified(StockOnOrderConfigTableMap::BEHAVIOR)) {
             $modifiedColumns[':p' . $index++]  = 'BEHAVIOR';
         }
+        if ($this->isColumnModified(StockOnOrderConfigTableMap::DECREASE_ON_ORDER_CREATION)) {
+            $modifiedColumns[':p' . $index++]  = 'DECREASE_ON_ORDER_CREATION';
+        }
 
         $sql = sprintf(
             'INSERT INTO stock_on_order_config (%s) VALUES (%s)',
@@ -835,6 +887,9 @@ abstract class StockOnOrderConfig implements ActiveRecordInterface
                         break;
                     case 'BEHAVIOR':
                         $stmt->bindValue($identifier, $this->behavior, PDO::PARAM_STR);
+                        break;
+                    case 'DECREASE_ON_ORDER_CREATION':
+                        $stmt->bindValue($identifier, (int) $this->decrease_on_order_creation, PDO::PARAM_INT);
                         break;
                 }
             }
@@ -910,6 +965,9 @@ abstract class StockOnOrderConfig implements ActiveRecordInterface
             case 3:
                 return $this->getBehavior();
                 break;
+            case 4:
+                return $this->getDecreaseOnOrderCreation();
+                break;
             default:
                 return null;
                 break;
@@ -943,6 +1001,7 @@ abstract class StockOnOrderConfig implements ActiveRecordInterface
             $keys[1] => $this->getModuleId(),
             $keys[2] => $this->getStatusId(),
             $keys[3] => $this->getBehavior(),
+            $keys[4] => $this->getDecreaseOnOrderCreation(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -1002,6 +1061,9 @@ abstract class StockOnOrderConfig implements ActiveRecordInterface
             case 3:
                 $this->setBehavior($value);
                 break;
+            case 4:
+                $this->setDecreaseOnOrderCreation($value);
+                break;
         } // switch()
     }
 
@@ -1030,6 +1092,7 @@ abstract class StockOnOrderConfig implements ActiveRecordInterface
         if (array_key_exists($keys[1], $arr)) $this->setModuleId($arr[$keys[1]]);
         if (array_key_exists($keys[2], $arr)) $this->setStatusId($arr[$keys[2]]);
         if (array_key_exists($keys[3], $arr)) $this->setBehavior($arr[$keys[3]]);
+        if (array_key_exists($keys[4], $arr)) $this->setDecreaseOnOrderCreation($arr[$keys[4]]);
     }
 
     /**
@@ -1045,6 +1108,7 @@ abstract class StockOnOrderConfig implements ActiveRecordInterface
         if ($this->isColumnModified(StockOnOrderConfigTableMap::MODULE_ID)) $criteria->add(StockOnOrderConfigTableMap::MODULE_ID, $this->module_id);
         if ($this->isColumnModified(StockOnOrderConfigTableMap::STATUS_ID)) $criteria->add(StockOnOrderConfigTableMap::STATUS_ID, $this->status_id);
         if ($this->isColumnModified(StockOnOrderConfigTableMap::BEHAVIOR)) $criteria->add(StockOnOrderConfigTableMap::BEHAVIOR, $this->behavior);
+        if ($this->isColumnModified(StockOnOrderConfigTableMap::DECREASE_ON_ORDER_CREATION)) $criteria->add(StockOnOrderConfigTableMap::DECREASE_ON_ORDER_CREATION, $this->decrease_on_order_creation);
 
         return $criteria;
     }
@@ -1111,6 +1175,7 @@ abstract class StockOnOrderConfig implements ActiveRecordInterface
         $copyObj->setModuleId($this->getModuleId());
         $copyObj->setStatusId($this->getStatusId());
         $copyObj->setBehavior($this->getBehavior());
+        $copyObj->setDecreaseOnOrderCreation($this->getDecreaseOnOrderCreation());
         if ($makeNew) {
             $copyObj->setNew(true);
             $copyObj->setId(NULL); // this is a auto-increment column, so set to default value
@@ -1250,6 +1315,7 @@ abstract class StockOnOrderConfig implements ActiveRecordInterface
         $this->module_id = null;
         $this->status_id = null;
         $this->behavior = null;
+        $this->decrease_on_order_creation = null;
         $this->alreadyInSave = false;
         $this->clearAllReferences();
         $this->applyDefaultValues();

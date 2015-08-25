@@ -27,6 +27,7 @@ class StockOnOrderConfigCreateForm extends BaseForm
         $this->addModuleIdField($translationKeys, $fieldsIdKeys);
         $this->addStatusIdField($translationKeys, $fieldsIdKeys);
         $this->addBehaviorField($translationKeys, $fieldsIdKeys);
+        $this->addDecreaseOnOrderCreationField($translationKeys, $fieldsIdKeys);
     }
 
     protected function addModuleIdField(array $translationKeys, array $fieldsIdKeys)
@@ -70,6 +71,19 @@ class StockOnOrderConfigCreateForm extends BaseForm
         ));
     }
 
+    protected function addDecreaseOnOrderCreationField(array $translationKeys, array $fieldsIdKeys)
+    {
+        $this->formBuilder->add("decrease_on_order_creation", "checkbox", array(
+            "label" => $this->translator->trans($this->readKey("decrease_on_order_creation", $translationKeys), [], StockOnOrder::MESSAGE_DOMAIN),
+            "label_attr" => ["for" => $this->readKey("decrease_on_order_creation", $fieldsIdKeys)],
+            "required" => false,
+            "constraints" => array(
+            ),
+            "attr" => array(
+            )
+        ));
+    }
+
     public function getName()
     {
         return static::FORM_NAME;
@@ -95,6 +109,7 @@ class StockOnOrderConfigCreateForm extends BaseForm
             "module_id" => "stock_on_order_config_module_id",
             "status_id" => "stock_on_order_config_status_id",
             "behavior" => "stock_on_order_config_behavior",
+            "decrease_on_order_creation" => "stock_on_order_config_decrease_on_order_creation",
         );
     }
 }

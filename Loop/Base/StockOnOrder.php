@@ -37,7 +37,7 @@ class StockOnOrder extends BaseLoop implements PropelSearchLoopInterface
 
             $row
                 ->set("ORDER_ID", $entry->getOrderId())
-                ->set("ISSTOCKDECREASED", $entry->getIsStockDecreased())
+                ->set("IS_STOCK_DECREASED", $entry->getIsStockDecreased())
             ;
 
             $this->addMoreResults($row, $entry);
@@ -76,14 +76,14 @@ class StockOnOrder extends BaseLoop implements PropelSearchLoopInterface
     {
         return new ArgumentCollection(
             Argument::createIntListTypeArgument("order_id"),
-            Argument::createBooleanOrBothTypeArgument("isStockDecreased", BooleanOrBothType::ANY),
+            Argument::createBooleanOrBothTypeArgument("is_stock_decreased", BooleanOrBothType::ANY),
             Argument::createEnumListTypeArgument(
                 "order",
                 [
                     "order_id",
                     "order_id-reverse",
-                    "isStockDecreased",
-                    "isStockDecreased-reverse",
+                    "is_stock_decreased",
+                    "is_stock_decreased-reverse",
                 ],
                 "id"
             )
@@ -103,8 +103,8 @@ class StockOnOrder extends BaseLoop implements PropelSearchLoopInterface
             $query->filterByOrderId($order_id);
         }
 
-        if (BooleanOrBothType::ANY !== $isStockDecreased = $this->getIsStockDecreased()) {
-            $query->filterByIsStockDecreased($isStockDecreased);
+        if (BooleanOrBothType::ANY !== $is_stock_decreased = $this->getIsStockDecreased()) {
+            $query->filterByIsStockDecreased($is_stock_decreased);
         }
 
         foreach ($this->getOrder() as $order) {
@@ -115,10 +115,10 @@ class StockOnOrder extends BaseLoop implements PropelSearchLoopInterface
                 case "order_id-reverse":
                     $query->orderByOrderId(Criteria::DESC);
                     break;
-                case "isStockDecreased":
+                case "is_stock_decreased":
                     $query->orderByIsStockDecreased();
                     break;
-                case "isStockDecreased-reverse":
+                case "is_stock_decreased-reverse":
                     $query->orderByIsStockDecreased(Criteria::DESC);
                     break;
             }

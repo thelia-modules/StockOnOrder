@@ -16,7 +16,15 @@
             <unique-column name="status_id" />
         </unique>
         <column name="behavior" defaultValue="default" valueSet="default,do_nothing,increase,decrease" type="VARCHAR" />
-        <column name="decrease_on_order_creation" required="true" type="BOOLEAN" />
+    </table>
+
+    <table name="stock_on_order_decrease_on_creation" namespace="StockOnOrder\Model">
+        <column autoIncrement="true" name="id" primaryKey="true" required="true" type="INTEGER" />
+        <column name="module_id" required="true" type="INTEGER" />
+        <foreign-key foreignTable="module" name="fk_module_id_stock_on_order_decrease_on_creation" onDelete="CASCADE">
+            <reference foreign="id" local="module_id" />
+        </foreign-key>
+        <column name="decreased_on_order_creation" required="true" type="BOOLEAN" />
     </table>
 
     <table name="stock_on_order" namespace="StockOnOrder\Model">

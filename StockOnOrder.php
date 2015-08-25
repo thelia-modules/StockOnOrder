@@ -45,6 +45,7 @@ class StockOnOrder extends BaseModule
                     ->setModuleId($paymentModule->getId())
                     ->setStatusId($orderStatus->getId())
                     ->setBehavior('default')
+                    ->setDecreaseOnOrderCreation(true)
                     ->save();
             }
         }

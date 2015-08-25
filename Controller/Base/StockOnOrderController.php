@@ -66,7 +66,7 @@ class StockOnOrderController extends AbstractCrudController
     {
         $data = array(
             "order_id" => $object->getOrderId(),
-            "isStockDecreased" => (bool) $object->getIsStockDecreased(),
+            "is_stock_decreased" => (bool) $object->getIsStockDecreased(),
         );
 
         return $this->getUpdateForm($data);
@@ -83,7 +83,7 @@ class StockOnOrderController extends AbstractCrudController
         $event = new StockOnOrderEvent();
 
         $event->setOrderId($formData["order_id"]);
-        $event->setIsStockDecreased($formData["isStockDecreased"]);
+        $event->setIsStockDecreased($formData["is_stock_decreased"]);
 
         return $event;
     }
@@ -99,7 +99,7 @@ class StockOnOrderController extends AbstractCrudController
         $event = new StockOnOrderEvent();
 
         $event->setOrderId($formData["order_id"]);
-        $event->setIsStockDecreased($formData["isStockDecreased"]);
+        $event->setIsStockDecreased($formData["is_stock_decreased"]);
 
         return $event;
     }

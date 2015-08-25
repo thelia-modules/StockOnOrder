@@ -58,7 +58,7 @@ class StockOnOrderConfigTableMap extends TableMap
     /**
      * The total number of columns
      */
-    const NUM_COLUMNS = 4;
+    const NUM_COLUMNS = 5;
 
     /**
      * The number of lazy-loaded columns
@@ -68,7 +68,7 @@ class StockOnOrderConfigTableMap extends TableMap
     /**
      * The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS)
      */
-    const NUM_HYDRATE_COLUMNS = 4;
+    const NUM_HYDRATE_COLUMNS = 5;
 
     /**
      * the column name for the ID field
@@ -91,6 +91,11 @@ class StockOnOrderConfigTableMap extends TableMap
     const BEHAVIOR = 'stock_on_order_config.BEHAVIOR';
 
     /**
+     * the column name for the DECREASE_ON_ORDER_CREATION field
+     */
+    const DECREASE_ON_ORDER_CREATION = 'stock_on_order_config.DECREASE_ON_ORDER_CREATION';
+
+    /**
      * The default string format for model objects of the related table
      */
     const DEFAULT_STRING_FORMAT = 'YAML';
@@ -102,12 +107,12 @@ class StockOnOrderConfigTableMap extends TableMap
      * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        self::TYPE_PHPNAME       => array('Id', 'ModuleId', 'StatusId', 'Behavior', ),
-        self::TYPE_STUDLYPHPNAME => array('id', 'moduleId', 'statusId', 'behavior', ),
-        self::TYPE_COLNAME       => array(StockOnOrderConfigTableMap::ID, StockOnOrderConfigTableMap::MODULE_ID, StockOnOrderConfigTableMap::STATUS_ID, StockOnOrderConfigTableMap::BEHAVIOR, ),
-        self::TYPE_RAW_COLNAME   => array('ID', 'MODULE_ID', 'STATUS_ID', 'BEHAVIOR', ),
-        self::TYPE_FIELDNAME     => array('id', 'module_id', 'status_id', 'behavior', ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, )
+        self::TYPE_PHPNAME       => array('Id', 'ModuleId', 'StatusId', 'Behavior', 'DecreaseOnOrderCreation', ),
+        self::TYPE_STUDLYPHPNAME => array('id', 'moduleId', 'statusId', 'behavior', 'decreaseOnOrderCreation', ),
+        self::TYPE_COLNAME       => array(StockOnOrderConfigTableMap::ID, StockOnOrderConfigTableMap::MODULE_ID, StockOnOrderConfigTableMap::STATUS_ID, StockOnOrderConfigTableMap::BEHAVIOR, StockOnOrderConfigTableMap::DECREASE_ON_ORDER_CREATION, ),
+        self::TYPE_RAW_COLNAME   => array('ID', 'MODULE_ID', 'STATUS_ID', 'BEHAVIOR', 'DECREASE_ON_ORDER_CREATION', ),
+        self::TYPE_FIELDNAME     => array('id', 'module_id', 'status_id', 'behavior', 'decrease_on_order_creation', ),
+        self::TYPE_NUM           => array(0, 1, 2, 3, 4, )
     );
 
     /**
@@ -117,12 +122,12 @@ class StockOnOrderConfigTableMap extends TableMap
      * e.g. self::$fieldKeys[self::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        self::TYPE_PHPNAME       => array('Id' => 0, 'ModuleId' => 1, 'StatusId' => 2, 'Behavior' => 3, ),
-        self::TYPE_STUDLYPHPNAME => array('id' => 0, 'moduleId' => 1, 'statusId' => 2, 'behavior' => 3, ),
-        self::TYPE_COLNAME       => array(StockOnOrderConfigTableMap::ID => 0, StockOnOrderConfigTableMap::MODULE_ID => 1, StockOnOrderConfigTableMap::STATUS_ID => 2, StockOnOrderConfigTableMap::BEHAVIOR => 3, ),
-        self::TYPE_RAW_COLNAME   => array('ID' => 0, 'MODULE_ID' => 1, 'STATUS_ID' => 2, 'BEHAVIOR' => 3, ),
-        self::TYPE_FIELDNAME     => array('id' => 0, 'module_id' => 1, 'status_id' => 2, 'behavior' => 3, ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, )
+        self::TYPE_PHPNAME       => array('Id' => 0, 'ModuleId' => 1, 'StatusId' => 2, 'Behavior' => 3, 'DecreaseOnOrderCreation' => 4, ),
+        self::TYPE_STUDLYPHPNAME => array('id' => 0, 'moduleId' => 1, 'statusId' => 2, 'behavior' => 3, 'decreaseOnOrderCreation' => 4, ),
+        self::TYPE_COLNAME       => array(StockOnOrderConfigTableMap::ID => 0, StockOnOrderConfigTableMap::MODULE_ID => 1, StockOnOrderConfigTableMap::STATUS_ID => 2, StockOnOrderConfigTableMap::BEHAVIOR => 3, StockOnOrderConfigTableMap::DECREASE_ON_ORDER_CREATION => 4, ),
+        self::TYPE_RAW_COLNAME   => array('ID' => 0, 'MODULE_ID' => 1, 'STATUS_ID' => 2, 'BEHAVIOR' => 3, 'DECREASE_ON_ORDER_CREATION' => 4, ),
+        self::TYPE_FIELDNAME     => array('id' => 0, 'module_id' => 1, 'status_id' => 2, 'behavior' => 3, 'decrease_on_order_creation' => 4, ),
+        self::TYPE_NUM           => array(0, 1, 2, 3, 4, )
     );
 
     /**
@@ -145,6 +150,7 @@ class StockOnOrderConfigTableMap extends TableMap
         $this->addForeignKey('MODULE_ID', 'ModuleId', 'INTEGER', 'module', 'ID', true, null, null);
         $this->addForeignKey('STATUS_ID', 'StatusId', 'INTEGER', 'order_status', 'ID', true, null, null);
         $this->addColumn('BEHAVIOR', 'Behavior', 'VARCHAR', false, 255, 'default');
+        $this->addColumn('DECREASE_ON_ORDER_CREATION', 'DecreaseOnOrderCreation', 'BOOLEAN', true, 1, null);
     } // initialize()
 
     /**
@@ -298,11 +304,13 @@ class StockOnOrderConfigTableMap extends TableMap
             $criteria->addSelectColumn(StockOnOrderConfigTableMap::MODULE_ID);
             $criteria->addSelectColumn(StockOnOrderConfigTableMap::STATUS_ID);
             $criteria->addSelectColumn(StockOnOrderConfigTableMap::BEHAVIOR);
+            $criteria->addSelectColumn(StockOnOrderConfigTableMap::DECREASE_ON_ORDER_CREATION);
         } else {
             $criteria->addSelectColumn($alias . '.ID');
             $criteria->addSelectColumn($alias . '.MODULE_ID');
             $criteria->addSelectColumn($alias . '.STATUS_ID');
             $criteria->addSelectColumn($alias . '.BEHAVIOR');
+            $criteria->addSelectColumn($alias . '.DECREASE_ON_ORDER_CREATION');
         }
     }
 

@@ -22,10 +22,10 @@ use Thelia\Model\Order;
  *
  *
  * @method     ChildStockOnOrderQuery orderByOrderId($order = Criteria::ASC) Order by the order_id column
- * @method     ChildStockOnOrderQuery orderByIsstockdecreased($order = Criteria::ASC) Order by the isStockDecreased column
+ * @method     ChildStockOnOrderQuery orderByIsStockDecreased($order = Criteria::ASC) Order by the is_stock_decreased column
  *
  * @method     ChildStockOnOrderQuery groupByOrderId() Group by the order_id column
- * @method     ChildStockOnOrderQuery groupByIsstockdecreased() Group by the isStockDecreased column
+ * @method     ChildStockOnOrderQuery groupByIsStockDecreased() Group by the is_stock_decreased column
  *
  * @method     ChildStockOnOrderQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method     ChildStockOnOrderQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
@@ -39,10 +39,10 @@ use Thelia\Model\Order;
  * @method     ChildStockOnOrder findOneOrCreate(ConnectionInterface $con = null) Return the first ChildStockOnOrder matching the query, or a new ChildStockOnOrder object populated from the query conditions when no match is found
  *
  * @method     ChildStockOnOrder findOneByOrderId(int $order_id) Return the first ChildStockOnOrder filtered by the order_id column
- * @method     ChildStockOnOrder findOneByIsstockdecreased(boolean $isStockDecreased) Return the first ChildStockOnOrder filtered by the isStockDecreased column
+ * @method     ChildStockOnOrder findOneByIsStockDecreased(boolean $is_stock_decreased) Return the first ChildStockOnOrder filtered by the is_stock_decreased column
  *
  * @method     array findByOrderId(int $order_id) Return ChildStockOnOrder objects filtered by the order_id column
- * @method     array findByIsstockdecreased(boolean $isStockDecreased) Return ChildStockOnOrder objects filtered by the isStockDecreased column
+ * @method     array findByIsStockDecreased(boolean $is_stock_decreased) Return ChildStockOnOrder objects filtered by the is_stock_decreased column
  *
  */
 abstract class StockOnOrderQuery extends ModelCriteria
@@ -186,15 +186,15 @@ abstract class StockOnOrderQuery extends ModelCriteria
     }
 
     /**
-     * Filter the query on the isStockDecreased column
+     * Filter the query on the is_stock_decreased column
      *
      * Example usage:
      * <code>
-     * $query->filterByIsstockdecreased(true); // WHERE isStockDecreased = true
-     * $query->filterByIsstockdecreased('yes'); // WHERE isStockDecreased = true
+     * $query->filterByIsStockDecreased(true); // WHERE is_stock_decreased = true
+     * $query->filterByIsStockDecreased('yes'); // WHERE is_stock_decreased = true
      * </code>
      *
-     * @param     boolean|string $isstockdecreased The value to use as filter.
+     * @param     boolean|string $isStockDecreased The value to use as filter.
      *              Non-boolean arguments are converted using the following rules:
      *                * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
      *                * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
@@ -203,13 +203,13 @@ abstract class StockOnOrderQuery extends ModelCriteria
      *
      * @return ChildStockOnOrderQuery The current query, for fluid interface
      */
-    public function filterByIsstockdecreased($isstockdecreased = null, $comparison = null)
+    public function filterByIsStockDecreased($isStockDecreased = null, $comparison = null)
     {
-        if (is_string($isstockdecreased)) {
-            $isStockDecreased = in_array(strtolower($isstockdecreased), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
+        if (is_string($isStockDecreased)) {
+            $is_stock_decreased = in_array(strtolower($isStockDecreased), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
         }
 
-        return $this->addUsingAlias(StockOnOrderTableMap::ISSTOCKDECREASED, $isstockdecreased, $comparison);
+        return $this->addUsingAlias(StockOnOrderTableMap::IS_STOCK_DECREASED, $isStockDecreased, $comparison);
     }
 
     /**

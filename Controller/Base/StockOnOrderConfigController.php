@@ -69,6 +69,7 @@ class StockOnOrderConfigController extends AbstractCrudController
             "module_id" => $object->getModuleId(),
             "status_id" => $object->getStatusId(),
             "behavior" => $object->getBehavior(),
+            "decrease_on_order_creation" => (bool) $object->getDecreaseOnOrderCreation(),
         );
 
         return $this->getUpdateForm($data);
@@ -87,6 +88,7 @@ class StockOnOrderConfigController extends AbstractCrudController
         $event->setModuleId($formData["module_id"]);
         $event->setStatusId($formData["status_id"]);
         $event->setBehavior($formData["behavior"]);
+        $event->setDecreaseOnOrderCreation($formData["decrease_on_order_creation"]);
 
         return $event;
     }
@@ -105,6 +107,7 @@ class StockOnOrderConfigController extends AbstractCrudController
         $event->setModuleId($formData["module_id"]);
         $event->setStatusId($formData["status_id"]);
         $event->setBehavior($formData["behavior"]);
+        $event->setDecreaseOnOrderCreation($formData["decrease_on_order_creation"]);
 
         return $event;
     }
