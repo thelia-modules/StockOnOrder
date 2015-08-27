@@ -82,7 +82,6 @@ class StockOnOrderEventListener implements EventSubscriberInterface
                 ->setOrderId($event->getOrder()->getId())
                 ->setIsStockDecreased(true)
                 ->save();
-
         } else {
             // Don't decrease stock & save that it hasn't been decreased
             (new StockOnOrderModel())
@@ -141,8 +140,7 @@ class StockOnOrderEventListener implements EventSubscriberInterface
 
         // If quantities have to be changed
         if (($behavior === 'decrease' && !$stockOnOrder->getIsStockDecreased()) ||
-            ($behavior === 'increase' && $stockOnOrder->getIsStockDecreased()) ||
-            $behavior === 'do_nothing') {
+            ($behavior === 'increase' && $stockOnOrder->getIsStockDecreased())) {
             $this->actionOnQuantities($order, $behavior, $stockOnOrder);
         } else {
             $this->actionOnQuantities($order, 'do_nothing', $stockOnOrder);
@@ -206,25 +204,18 @@ class StockOnOrderEventListener implements EventSubscriberInterface
         $stockOnOrder
             ->setIsStockDecreased(true)
             ->save();
-
     }
 
     public function increaseStock(OrderProduct $orderProduct, ProductSaleElements $pse, StockOnOrder $stockOnOrder)
     {
         // Increase stock and save
-        try {
-            $pse
-                ->setQuantity(static::$stock[$pse->getId()] + $orderProduct->getQuantity())
-                ->save();
+        $pse
+            ->setQuantity(static::$stock[$pse->getId()] + $orderProduct->getQuantity())
+            ->save();
 
-            // Save that stock has not been decreased
-            $stockOnOrder
-                ->setIsStockDecreased(false)
-                ->save();
-
-        } catch (\Exception $e) {
-            $e->getMessage("Unable to increase stock");
-        }
+        // Save that stock has not been decreased
+        $stockOnOrder
+            ->setIsStockDecreased(false)
+            ->save();
     }
-
 }

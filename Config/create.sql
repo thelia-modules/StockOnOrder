@@ -49,8 +49,10 @@ CREATE TABLE IF NOT EXISTS `stock_on_order_decrease_on_creation`
 
 CREATE TABLE IF NOT EXISTS `stock_on_order`
 (
+  `id` INTEGER NOT NULL AUTO_INCREMENT,
   `order_id` INTEGER NOT NULL,
   `is_stock_decreased` TINYINT(1) NOT NULL,
+  PRIMARY KEY (`id`),
   INDEX `FI_order_id_stock_on_order` (`order_id`),
   CONSTRAINT `fk_order_id_stock_on_order`
   FOREIGN KEY (`order_id`)

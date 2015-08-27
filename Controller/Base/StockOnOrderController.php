@@ -65,6 +65,7 @@ class StockOnOrderController extends AbstractCrudController
     protected function hydrateObjectForm($object)
     {
         $data = array(
+            "id" => $object->getId(),
             "order_id" => $object->getOrderId(),
             "is_stock_decreased" => (bool) $object->getIsStockDecreased(),
         );
@@ -98,6 +99,7 @@ class StockOnOrderController extends AbstractCrudController
     {
         $event = new StockOnOrderEvent();
 
+        $event->setId($formData["id"]);
         $event->setOrderId($formData["order_id"]);
         $event->setIsStockDecreased($formData["is_stock_decreased"]);
 

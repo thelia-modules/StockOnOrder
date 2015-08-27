@@ -23,7 +23,6 @@ use StockOnOrder\Model\StockOnOrderDecreaseOnCreationQuery;
  */
 class StockOnOrderDecreaseOnCreation extends BaseLoop implements PropelSearchLoopInterface
 {
-
     /**
      * @param LoopResult $loopResult
      *

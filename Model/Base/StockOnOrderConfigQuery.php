@@ -61,7 +61,6 @@ use Thelia\Model\OrderStatus;
  */
 abstract class StockOnOrderConfigQuery extends ModelCriteria
 {
-
     /**
      * Initializes internal state of \StockOnOrder\Model\Base\StockOnOrderConfigQuery object.
      *
@@ -217,7 +216,6 @@ abstract class StockOnOrderConfigQuery extends ModelCriteria
      */
     public function filterByPrimaryKey($key)
     {
-
         return $this->addUsingAlias(StockOnOrderConfigTableMap::ID, $key, Criteria::EQUAL);
     }
 
@@ -230,7 +228,6 @@ abstract class StockOnOrderConfigQuery extends ModelCriteria
      */
     public function filterByPrimaryKeys($keys)
     {
-
         return $this->addUsingAlias(StockOnOrderConfigTableMap::ID, $keys, Criteria::IN);
     }
 
@@ -601,16 +598,16 @@ abstract class StockOnOrderConfigQuery extends ModelCriteria
      */
      public function delete(ConnectionInterface $con = null)
      {
-        if (null === $con) {
-            $con = Propel::getServiceContainer()->getWriteConnection(StockOnOrderConfigTableMap::DATABASE_NAME);
-        }
+         if (null === $con) {
+             $con = Propel::getServiceContainer()->getWriteConnection(StockOnOrderConfigTableMap::DATABASE_NAME);
+         }
 
-        $criteria = $this;
+         $criteria = $this;
 
         // Set the correct dbName
         $criteria->setDbName(StockOnOrderConfigTableMap::DATABASE_NAME);
 
-        $affectedRows = 0; // initialize var to track total num of affected rows
+         $affectedRows = 0; // initialize var to track total num of affected rows
 
         try {
             // use transaction because $criteria could contain info
@@ -618,7 +615,7 @@ abstract class StockOnOrderConfigQuery extends ModelCriteria
             $con->beginTransaction();
 
 
-        StockOnOrderConfigTableMap::removeInstanceFromPool($criteria);
+            StockOnOrderConfigTableMap::removeInstanceFromPool($criteria);
 
             $affectedRows += ModelCriteria::delete($con);
             StockOnOrderConfigTableMap::clearRelatedInstancePool();
@@ -629,6 +626,6 @@ abstract class StockOnOrderConfigQuery extends ModelCriteria
             $con->rollBack();
             throw $e;
         }
-    }
-
+     }
 } // StockOnOrderConfigQuery
+

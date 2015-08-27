@@ -49,6 +49,10 @@ class StockOnOrderAction extends BaseAction implements EventSubscriberInterface
         $con->beginTransaction();
 
         try {
+            if (null !== $id = $event->getId()) {
+                $model->setId($id);
+            }
+
             if (null !== $orderId = $event->getOrderId()) {
                 $model->setOrderId($orderId);
             }

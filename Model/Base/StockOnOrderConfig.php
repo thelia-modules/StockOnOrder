@@ -226,7 +226,7 @@ abstract class StockOnOrderConfig implements ActiveRecordInterface
         }
 
         if (null === $this->getPrimaryKey()
-            || null === $obj->getPrimaryKey())  {
+            || null === $obj->getPrimaryKey()) {
             return false;
         }
 
@@ -376,7 +376,6 @@ abstract class StockOnOrderConfig implements ActiveRecordInterface
      */
     public function getId()
     {
-
         return $this->id;
     }
 
@@ -387,7 +386,6 @@ abstract class StockOnOrderConfig implements ActiveRecordInterface
      */
     public function getModuleId()
     {
-
         return $this->module_id;
     }
 
@@ -398,7 +396,6 @@ abstract class StockOnOrderConfig implements ActiveRecordInterface
      */
     public function getStatusId()
     {
-
         return $this->status_id;
     }
 
@@ -409,7 +406,6 @@ abstract class StockOnOrderConfig implements ActiveRecordInterface
      */
     public function getBehavior()
     {
-
         return $this->behavior;
     }
 
@@ -515,9 +511,9 @@ abstract class StockOnOrderConfig implements ActiveRecordInterface
      */
     public function hasOnlyDefaultValues()
     {
-            if ($this->behavior !== 'default') {
-                return false;
-            }
+        if ($this->behavior !== 'default') {
+            return false;
+        }
 
         // otherwise, everything was equal, so return TRUE
         return true;
@@ -544,8 +540,6 @@ abstract class StockOnOrderConfig implements ActiveRecordInterface
     public function hydrate($row, $startcol = 0, $rehydrate = false, $indexType = TableMap::TYPE_NUM)
     {
         try {
-
-
             $col = $row[TableMap::TYPE_NUM == $indexType ? 0 + $startcol : StockOnOrderConfigTableMap::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)];
             $this->id = (null !== $col) ? (int) $col : null;
 
@@ -566,7 +560,6 @@ abstract class StockOnOrderConfig implements ActiveRecordInterface
             }
 
             return $startcol + 4; // 4 = StockOnOrderConfigTableMap::NUM_HYDRATE_COLUMNS.
-
         } catch (Exception $e) {
             throw new PropelException("Error populating \StockOnOrder\Model\StockOnOrderConfig object", 0, $e);
         }
@@ -776,7 +769,6 @@ abstract class StockOnOrderConfig implements ActiveRecordInterface
             }
 
             $this->alreadyInSave = false;
-
         }
 
         return $affectedRows;
@@ -1026,10 +1018,18 @@ abstract class StockOnOrderConfig implements ActiveRecordInterface
     {
         $keys = StockOnOrderConfigTableMap::getFieldNames($keyType);
 
-        if (array_key_exists($keys[0], $arr)) $this->setId($arr[$keys[0]]);
-        if (array_key_exists($keys[1], $arr)) $this->setModuleId($arr[$keys[1]]);
-        if (array_key_exists($keys[2], $arr)) $this->setStatusId($arr[$keys[2]]);
-        if (array_key_exists($keys[3], $arr)) $this->setBehavior($arr[$keys[3]]);
+        if (array_key_exists($keys[0], $arr)) {
+            $this->setId($arr[$keys[0]]);
+        }
+        if (array_key_exists($keys[1], $arr)) {
+            $this->setModuleId($arr[$keys[1]]);
+        }
+        if (array_key_exists($keys[2], $arr)) {
+            $this->setStatusId($arr[$keys[2]]);
+        }
+        if (array_key_exists($keys[3], $arr)) {
+            $this->setBehavior($arr[$keys[3]]);
+        }
     }
 
     /**
@@ -1041,10 +1041,18 @@ abstract class StockOnOrderConfig implements ActiveRecordInterface
     {
         $criteria = new Criteria(StockOnOrderConfigTableMap::DATABASE_NAME);
 
-        if ($this->isColumnModified(StockOnOrderConfigTableMap::ID)) $criteria->add(StockOnOrderConfigTableMap::ID, $this->id);
-        if ($this->isColumnModified(StockOnOrderConfigTableMap::MODULE_ID)) $criteria->add(StockOnOrderConfigTableMap::MODULE_ID, $this->module_id);
-        if ($this->isColumnModified(StockOnOrderConfigTableMap::STATUS_ID)) $criteria->add(StockOnOrderConfigTableMap::STATUS_ID, $this->status_id);
-        if ($this->isColumnModified(StockOnOrderConfigTableMap::BEHAVIOR)) $criteria->add(StockOnOrderConfigTableMap::BEHAVIOR, $this->behavior);
+        if ($this->isColumnModified(StockOnOrderConfigTableMap::ID)) {
+            $criteria->add(StockOnOrderConfigTableMap::ID, $this->id);
+        }
+        if ($this->isColumnModified(StockOnOrderConfigTableMap::MODULE_ID)) {
+            $criteria->add(StockOnOrderConfigTableMap::MODULE_ID, $this->module_id);
+        }
+        if ($this->isColumnModified(StockOnOrderConfigTableMap::STATUS_ID)) {
+            $criteria->add(StockOnOrderConfigTableMap::STATUS_ID, $this->status_id);
+        }
+        if ($this->isColumnModified(StockOnOrderConfigTableMap::BEHAVIOR)) {
+            $criteria->add(StockOnOrderConfigTableMap::BEHAVIOR, $this->behavior);
+        }
 
         return $criteria;
     }
@@ -1091,7 +1099,6 @@ abstract class StockOnOrderConfig implements ActiveRecordInterface
      */
     public function isPrimaryKeyNull()
     {
-
         return null === $this->getId();
     }
 
@@ -1113,7 +1120,7 @@ abstract class StockOnOrderConfig implements ActiveRecordInterface
         $copyObj->setBehavior($this->getBehavior());
         if ($makeNew) {
             $copyObj->setNew(true);
-            $copyObj->setId(NULL); // this is a auto-increment column, so set to default value
+            $copyObj->setId(null); // this is a auto-increment column, so set to default value
         }
     }
 
@@ -1149,7 +1156,7 @@ abstract class StockOnOrderConfig implements ActiveRecordInterface
     public function setModule(ChildModule $v = null)
     {
         if ($v === null) {
-            $this->setModuleId(NULL);
+            $this->setModuleId(null);
         } else {
             $this->setModuleId($v->getId());
         }
@@ -1200,7 +1207,7 @@ abstract class StockOnOrderConfig implements ActiveRecordInterface
     public function setOrderStatus(ChildOrderStatus $v = null)
     {
         if ($v === null) {
-            $this->setStatusId(NULL);
+            $this->setStatusId(null);
         } else {
             $this->setStatusId($v->getId());
         }
@@ -1302,7 +1309,6 @@ abstract class StockOnOrderConfig implements ActiveRecordInterface
      */
     public function postSave(ConnectionInterface $con = null)
     {
-
     }
 
     /**
@@ -1321,7 +1327,6 @@ abstract class StockOnOrderConfig implements ActiveRecordInterface
      */
     public function postInsert(ConnectionInterface $con = null)
     {
-
     }
 
     /**
@@ -1340,7 +1345,6 @@ abstract class StockOnOrderConfig implements ActiveRecordInterface
      */
     public function postUpdate(ConnectionInterface $con = null)
     {
-
     }
 
     /**
@@ -1359,7 +1363,6 @@ abstract class StockOnOrderConfig implements ActiveRecordInterface
      */
     public function postDelete(ConnectionInterface $con = null)
     {
-
     }
 
 
@@ -1403,5 +1406,4 @@ abstract class StockOnOrderConfig implements ActiveRecordInterface
 
         throw new BadMethodCallException(sprintf('Call to undefined method: %s.', $name));
     }
-
 }

@@ -4,7 +4,6 @@ namespace StockOnOrder\Model;
 
 use StockOnOrder\Model\Base\StockOnOrderDecreaseOnCreationQuery as BaseStockOnOrderDecreaseOnCreationQuery;
 
-
 /**
  * Skeleton subclass for performing query and update operations on the 'stock_on_order_decrease_on_creation' table.
  *
@@ -17,5 +16,5 @@ use StockOnOrder\Model\Base\StockOnOrderDecreaseOnCreationQuery as BaseStockOnOr
  */
 class StockOnOrderDecreaseOnCreationQuery extends BaseStockOnOrderDecreaseOnCreationQuery
 {
-
 } // StockOnOrderDecreaseOnCreationQuery
+

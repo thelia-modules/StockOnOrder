@@ -16,9 +16,22 @@ use StockOnOrder\Model\StockOnOrder;
 */
 class StockOnOrderEvent extends ActionEvent
 {
+    protected $id;
     protected $orderId;
     protected $isStockDecreased;
     protected $stockOnOrder;
+
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    public function setId($id)
+    {
+        $this->id = $id;
+
+        return $this;
+    }
 
     public function getOrderId()
     {

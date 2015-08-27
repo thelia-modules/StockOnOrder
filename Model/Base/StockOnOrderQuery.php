@@ -3,6 +3,7 @@
 namespace StockOnOrder\Model\Base;
 
 use \Exception;
+use \PDO;
 use Propel\Runtime\Propel;
 use Propel\Runtime\ActiveQuery\Criteria;
 use Propel\Runtime\ActiveQuery\ModelCriteria;
@@ -21,9 +22,11 @@ use Thelia\Model\Order;
  *
  *
  *
+ * @method     ChildStockOnOrderQuery orderById($order = Criteria::ASC) Order by the id column
  * @method     ChildStockOnOrderQuery orderByOrderId($order = Criteria::ASC) Order by the order_id column
  * @method     ChildStockOnOrderQuery orderByIsStockDecreased($order = Criteria::ASC) Order by the is_stock_decreased column
  *
+ * @method     ChildStockOnOrderQuery groupById() Group by the id column
  * @method     ChildStockOnOrderQuery groupByOrderId() Group by the order_id column
  * @method     ChildStockOnOrderQuery groupByIsStockDecreased() Group by the is_stock_decreased column
  *
@@ -38,16 +41,17 @@ use Thelia\Model\Order;
  * @method     ChildStockOnOrder findOne(ConnectionInterface $con = null) Return the first ChildStockOnOrder matching the query
  * @method     ChildStockOnOrder findOneOrCreate(ConnectionInterface $con = null) Return the first ChildStockOnOrder matching the query, or a new ChildStockOnOrder object populated from the query conditions when no match is found
  *
+ * @method     ChildStockOnOrder findOneById(int $id) Return the first ChildStockOnOrder filtered by the id column
  * @method     ChildStockOnOrder findOneByOrderId(int $order_id) Return the first ChildStockOnOrder filtered by the order_id column
  * @method     ChildStockOnOrder findOneByIsStockDecreased(boolean $is_stock_decreased) Return the first ChildStockOnOrder filtered by the is_stock_decreased column
  *
+ * @method     array findById(int $id) Return ChildStockOnOrder objects filtered by the id column
  * @method     array findByOrderId(int $order_id) Return ChildStockOnOrder objects filtered by the order_id column
  * @method     array findByIsStockDecreased(boolean $is_stock_decreased) Return ChildStockOnOrder objects filtered by the is_stock_decreased column
  *
  */
 abstract class StockOnOrderQuery extends ModelCriteria
 {
-
     /**
      * Initializes internal state of \StockOnOrder\Model\Base\StockOnOrderQuery object.
      *
@@ -100,13 +104,80 @@ abstract class StockOnOrderQuery extends ModelCriteria
      */
     public function findPk($key, $con = null)
     {
-        throw new \LogicException('The ChildStockOnOrder class has no primary key');
+        if ($key === null) {
+            return null;
+        }
+        if ((null !== ($obj = StockOnOrderTableMap::getInstanceFromPool((string) $key))) && !$this->formatter) {
+            // the object is already in the instance pool
+            return $obj;
+        }
+        if ($con === null) {
+            $con = Propel::getServiceContainer()->getReadConnection(StockOnOrderTableMap::DATABASE_NAME);
+        }
+        $this->basePreSelect($con);
+        if ($this->formatter || $this->modelAlias || $this->with || $this->select
+         || $this->selectColumns || $this->asColumns || $this->selectModifiers
+         || $this->map || $this->having || $this->joins) {
+            return $this->findPkComplex($key, $con);
+        } else {
+            return $this->findPkSimple($key, $con);
+        }
+    }
+
+    /**
+     * Find object by primary key using raw SQL to go fast.
+     * Bypass doSelect() and the object formatter by using generated code.
+     *
+     * @param     mixed $key Primary key to use for the query
+     * @param     ConnectionInterface $con A connection object
+     *
+     * @return   ChildStockOnOrder A model object, or null if the key is not found
+     */
+    protected function findPkSimple($key, $con)
+    {
+        $sql = 'SELECT ID, ORDER_ID, IS_STOCK_DECREASED FROM stock_on_order WHERE ID = :p0';
+        try {
+            $stmt = $con->prepare($sql);
+            $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
+            $stmt->execute();
+        } catch (Exception $e) {
+            Propel::log($e->getMessage(), Propel::LOG_ERR);
+            throw new PropelException(sprintf('Unable to execute SELECT statement [%s]', $sql), 0, $e);
+        }
+        $obj = null;
+        if ($row = $stmt->fetch(\PDO::FETCH_NUM)) {
+            $obj = new ChildStockOnOrder();
+            $obj->hydrate($row);
+            StockOnOrderTableMap::addInstanceToPool($obj, (string) $key);
+        }
+        $stmt->closeCursor();
+
+        return $obj;
+    }
+
+    /**
+     * Find object by primary key.
+     *
+     * @param     mixed $key Primary key to use for the query
+     * @param     ConnectionInterface $con A connection object
+     *
+     * @return ChildStockOnOrder|array|mixed the result, formatted by the current formatter
+     */
+    protected function findPkComplex($key, $con)
+    {
+        // As the query uses a PK condition, no limit(1) is necessary.
+        $criteria = $this->isKeepQuery() ? clone $this : $this;
+        $dataFetcher = $criteria
+            ->filterByPrimaryKey($key)
+            ->doSelect($con);
+
+        return $criteria->getFormatter()->init($criteria)->formatOne($dataFetcher);
     }
 
     /**
      * Find objects by primary key
      * <code>
-     * $objs = $c->findPks(array(array(12, 56), array(832, 123), array(123, 456)), $con);
+     * $objs = $c->findPks(array(12, 56, 832), $con);
      * </code>
      * @param     array $keys Primary keys to use for the query
      * @param     ConnectionInterface $con an optional connection object
@@ -115,7 +186,16 @@ abstract class StockOnOrderQuery extends ModelCriteria
      */
     public function findPks($keys, $con = null)
     {
-        throw new \LogicException('The ChildStockOnOrder class has no primary key');
+        if (null === $con) {
+            $con = Propel::getServiceContainer()->getReadConnection($this->getDbName());
+        }
+        $this->basePreSelect($con);
+        $criteria = $this->isKeepQuery() ? clone $this : $this;
+        $dataFetcher = $criteria
+            ->filterByPrimaryKeys($keys)
+            ->doSelect($con);
+
+        return $criteria->getFormatter()->init($criteria)->format($dataFetcher);
     }
 
     /**
@@ -127,7 +207,7 @@ abstract class StockOnOrderQuery extends ModelCriteria
      */
     public function filterByPrimaryKey($key)
     {
-        throw new \LogicException('The ChildStockOnOrder class has no primary key');
+        return $this->addUsingAlias(StockOnOrderTableMap::ID, $key, Criteria::EQUAL);
     }
 
     /**
@@ -139,7 +219,48 @@ abstract class StockOnOrderQuery extends ModelCriteria
      */
     public function filterByPrimaryKeys($keys)
     {
-        throw new \LogicException('The ChildStockOnOrder class has no primary key');
+        return $this->addUsingAlias(StockOnOrderTableMap::ID, $keys, Criteria::IN);
+    }
+
+    /**
+     * Filter the query on the id column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterById(1234); // WHERE id = 1234
+     * $query->filterById(array(12, 34)); // WHERE id IN (12, 34)
+     * $query->filterById(array('min' => 12)); // WHERE id > 12
+     * </code>
+     *
+     * @param     mixed $id The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return ChildStockOnOrderQuery The current query, for fluid interface
+     */
+    public function filterById($id = null, $comparison = null)
+    {
+        if (is_array($id)) {
+            $useMinMax = false;
+            if (isset($id['min'])) {
+                $this->addUsingAlias(StockOnOrderTableMap::ID, $id['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($id['max'])) {
+                $this->addUsingAlias(StockOnOrderTableMap::ID, $id['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(StockOnOrderTableMap::ID, $id, $comparison);
     }
 
     /**
@@ -297,8 +418,7 @@ abstract class StockOnOrderQuery extends ModelCriteria
     public function prune($stockOnOrder = null)
     {
         if ($stockOnOrder) {
-            throw new \LogicException('ChildStockOnOrder class has no primary key');
-
+            $this->addUsingAlias(StockOnOrderTableMap::ID, $stockOnOrder->getId(), Criteria::NOT_EQUAL);
         }
 
         return $this;
@@ -349,16 +469,16 @@ abstract class StockOnOrderQuery extends ModelCriteria
      */
      public function delete(ConnectionInterface $con = null)
      {
-        if (null === $con) {
-            $con = Propel::getServiceContainer()->getWriteConnection(StockOnOrderTableMap::DATABASE_NAME);
-        }
+         if (null === $con) {
+             $con = Propel::getServiceContainer()->getWriteConnection(StockOnOrderTableMap::DATABASE_NAME);
+         }
 
-        $criteria = $this;
+         $criteria = $this;
 
         // Set the correct dbName
         $criteria->setDbName(StockOnOrderTableMap::DATABASE_NAME);
 
-        $affectedRows = 0; // initialize var to track total num of affected rows
+         $affectedRows = 0; // initialize var to track total num of affected rows
 
         try {
             // use transaction because $criteria could contain info
@@ -366,7 +486,7 @@ abstract class StockOnOrderQuery extends ModelCriteria
             $con->beginTransaction();
 
 
-        StockOnOrderTableMap::removeInstanceFromPool($criteria);
+            StockOnOrderTableMap::removeInstanceFromPool($criteria);
 
             $affectedRows += ModelCriteria::delete($con);
             StockOnOrderTableMap::clearRelatedInstancePool();
@@ -377,6 +497,6 @@ abstract class StockOnOrderQuery extends ModelCriteria
             $con->rollBack();
             throw $e;
         }
-    }
-
+     }
 } // StockOnOrderQuery
+

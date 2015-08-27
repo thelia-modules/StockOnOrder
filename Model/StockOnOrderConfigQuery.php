@@ -4,7 +4,6 @@ namespace StockOnOrder\Model;
 
 use StockOnOrder\Model\Base\StockOnOrderConfigQuery as BaseStockOnOrderConfigQuery;
 
-
 /**
  * Skeleton subclass for performing query and update operations on the 'stock_on_order_config' table.
  *
@@ -17,5 +16,5 @@ use StockOnOrder\Model\Base\StockOnOrderConfigQuery as BaseStockOnOrderConfigQue
  */
 class StockOnOrderConfigQuery extends BaseStockOnOrderConfigQuery
 {
-
 } // StockOnOrderConfigQuery
+

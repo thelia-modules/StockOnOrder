@@ -12,7 +12,6 @@ use Thelia\Form\BaseForm;
  */
 class StockOnOrderConfigForm extends BaseForm
 {
-
     protected function buildForm()
     {
         $this->formBuilder

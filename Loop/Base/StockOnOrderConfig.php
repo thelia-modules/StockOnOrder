@@ -23,7 +23,6 @@ use StockOnOrder\Model\StockOnOrderConfigQuery;
  */
 class StockOnOrderConfig extends BaseLoop implements PropelSearchLoopInterface
 {
-
     /**
      * @param LoopResult $loopResult
      *

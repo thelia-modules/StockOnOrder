@@ -23,7 +23,6 @@ use StockOnOrder\Model\StockOnOrderQuery;
  */
 class StockOnOrder extends BaseLoop implements PropelSearchLoopInterface
 {
-
     /**
      * @param LoopResult $loopResult
      *
@@ -36,6 +35,7 @@ class StockOnOrder extends BaseLoop implements PropelSearchLoopInterface
             $row = new LoopResultRow($entry);
 
             $row
+                ->set("ID", $entry->getId())
                 ->set("ORDER_ID", $entry->getOrderId())
                 ->set("IS_STOCK_DECREASED", $entry->getIsStockDecreased())
             ;
@@ -75,11 +75,14 @@ class StockOnOrder extends BaseLoop implements PropelSearchLoopInterface
     protected function getArgDefinitions()
     {
         return new ArgumentCollection(
+            Argument::createIntListTypeArgument("id"),
             Argument::createIntListTypeArgument("order_id"),
             Argument::createBooleanOrBothTypeArgument("is_stock_decreased", BooleanOrBothType::ANY),
             Argument::createEnumListTypeArgument(
                 "order",
                 [
+                    "id",
+                    "id-reverse",
                     "order_id",
                     "order_id-reverse",
                     "is_stock_decreased",
@@ -99,6 +102,10 @@ class StockOnOrder extends BaseLoop implements PropelSearchLoopInterface
     {
         $query = new StockOnOrderQuery();
 
+        if (null !== $id = $this->getId()) {
+            $query->filterById($id);
+        }
+
         if (null !== $order_id = $this->getOrderId()) {
             $query->filterByOrderId($order_id);
         }
@@ -109,6 +116,12 @@ class StockOnOrder extends BaseLoop implements PropelSearchLoopInterface
 
         foreach ($this->getOrder() as $order) {
             switch ($order) {
+                case "id":
+                    $query->orderById();
+                    break;
+                case "id-reverse":
+                    $query->orderById(Criteria::DESC);
+                    break;
                 case "order_id":
                     $query->orderByOrderId();
                     break;

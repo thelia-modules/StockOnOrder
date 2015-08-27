@@ -14,7 +14,6 @@ use Propel\Runtime\Map\TableMapTrait;
 use StockOnOrder\Model\StockOnOrderDecreaseOnCreation;
 use StockOnOrder\Model\StockOnOrderDecreaseOnCreationQuery;
 
-
 /**
  * This class defines the structure of the 'stock_on_order_decrease_on_creation' table.
  *
@@ -96,7 +95,7 @@ class StockOnOrderDecreaseOnCreationTableMap extends TableMap
      * first dimension keys are the type constants
      * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
      */
-    protected static $fieldNames = array (
+    protected static $fieldNames = array(
         self::TYPE_PHPNAME       => array('Id', 'ModuleId', 'DecreaseOnOrderCreation', ),
         self::TYPE_STUDLYPHPNAME => array('id', 'moduleId', 'decreaseOnOrderCreation', ),
         self::TYPE_COLNAME       => array(StockOnOrderDecreaseOnCreationTableMap::ID, StockOnOrderDecreaseOnCreationTableMap::MODULE_ID, StockOnOrderDecreaseOnCreationTableMap::DECREASE_ON_ORDER_CREATION, ),
@@ -111,7 +110,7 @@ class StockOnOrderDecreaseOnCreationTableMap extends TableMap
      * first dimension keys are the type constants
      * e.g. self::$fieldKeys[self::TYPE_PHPNAME]['Id'] = 0
      */
-    protected static $fieldKeys = array (
+    protected static $fieldKeys = array(
         self::TYPE_PHPNAME       => array('Id' => 0, 'ModuleId' => 1, 'DecreaseOnOrderCreation' => 2, ),
         self::TYPE_STUDLYPHPNAME => array('id' => 0, 'moduleId' => 1, 'decreaseOnOrderCreation' => 2, ),
         self::TYPE_COLNAME       => array(StockOnOrderDecreaseOnCreationTableMap::ID => 0, StockOnOrderDecreaseOnCreationTableMap::MODULE_ID => 1, StockOnOrderDecreaseOnCreationTableMap::DECREASE_ON_ORDER_CREATION => 2, ),
@@ -184,8 +183,7 @@ class StockOnOrderDecreaseOnCreationTableMap extends TableMap
      */
     public static function getPrimaryKeyFromRow($row, $offset = 0, $indexType = TableMap::TYPE_NUM)
     {
-
-            return (int) $row[
+        return (int) $row[
                             $indexType == TableMap::TYPE_NUM
                             ? 0 + $offset
                             : self::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)
@@ -314,10 +312,10 @@ class StockOnOrderDecreaseOnCreationTableMap extends TableMap
      */
     public static function buildTableMap()
     {
-      $dbMap = Propel::getServiceContainer()->getDatabaseMap(StockOnOrderDecreaseOnCreationTableMap::DATABASE_NAME);
-      if (!$dbMap->hasTable(StockOnOrderDecreaseOnCreationTableMap::TABLE_NAME)) {
-        $dbMap->addTableObject(new StockOnOrderDecreaseOnCreationTableMap());
-      }
+        $dbMap = Propel::getServiceContainer()->getDatabaseMap(StockOnOrderDecreaseOnCreationTableMap::DATABASE_NAME);
+        if (!$dbMap->hasTable(StockOnOrderDecreaseOnCreationTableMap::TABLE_NAME)) {
+            $dbMap->addTableObject(new StockOnOrderDecreaseOnCreationTableMap());
+        }
     }
 
     /**
@@ -333,31 +331,33 @@ class StockOnOrderDecreaseOnCreationTableMap extends TableMap
      */
      public static function doDelete($values, ConnectionInterface $con = null)
      {
-        if (null === $con) {
-            $con = Propel::getServiceContainer()->getWriteConnection(StockOnOrderDecreaseOnCreationTableMap::DATABASE_NAME);
-        }
+         if (null === $con) {
+             $con = Propel::getServiceContainer()->getWriteConnection(StockOnOrderDecreaseOnCreationTableMap::DATABASE_NAME);
+         }
 
-        if ($values instanceof Criteria) {
-            // rename for clarity
+         if ($values instanceof Criteria) {
+             // rename for clarity
             $criteria = $values;
-        } elseif ($values instanceof \StockOnOrder\Model\StockOnOrderDecreaseOnCreation) { // it's a model object
+         } elseif ($values instanceof \StockOnOrder\Model\StockOnOrderDecreaseOnCreation) { // it's a model object
             // create criteria based on pk values
             $criteria = $values->buildPkeyCriteria();
-        } else { // it's a primary key, or an array of pks
+         } else { // it's a primary key, or an array of pks
             $criteria = new Criteria(StockOnOrderDecreaseOnCreationTableMap::DATABASE_NAME);
-            $criteria->add(StockOnOrderDecreaseOnCreationTableMap::ID, (array) $values, Criteria::IN);
-        }
+             $criteria->add(StockOnOrderDecreaseOnCreationTableMap::ID, (array) $values, Criteria::IN);
+         }
 
-        $query = StockOnOrderDecreaseOnCreationQuery::create()->mergeWith($criteria);
+         $query = StockOnOrderDecreaseOnCreationQuery::create()->mergeWith($criteria);
 
-        if ($values instanceof Criteria) { StockOnOrderDecreaseOnCreationTableMap::clearInstancePool();
-        } elseif (!is_object($values)) { // it's a primary key, or an array of pks
-            foreach ((array) $values as $singleval) { StockOnOrderDecreaseOnCreationTableMap::removeInstanceFromPool($singleval);
+         if ($values instanceof Criteria) {
+             StockOnOrderDecreaseOnCreationTableMap::clearInstancePool();
+         } elseif (!is_object($values)) { // it's a primary key, or an array of pks
+            foreach ((array) $values as $singleval) {
+                StockOnOrderDecreaseOnCreationTableMap::removeInstanceFromPool($singleval);
             }
-        }
+         }
 
-        return $query->delete($con);
-    }
+         return $query->delete($con);
+     }
 
     /**
      * Deletes all rows from the stock_on_order_decrease_on_creation table.
@@ -391,7 +391,7 @@ class StockOnOrderDecreaseOnCreationTableMap extends TableMap
             $criteria = $criteria->buildCriteria(); // build Criteria from StockOnOrderDecreaseOnCreation object
         }
 
-        if ($criteria->containsKey(StockOnOrderDecreaseOnCreationTableMap::ID) && $criteria->keyContainsValue(StockOnOrderDecreaseOnCreationTableMap::ID) ) {
+        if ($criteria->containsKey(StockOnOrderDecreaseOnCreationTableMap::ID) && $criteria->keyContainsValue(StockOnOrderDecreaseOnCreationTableMap::ID)) {
             throw new PropelException('Cannot insert a value for auto-increment primary key ('.StockOnOrderDecreaseOnCreationTableMap::ID.')');
         }
 
@@ -412,7 +412,6 @@ class StockOnOrderDecreaseOnCreationTableMap extends TableMap
 
         return $pk;
     }
-
 } // StockOnOrderDecreaseOnCreationTableMap
 // This is the static code needed to register the TableMap for this table with the main Propel class.
 //

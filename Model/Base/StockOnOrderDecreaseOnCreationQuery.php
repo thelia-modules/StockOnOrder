@@ -52,7 +52,6 @@ use Thelia\Model\Module;
  */
 abstract class StockOnOrderDecreaseOnCreationQuery extends ModelCriteria
 {
-
     /**
      * Initializes internal state of \StockOnOrder\Model\Base\StockOnOrderDecreaseOnCreationQuery object.
      *
@@ -208,7 +207,6 @@ abstract class StockOnOrderDecreaseOnCreationQuery extends ModelCriteria
      */
     public function filterByPrimaryKey($key)
     {
-
         return $this->addUsingAlias(StockOnOrderDecreaseOnCreationTableMap::ID, $key, Criteria::EQUAL);
     }
 
@@ -221,7 +219,6 @@ abstract class StockOnOrderDecreaseOnCreationQuery extends ModelCriteria
      */
     public function filterByPrimaryKeys($keys)
     {
-
         return $this->addUsingAlias(StockOnOrderDecreaseOnCreationTableMap::ID, $keys, Criteria::IN);
     }
 
@@ -472,16 +469,16 @@ abstract class StockOnOrderDecreaseOnCreationQuery extends ModelCriteria
      */
      public function delete(ConnectionInterface $con = null)
      {
-        if (null === $con) {
-            $con = Propel::getServiceContainer()->getWriteConnection(StockOnOrderDecreaseOnCreationTableMap::DATABASE_NAME);
-        }
+         if (null === $con) {
+             $con = Propel::getServiceContainer()->getWriteConnection(StockOnOrderDecreaseOnCreationTableMap::DATABASE_NAME);
+         }
 
-        $criteria = $this;
+         $criteria = $this;
 
         // Set the correct dbName
         $criteria->setDbName(StockOnOrderDecreaseOnCreationTableMap::DATABASE_NAME);
 
-        $affectedRows = 0; // initialize var to track total num of affected rows
+         $affectedRows = 0; // initialize var to track total num of affected rows
 
         try {
             // use transaction because $criteria could contain info
@@ -489,7 +486,7 @@ abstract class StockOnOrderDecreaseOnCreationQuery extends ModelCriteria
             $con->beginTransaction();
 
 
-        StockOnOrderDecreaseOnCreationTableMap::removeInstanceFromPool($criteria);
+            StockOnOrderDecreaseOnCreationTableMap::removeInstanceFromPool($criteria);
 
             $affectedRows += ModelCriteria::delete($con);
             StockOnOrderDecreaseOnCreationTableMap::clearRelatedInstancePool();
@@ -500,6 +497,6 @@ abstract class StockOnOrderDecreaseOnCreationQuery extends ModelCriteria
             $con->rollBack();
             throw $e;
         }
-    }
-
+     }
 } // StockOnOrderDecreaseOnCreationQuery
+

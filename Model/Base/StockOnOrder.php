@@ -54,6 +54,12 @@ abstract class StockOnOrder implements ActiveRecordInterface
     protected $virtualColumns = array();
 
     /**
+     * The value for the id field.
+     * @var        int
+     */
+    protected $id;
+
+    /**
      * The value for the order_id field.
      * @var        int
      */
@@ -193,7 +199,7 @@ abstract class StockOnOrder implements ActiveRecordInterface
         }
 
         if (null === $this->getPrimaryKey()
-            || null === $obj->getPrimaryKey())  {
+            || null === $obj->getPrimaryKey()) {
             return false;
         }
 
@@ -337,13 +343,22 @@ abstract class StockOnOrder implements ActiveRecordInterface
     }
 
     /**
+     * Get the [id] column value.
+     *
+     * @return   int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
      * Get the [order_id] column value.
      *
      * @return   int
      */
     public function getOrderId()
     {
-
         return $this->order_id;
     }
 
@@ -354,9 +369,29 @@ abstract class StockOnOrder implements ActiveRecordInterface
      */
     public function getIsStockDecreased()
     {
-
         return $this->is_stock_decreased;
     }
+
+    /**
+     * Set the value of [id] column.
+     *
+     * @param      int $v new value
+     * @return   \StockOnOrder\Model\StockOnOrder The current object (for fluent API support)
+     */
+    public function setId($v)
+    {
+        if ($v !== null) {
+            $v = (int) $v;
+        }
+
+        if ($this->id !== $v) {
+            $this->id = $v;
+            $this->modifiedColumns[StockOnOrderTableMap::ID] = true;
+        }
+
+
+        return $this;
+    } // setId()
 
     /**
      * Set the value of [order_id] column.
@@ -447,12 +482,13 @@ abstract class StockOnOrder implements ActiveRecordInterface
     public function hydrate($row, $startcol = 0, $rehydrate = false, $indexType = TableMap::TYPE_NUM)
     {
         try {
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 0 + $startcol : StockOnOrderTableMap::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->id = (null !== $col) ? (int) $col : null;
 
-
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 0 + $startcol : StockOnOrderTableMap::translateFieldName('OrderId', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 1 + $startcol : StockOnOrderTableMap::translateFieldName('OrderId', TableMap::TYPE_PHPNAME, $indexType)];
             $this->order_id = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 1 + $startcol : StockOnOrderTableMap::translateFieldName('IsStockDecreased', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 2 + $startcol : StockOnOrderTableMap::translateFieldName('IsStockDecreased', TableMap::TYPE_PHPNAME, $indexType)];
             $this->is_stock_decreased = (null !== $col) ? (boolean) $col : null;
             $this->resetModified();
 
@@ -462,8 +498,7 @@ abstract class StockOnOrder implements ActiveRecordInterface
                 $this->ensureConsistency();
             }
 
-            return $startcol + 2; // 2 = StockOnOrderTableMap::NUM_HYDRATE_COLUMNS.
-
+            return $startcol + 3; // 3 = StockOnOrderTableMap::NUM_HYDRATE_COLUMNS.
         } catch (Exception $e) {
             throw new PropelException("Error populating \StockOnOrder\Model\StockOnOrder object", 0, $e);
         }
@@ -662,7 +697,6 @@ abstract class StockOnOrder implements ActiveRecordInterface
             }
 
             $this->alreadyInSave = false;
-
         }
 
         return $affectedRows;
@@ -681,8 +715,15 @@ abstract class StockOnOrder implements ActiveRecordInterface
         $modifiedColumns = array();
         $index = 0;
 
+        $this->modifiedColumns[StockOnOrderTableMap::ID] = true;
+        if (null !== $this->id) {
+            throw new PropelException('Cannot insert a value for auto-increment primary key (' . StockOnOrderTableMap::ID . ')');
+        }
 
          // check the columns in natural order for more readable SQL queries
+        if ($this->isColumnModified(StockOnOrderTableMap::ID)) {
+            $modifiedColumns[':p' . $index++]  = 'ID';
+        }
         if ($this->isColumnModified(StockOnOrderTableMap::ORDER_ID)) {
             $modifiedColumns[':p' . $index++]  = 'ORDER_ID';
         }
@@ -700,6 +741,9 @@ abstract class StockOnOrder implements ActiveRecordInterface
             $stmt = $con->prepare($sql);
             foreach ($modifiedColumns as $identifier => $columnName) {
                 switch ($columnName) {
+                    case 'ID':
+                        $stmt->bindValue($identifier, $this->id, PDO::PARAM_INT);
+                        break;
                     case 'ORDER_ID':
                         $stmt->bindValue($identifier, $this->order_id, PDO::PARAM_INT);
                         break;
@@ -713,6 +757,13 @@ abstract class StockOnOrder implements ActiveRecordInterface
             Propel::log($e->getMessage(), Propel::LOG_ERR);
             throw new PropelException(sprintf('Unable to execute INSERT statement [%s]', $sql), 0, $e);
         }
+
+        try {
+            $pk = $con->lastInsertId();
+        } catch (Exception $e) {
+            throw new PropelException('Unable to get autoincrement id.', 0, $e);
+        }
+        $this->setId($pk);
 
         $this->setNew(false);
     }
@@ -762,9 +813,12 @@ abstract class StockOnOrder implements ActiveRecordInterface
     {
         switch ($pos) {
             case 0:
-                return $this->getOrderId();
+                return $this->getId();
                 break;
             case 1:
+                return $this->getOrderId();
+                break;
+            case 2:
                 return $this->getIsStockDecreased();
                 break;
             default:
@@ -796,8 +850,9 @@ abstract class StockOnOrder implements ActiveRecordInterface
         $alreadyDumpedObjects['StockOnOrder'][$this->getPrimaryKey()] = true;
         $keys = StockOnOrderTableMap::getFieldNames($keyType);
         $result = array(
-            $keys[0] => $this->getOrderId(),
-            $keys[1] => $this->getIsStockDecreased(),
+            $keys[0] => $this->getId(),
+            $keys[1] => $this->getOrderId(),
+            $keys[2] => $this->getIsStockDecreased(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -843,9 +898,12 @@ abstract class StockOnOrder implements ActiveRecordInterface
     {
         switch ($pos) {
             case 0:
-                $this->setOrderId($value);
+                $this->setId($value);
                 break;
             case 1:
+                $this->setOrderId($value);
+                break;
+            case 2:
                 $this->setIsStockDecreased($value);
                 break;
         } // switch()
@@ -872,8 +930,15 @@ abstract class StockOnOrder implements ActiveRecordInterface
     {
         $keys = StockOnOrderTableMap::getFieldNames($keyType);
 
-        if (array_key_exists($keys[0], $arr)) $this->setOrderId($arr[$keys[0]]);
-        if (array_key_exists($keys[1], $arr)) $this->setIsStockDecreased($arr[$keys[1]]);
+        if (array_key_exists($keys[0], $arr)) {
+            $this->setId($arr[$keys[0]]);
+        }
+        if (array_key_exists($keys[1], $arr)) {
+            $this->setOrderId($arr[$keys[1]]);
+        }
+        if (array_key_exists($keys[2], $arr)) {
+            $this->setIsStockDecreased($arr[$keys[2]]);
+        }
     }
 
     /**
@@ -885,8 +950,15 @@ abstract class StockOnOrder implements ActiveRecordInterface
     {
         $criteria = new Criteria(StockOnOrderTableMap::DATABASE_NAME);
 
-        if ($this->isColumnModified(StockOnOrderTableMap::ORDER_ID)) $criteria->add(StockOnOrderTableMap::ORDER_ID, $this->order_id);
-        if ($this->isColumnModified(StockOnOrderTableMap::IS_STOCK_DECREASED)) $criteria->add(StockOnOrderTableMap::IS_STOCK_DECREASED, $this->is_stock_decreased);
+        if ($this->isColumnModified(StockOnOrderTableMap::ID)) {
+            $criteria->add(StockOnOrderTableMap::ID, $this->id);
+        }
+        if ($this->isColumnModified(StockOnOrderTableMap::ORDER_ID)) {
+            $criteria->add(StockOnOrderTableMap::ORDER_ID, $this->order_id);
+        }
+        if ($this->isColumnModified(StockOnOrderTableMap::IS_STOCK_DECREASED)) {
+            $criteria->add(StockOnOrderTableMap::IS_STOCK_DECREASED, $this->is_stock_decreased);
+        }
 
         return $criteria;
     }
@@ -902,32 +974,29 @@ abstract class StockOnOrder implements ActiveRecordInterface
     public function buildPkeyCriteria()
     {
         $criteria = new Criteria(StockOnOrderTableMap::DATABASE_NAME);
+        $criteria->add(StockOnOrderTableMap::ID, $this->id);
 
         return $criteria;
     }
 
     /**
-     * Returns NULL since this table doesn't have a primary key.
-     * This method exists only for BC and is deprecated!
-     * @return null
+     * Returns the primary key for this object (row).
+     * @return   int
      */
     public function getPrimaryKey()
     {
-        return null;
+        return $this->getId();
     }
 
     /**
-     * Dummy primary key setter.
+     * Generic method to set the primary key (id column).
      *
-     * This function only exists to preserve backwards compatibility.  It is no longer
-     * needed or required by the Persistent interface.  It will be removed in next BC-breaking
-     * release of Propel.
-     *
-     * @deprecated
+     * @param       int $key Primary key.
+     * @return void
      */
-    public function setPrimaryKey($pk)
+    public function setPrimaryKey($key)
     {
-        // do nothing, because this object doesn't have any primary keys
+        $this->setId($key);
     }
 
     /**
@@ -936,8 +1005,7 @@ abstract class StockOnOrder implements ActiveRecordInterface
      */
     public function isPrimaryKeyNull()
     {
-
-        return ;
+        return null === $this->getId();
     }
 
     /**
@@ -957,6 +1025,7 @@ abstract class StockOnOrder implements ActiveRecordInterface
         $copyObj->setIsStockDecreased($this->getIsStockDecreased());
         if ($makeNew) {
             $copyObj->setNew(true);
+            $copyObj->setId(null); // this is a auto-increment column, so set to default value
         }
     }
 
@@ -992,7 +1061,7 @@ abstract class StockOnOrder implements ActiveRecordInterface
     public function setOrder(ChildOrder $v = null)
     {
         if ($v === null) {
-            $this->setOrderId(NULL);
+            $this->setOrderId(null);
         } else {
             $this->setOrderId($v->getId());
         }
@@ -1038,6 +1107,7 @@ abstract class StockOnOrder implements ActiveRecordInterface
      */
     public function clear()
     {
+        $this->id = null;
         $this->order_id = null;
         $this->is_stock_decreased = null;
         $this->alreadyInSave = false;
@@ -1090,7 +1160,6 @@ abstract class StockOnOrder implements ActiveRecordInterface
      */
     public function postSave(ConnectionInterface $con = null)
     {
-
     }
 
     /**
@@ -1109,7 +1178,6 @@ abstract class StockOnOrder implements ActiveRecordInterface
      */
     public function postInsert(ConnectionInterface $con = null)
     {
-
     }
 
     /**
@@ -1128,7 +1196,6 @@ abstract class StockOnOrder implements ActiveRecordInterface
      */
     public function postUpdate(ConnectionInterface $con = null)
     {
-
     }
 
     /**
@@ -1147,7 +1214,6 @@ abstract class StockOnOrder implements ActiveRecordInterface
      */
     public function postDelete(ConnectionInterface $con = null)
     {
-
     }
 
 
@@ -1191,5 +1257,4 @@ abstract class StockOnOrder implements ActiveRecordInterface
 
         throw new BadMethodCallException(sprintf('Call to undefined method: %s.', $name));
     }
-
 }

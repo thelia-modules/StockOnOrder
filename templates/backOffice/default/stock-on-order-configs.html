@@ -77,7 +77,7 @@
                                             <input type="hidden" name="{$name}" value="{$ID}">
                                         {/form_field}
 
-                                        {loop name='decrease-on-creation' type='stock-on-order-decrease-on-creation' module_id=$ID}
+                                        {loop type='stock-on-order-decrease-on-creation' name='decrease-on-creation' module_id=$ID}
 
                                             {form_field form=$form field='id'}
                                                 <input type="hidden" name="{$name}" value="{$ID}">

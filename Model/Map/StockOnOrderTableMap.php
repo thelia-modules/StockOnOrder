@@ -14,7 +14,6 @@ use Propel\Runtime\Map\TableMapTrait;
 use StockOnOrder\Model\StockOnOrder;
 use StockOnOrder\Model\StockOnOrderQuery;
 
-
 /**
  * This class defines the structure of the 'stock_on_order' table.
  *
@@ -58,7 +57,7 @@ class StockOnOrderTableMap extends TableMap
     /**
      * The total number of columns
      */
-    const NUM_COLUMNS = 2;
+    const NUM_COLUMNS = 3;
 
     /**
      * The number of lazy-loaded columns
@@ -68,7 +67,12 @@ class StockOnOrderTableMap extends TableMap
     /**
      * The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS)
      */
-    const NUM_HYDRATE_COLUMNS = 2;
+    const NUM_HYDRATE_COLUMNS = 3;
+
+    /**
+     * the column name for the ID field
+     */
+    const ID = 'stock_on_order.ID';
 
     /**
      * the column name for the ORDER_ID field
@@ -91,13 +95,13 @@ class StockOnOrderTableMap extends TableMap
      * first dimension keys are the type constants
      * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
      */
-    protected static $fieldNames = array (
-        self::TYPE_PHPNAME       => array('OrderId', 'IsStockDecreased', ),
-        self::TYPE_STUDLYPHPNAME => array('orderId', 'isStockDecreased', ),
-        self::TYPE_COLNAME       => array(StockOnOrderTableMap::ORDER_ID, StockOnOrderTableMap::IS_STOCK_DECREASED, ),
-        self::TYPE_RAW_COLNAME   => array('ORDER_ID', 'IS_STOCK_DECREASED', ),
-        self::TYPE_FIELDNAME     => array('order_id', 'is_stock_decreased', ),
-        self::TYPE_NUM           => array(0, 1, )
+    protected static $fieldNames = array(
+        self::TYPE_PHPNAME       => array('Id', 'OrderId', 'IsStockDecreased', ),
+        self::TYPE_STUDLYPHPNAME => array('id', 'orderId', 'isStockDecreased', ),
+        self::TYPE_COLNAME       => array(StockOnOrderTableMap::ID, StockOnOrderTableMap::ORDER_ID, StockOnOrderTableMap::IS_STOCK_DECREASED, ),
+        self::TYPE_RAW_COLNAME   => array('ID', 'ORDER_ID', 'IS_STOCK_DECREASED', ),
+        self::TYPE_FIELDNAME     => array('id', 'order_id', 'is_stock_decreased', ),
+        self::TYPE_NUM           => array(0, 1, 2, )
     );
 
     /**
@@ -106,13 +110,13 @@ class StockOnOrderTableMap extends TableMap
      * first dimension keys are the type constants
      * e.g. self::$fieldKeys[self::TYPE_PHPNAME]['Id'] = 0
      */
-    protected static $fieldKeys = array (
-        self::TYPE_PHPNAME       => array('OrderId' => 0, 'IsStockDecreased' => 1, ),
-        self::TYPE_STUDLYPHPNAME => array('orderId' => 0, 'isStockDecreased' => 1, ),
-        self::TYPE_COLNAME       => array(StockOnOrderTableMap::ORDER_ID => 0, StockOnOrderTableMap::IS_STOCK_DECREASED => 1, ),
-        self::TYPE_RAW_COLNAME   => array('ORDER_ID' => 0, 'IS_STOCK_DECREASED' => 1, ),
-        self::TYPE_FIELDNAME     => array('order_id' => 0, 'is_stock_decreased' => 1, ),
-        self::TYPE_NUM           => array(0, 1, )
+    protected static $fieldKeys = array(
+        self::TYPE_PHPNAME       => array('Id' => 0, 'OrderId' => 1, 'IsStockDecreased' => 2, ),
+        self::TYPE_STUDLYPHPNAME => array('id' => 0, 'orderId' => 1, 'isStockDecreased' => 2, ),
+        self::TYPE_COLNAME       => array(StockOnOrderTableMap::ID => 0, StockOnOrderTableMap::ORDER_ID => 1, StockOnOrderTableMap::IS_STOCK_DECREASED => 2, ),
+        self::TYPE_RAW_COLNAME   => array('ID' => 0, 'ORDER_ID' => 1, 'IS_STOCK_DECREASED' => 2, ),
+        self::TYPE_FIELDNAME     => array('id' => 0, 'order_id' => 1, 'is_stock_decreased' => 2, ),
+        self::TYPE_NUM           => array(0, 1, 2, )
     );
 
     /**
@@ -129,8 +133,9 @@ class StockOnOrderTableMap extends TableMap
         $this->setPhpName('StockOnOrder');
         $this->setClassName('\\StockOnOrder\\Model\\StockOnOrder');
         $this->setPackage('StockOnOrder.Model');
-        $this->setUseIdGenerator(false);
+        $this->setUseIdGenerator(true);
         // columns
+        $this->addPrimaryKey('ID', 'Id', 'INTEGER', true, null, null);
         $this->addForeignKey('ORDER_ID', 'OrderId', 'INTEGER', 'order', 'ID', true, null, null);
         $this->addColumn('IS_STOCK_DECREASED', 'IsStockDecreased', 'BOOLEAN', true, 1, null);
     } // initialize()
@@ -156,7 +161,12 @@ class StockOnOrderTableMap extends TableMap
      */
     public static function getPrimaryKeyHashFromRow($row, $offset = 0, $indexType = TableMap::TYPE_NUM)
     {
-        return null;
+        // If the PK cannot be derived from the row, return NULL.
+        if ($row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)] === null) {
+            return null;
+        }
+
+        return (string) $row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)];
     }
 
     /**
@@ -173,8 +183,11 @@ class StockOnOrderTableMap extends TableMap
      */
     public static function getPrimaryKeyFromRow($row, $offset = 0, $indexType = TableMap::TYPE_NUM)
     {
-
-            return '';
+        return (int) $row[
+                            $indexType == TableMap::TYPE_NUM
+                            ? 0 + $offset
+                            : self::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)
+                        ];
     }
 
     /**
@@ -272,9 +285,11 @@ class StockOnOrderTableMap extends TableMap
     public static function addSelectColumns(Criteria $criteria, $alias = null)
     {
         if (null === $alias) {
+            $criteria->addSelectColumn(StockOnOrderTableMap::ID);
             $criteria->addSelectColumn(StockOnOrderTableMap::ORDER_ID);
             $criteria->addSelectColumn(StockOnOrderTableMap::IS_STOCK_DECREASED);
         } else {
+            $criteria->addSelectColumn($alias . '.ID');
             $criteria->addSelectColumn($alias . '.ORDER_ID');
             $criteria->addSelectColumn($alias . '.IS_STOCK_DECREASED');
         }
@@ -297,10 +312,10 @@ class StockOnOrderTableMap extends TableMap
      */
     public static function buildTableMap()
     {
-      $dbMap = Propel::getServiceContainer()->getDatabaseMap(StockOnOrderTableMap::DATABASE_NAME);
-      if (!$dbMap->hasTable(StockOnOrderTableMap::TABLE_NAME)) {
-        $dbMap->addTableObject(new StockOnOrderTableMap());
-      }
+        $dbMap = Propel::getServiceContainer()->getDatabaseMap(StockOnOrderTableMap::DATABASE_NAME);
+        if (!$dbMap->hasTable(StockOnOrderTableMap::TABLE_NAME)) {
+            $dbMap->addTableObject(new StockOnOrderTableMap());
+        }
     }
 
     /**
@@ -316,39 +331,33 @@ class StockOnOrderTableMap extends TableMap
      */
      public static function doDelete($values, ConnectionInterface $con = null)
      {
-        if (null === $con) {
-            $con = Propel::getServiceContainer()->getWriteConnection(StockOnOrderTableMap::DATABASE_NAME);
-        }
+         if (null === $con) {
+             $con = Propel::getServiceContainer()->getWriteConnection(StockOnOrderTableMap::DATABASE_NAME);
+         }
 
-        if ($values instanceof Criteria) {
-            // rename for clarity
+         if ($values instanceof Criteria) {
+             // rename for clarity
             $criteria = $values;
-        } elseif ($values instanceof \StockOnOrder\Model\StockOnOrder) { // it's a model object
-            // create criteria based on pk value
-            $criteria = $values->buildCriteria();
-        } else { // it's a primary key, or an array of pks
+         } elseif ($values instanceof \StockOnOrder\Model\StockOnOrder) { // it's a model object
+            // create criteria based on pk values
+            $criteria = $values->buildPkeyCriteria();
+         } else { // it's a primary key, or an array of pks
             $criteria = new Criteria(StockOnOrderTableMap::DATABASE_NAME);
-            // primary key is composite; we therefore, expect
-            // the primary key passed to be an array of pkey values
-            if (count($values) == count($values, COUNT_RECURSIVE)) {
-                // array is not multi-dimensional
-                $values = array($values);
-            }
-            foreach ($values as $value) {
-                $criteria->addOr($criterion);
-            }
-        }
+             $criteria->add(StockOnOrderTableMap::ID, (array) $values, Criteria::IN);
+         }
 
-        $query = StockOnOrderQuery::create()->mergeWith($criteria);
+         $query = StockOnOrderQuery::create()->mergeWith($criteria);
 
-        if ($values instanceof Criteria) { StockOnOrderTableMap::clearInstancePool();
-        } elseif (!is_object($values)) { // it's a primary key, or an array of pks
-            foreach ((array) $values as $singleval) { StockOnOrderTableMap::removeInstanceFromPool($singleval);
+         if ($values instanceof Criteria) {
+             StockOnOrderTableMap::clearInstancePool();
+         } elseif (!is_object($values)) { // it's a primary key, or an array of pks
+            foreach ((array) $values as $singleval) {
+                StockOnOrderTableMap::removeInstanceFromPool($singleval);
             }
-        }
+         }
 
-        return $query->delete($con);
-    }
+         return $query->delete($con);
+     }
 
     /**
      * Deletes all rows from the stock_on_order table.
@@ -382,6 +391,10 @@ class StockOnOrderTableMap extends TableMap
             $criteria = $criteria->buildCriteria(); // build Criteria from StockOnOrder object
         }
 
+        if ($criteria->containsKey(StockOnOrderTableMap::ID) && $criteria->keyContainsValue(StockOnOrderTableMap::ID)) {
+            throw new PropelException('Cannot insert a value for auto-increment primary key ('.StockOnOrderTableMap::ID.')');
+        }
+
 
         // Set the correct dbName
         $query = StockOnOrderQuery::create()->mergeWith($criteria);
@@ -399,7 +412,6 @@ class StockOnOrderTableMap extends TableMap
 
         return $pk;
     }
-
 } // StockOnOrderTableMap
 // This is the static code needed to register the TableMap for this table with the main Propel class.
 //
