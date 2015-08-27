@@ -14,14 +14,14 @@ use Thelia\Core\Template\Element\PropelSearchLoopInterface;
 use Thelia\Core\Template\Loop\Argument\Argument;
 use Thelia\Core\Template\Loop\Argument\ArgumentCollection;
 use Thelia\Type\BooleanOrBothType;
-use StockOnOrder\Model\StockOnOrderConfigQuery;
+use StockOnOrder\Model\StockOnOrderDecreaseOnCreationQuery;
 
 /**
- * Class StockOnOrderConfig
+ * Class StockOnOrderDecreaseOnCreation
  * @package StockOnOrder\Loop\Base
  * @author TheliaStudio
  */
-class StockOnOrderConfig extends BaseLoop implements PropelSearchLoopInterface
+class StockOnOrderDecreaseOnCreation extends BaseLoop implements PropelSearchLoopInterface
 {
 
     /**
@@ -31,15 +31,14 @@ class StockOnOrderConfig extends BaseLoop implements PropelSearchLoopInterface
      */
     public function parseResults(LoopResult $loopResult)
     {
-        /** @var \StockOnOrder\Model\StockOnOrderConfig $entry */
+        /** @var \StockOnOrder\Model\StockOnOrderDecreaseOnCreation $entry */
         foreach ($loopResult->getResultDataCollection() as $entry) {
             $row = new LoopResultRow($entry);
 
             $row
                 ->set("ID", $entry->getId())
                 ->set("MODULE_ID", $entry->getModuleId())
-                ->set("STATUS_ID", $entry->getStatusId())
-                ->set("BEHAVIOR", $entry->getBehavior())
+                ->set("DECREASE_ON_ORDER_CREATION", $entry->getDecreaseOnOrderCreation())
             ;
 
             $this->addMoreResults($row, $entry);
@@ -79,8 +78,7 @@ class StockOnOrderConfig extends BaseLoop implements PropelSearchLoopInterface
         return new ArgumentCollection(
             Argument::createIntListTypeArgument("id"),
             Argument::createIntListTypeArgument("module_id"),
-            Argument::createIntListTypeArgument("status_id"),
-            Argument::createAnyTypeArgument("behavior"),
+            Argument::createBooleanOrBothTypeArgument("decrease_on_order_creation", BooleanOrBothType::ANY),
             Argument::createEnumListTypeArgument(
                 "order",
                 [
@@ -88,10 +86,8 @@ class StockOnOrderConfig extends BaseLoop implements PropelSearchLoopInterface
                     "id-reverse",
                     "module_id",
                     "module_id-reverse",
-                    "status_id",
-                    "status_id-reverse",
-                    "behavior",
-                    "behavior-reverse",
+                    "decrease_on_order_creation",
+                    "decrease_on_order_creation-reverse",
                 ],
                 "id"
             )
@@ -105,7 +101,7 @@ class StockOnOrderConfig extends BaseLoop implements PropelSearchLoopInterface
      */
     public function buildModelCriteria()
     {
-        $query = new StockOnOrderConfigQuery();
+        $query = new StockOnOrderDecreaseOnCreationQuery();
 
         if (null !== $id = $this->getId()) {
             $query->filterById($id);
@@ -115,13 +111,8 @@ class StockOnOrderConfig extends BaseLoop implements PropelSearchLoopInterface
             $query->filterByModuleId($module_id);
         }
 
-        if (null !== $status_id = $this->getStatusId()) {
-            $query->filterByStatusId($status_id);
-        }
-
-        if (null !== $behavior = $this->getBehavior()) {
-            $behavior = array_map("trim", explode(",", $behavior));
-            $query->filterByBehavior($behavior);
+        if (BooleanOrBothType::ANY !== $decrease_on_order_creation = $this->getDecreaseOnOrderCreation()) {
+            $query->filterByDecreaseOnOrderCreation($decrease_on_order_creation);
         }
 
         foreach ($this->getOrder() as $order) {
@@ -138,17 +129,11 @@ class StockOnOrderConfig extends BaseLoop implements PropelSearchLoopInterface
                 case "module_id-reverse":
                     $query->orderByModuleId(Criteria::DESC);
                     break;
-                case "status_id":
-                    $query->orderByStatusId();
+                case "decrease_on_order_creation":
+                    $query->orderByDecreaseOnOrderCreation();
                     break;
-                case "status_id-reverse":
-                    $query->orderByStatusId(Criteria::DESC);
-                    break;
-                case "behavior":
-                    $query->orderByBehavior();
-                    break;
-                case "behavior-reverse":
-                    $query->orderByBehavior(Criteria::DESC);
+                case "decrease_on_order_creation-reverse":
+                    $query->orderByDecreaseOnOrderCreation(Criteria::DESC);
                     break;
             }
         }

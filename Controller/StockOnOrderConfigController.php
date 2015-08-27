@@ -6,6 +6,7 @@ use StockOnOrder\Controller\Base\StockOnOrderConfigController as BaseStockOnOrde
 use StockOnOrder\Model\StockOnOrderConfig;
 use StockOnOrder\Model\StockOnOrderConfigQuery;
 use Symfony\Component\Config\Definition\Exception\Exception;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Thelia\Core\HttpFoundation\Request;
 use Thelia\Core\Security\AccessManager;
 use Thelia\Core\Security\Resource\AdminResources;
@@ -83,7 +84,7 @@ class StockOnOrderConfigController extends BaseStockOnOrderConfigController
 
             // Redirect
             if ($this->getRequest()->get('save_mode') == 'stay') {
-                return $this->generateRedirect('/admin/module/StockOnOrder/viewModule/'.$moduleId);
+                return new RedirectResponse($form->getSuccessUrl());
             } else {
                 return $this->generateRedirect('/admin/module/StockOnOrder');
             }

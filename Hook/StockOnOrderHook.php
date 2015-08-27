@@ -16,4 +16,9 @@ class StockOnOrderHook extends BaseHook
     {
         $event->add($this->render('stock-on-order-configs.html'));
     }
+
+    public function onModuleConfigJs(HookRenderEvent $event)
+    {
+        $event->add($this->render('assets/js/stock-on-order-config-js.html'));
+    }
 }

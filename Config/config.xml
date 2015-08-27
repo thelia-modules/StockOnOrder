@@ -1,45 +1,49 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <config xmlns="http://thelia.net/schema/dic/config" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://thelia.net/schema/dic/config http://thelia.net/schema/dic/config/thelia-1.0.xsd">
-
-    <loops>
-        <loop name="stock-on-order-config" class="StockOnOrder\Loop\StockOnOrderConfig"/>
-        <loop name="stock-on-order" class="StockOnOrder\Loop\StockOnOrder"/>
-    </loops>
-
-    <forms>
-        <form name="stock_on_order_config" class="StockOnOrder\Form\StockOnOrderConfigForm"/>
-
-        <form name="stock_on_order_config.create" class="StockOnOrder\Form\StockOnOrderConfigCreateForm"/>
-        <form name="stock_on_order_config.update" class="StockOnOrder\Form\StockOnOrderConfigUpdateForm"/>
-        <form name="stock_on_order.create" class="StockOnOrder\Form\StockOnOrderCreateForm"/>
-        <form name="stock_on_order.update" class="StockOnOrder\Form\StockOnOrderUpdateForm"/>
-    </forms>
-
-    <hooks>
-        <hook id="stockonorder.hook" class="StockOnOrder\Hook\StockOnOrderHook" scope="request">
-            <tag name="hook.event_listener" event="module.configuration" type="back" method="onModuleConfig"/>
-        </hook>
-    </hooks>
-
-    <services>
-        <service id="action.stockonorder.orderstatuschange" class="StockOnOrder\EventListeners\StockOnOrderEventListener" scope="request">
-            <tag name="kernel.event_subscriber"/>
-        </service>
-
-        <service id="action.stockonorder.stock_on_order_config_table" class="StockOnOrder\Action\StockOnOrderConfigAction">
-            <tag name="kernel.event_subscriber"/>
-        </service>
-        <service id="stockonorder.form.type.stock_on_order_config_id" class="StockOnOrder\Form\Type\StockOnOrderConfigIdType">
-            <argument id="thelia.translator" type="service"/>
-            <tag name="thelia.form.type"/>
-        </service>
-        <service id="action.stockonorder.stock_on_order_table" class="StockOnOrder\Action\StockOnOrderAction">
-            <tag name="kernel.event_subscriber"/>
-        </service>
-        <service id="stockonorder.form.type.stock_on_order_id" class="StockOnOrder\Form\Type\StockOnOrderIdType">
-            <argument id="thelia.translator" type="service"/>
-            <tag name="thelia.form.type"/>
-        </service>
-    </services>
-
+  <loops>
+    <loop name="stock-on-order-config" class="StockOnOrder\Loop\StockOnOrderConfig"/>
+    <loop name="stock-on-order" class="StockOnOrder\Loop\StockOnOrder"/>
+    <loop name="stock-on-order-decrease-on-creation" class="StockOnOrder\Loop\StockOnOrderDecreaseOnCreation"/>
+  </loops>
+  <forms>
+    <form name="stock_on_order_config" class="StockOnOrder\Form\StockOnOrderConfigForm"/>
+    <form name="stock_on_order_config.create" class="StockOnOrder\Form\StockOnOrderConfigCreateForm"/>
+    <form name="stock_on_order_config.update" class="StockOnOrder\Form\StockOnOrderConfigUpdateForm"/>
+    <form name="stock_on_order.create" class="StockOnOrder\Form\StockOnOrderCreateForm"/>
+    <form name="stock_on_order.update" class="StockOnOrder\Form\StockOnOrderUpdateForm"/>
+    <form name="stock_on_order_decrease_on_creation.create" class="StockOnOrder\Form\StockOnOrderDecreaseOnCreationCreateForm"/>
+    <form name="stock_on_order_decrease_on_creation.update" class="StockOnOrder\Form\StockOnOrderDecreaseOnCreationUpdateForm"/>
+  </forms>
+  <hooks>
+    <hook id="stockonorder.hook" class="StockOnOrder\Hook\StockOnOrderHook" scope="request">
+      <tag name="hook.event_listener" event="module.configuration" type="back" method="onModuleConfig"/>
+      <tag name="hook.event_listener" event="module.config-js" type="back" method="onModuleConfigJs"/>
+    </hook>
+  </hooks>
+  <services>
+    <service id="action.stockonorder.orderstatuschange" class="StockOnOrder\EventListeners\StockOnOrderEventListener" scope="request">
+      <tag name="kernel.event_subscriber"/>
+    </service>
+    <service id="action.stockonorder.stock_on_order_config_table" class="StockOnOrder\Action\StockOnOrderConfigAction">
+      <tag name="kernel.event_subscriber"/>
+    </service>
+    <service id="stockonorder.form.type.stock_on_order_config_id" class="StockOnOrder\Form\Type\StockOnOrderConfigIdType">
+      <argument id="thelia.translator" type="service"/>
+      <tag name="thelia.form.type"/>
+    </service>
+    <service id="action.stockonorder.stock_on_order_table" class="StockOnOrder\Action\StockOnOrderAction">
+      <tag name="kernel.event_subscriber"/>
+    </service>
+    <service id="stockonorder.form.type.stock_on_order_id" class="StockOnOrder\Form\Type\StockOnOrderIdType">
+      <argument id="thelia.translator" type="service"/>
+      <tag name="thelia.form.type"/>
+    </service>
+    <service id="action.stockonorder.stock_on_order_decrease_on_creation_table" class="StockOnOrder\Action\StockOnOrderDecreaseOnCreationAction">
+      <tag name="kernel.event_subscriber"/>
+    </service>
+    <service id="stockonorder.form.type.stock_on_order_decrease_on_creation_id" class="StockOnOrder\Form\Type\StockOnOrderDecreaseOnCreationIdType">
+      <argument id="thelia.translator" type="service"/>
+      <tag name="thelia.form.type"/>
+    </service>
+  </services>
 </config>

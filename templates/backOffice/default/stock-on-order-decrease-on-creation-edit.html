@@ -1,0 +1,89 @@
+{extends file="admin-layout.tpl"}
+{default_translation_domain domain='stockonorder.bo.default'}
+
+{block name="no-return-functions"}
+    {$admin_current_location = 'tools'}
+{/block}
+
+{block name="page-title"}{intl l='StockOnOrderDecreaseOnCreation'}{/block}
+
+{block name="check-resource"}admin.module{/block}
+{block name="check-access"}update{/block}
+{block name="check-module"}StockOnOrder{/block}
+
+{block name="main-content"}
+
+    {form name="stock_on_order_decrease_on_creation.update"}
+        <div id="wrapper" class="container">
+
+            {if $form_error}
+                <div class="alert alert-danger">{$form_error_message}</div>
+            {/if}
+
+            <div class="general-block-decorator">
+                <div class="title title-without-tabs">
+                    {intl l="StockOnOrderDecreaseOnCreation edit" d="stockonorder.bo.default"}
+                </div>
+
+                <div class="form-container">
+                    <form method="POST" action="{$current_url}" {form_enctype form=$form} class="clearfix" >
+
+                        {include "includes/inner-form-toolbar.html"
+                        close_url = {url path="/admin/module/StockOnOrder/stock_on_order_decrease_on_creation"}
+                        }
+
+                        {form_field form=$form field="id"}
+                        {assign "stock_on_order_decrease_on_creation_id" $value}
+                            <input type="hidden" name="{$name}" value="{$value}"/>
+                        {/form_field}
+                        {form_field form=$form field="success_url"}
+                            <input type="hidden" name="{$name}" value="{url path='/admin/module/StockOnOrder'}/stock_on_order_decrease_on_creation"/>
+                        {/form_field}
+                        {form_hidden_fields form=$form}
+
+                        {loop name="stock_on_order_decrease_on_creation_update" type="stock-on-order-decrease-on-creation" backend_context="yes" id=$stock_on_order_decrease_on_creation_id lang=$edit_language_id}
+                            <div class="row">
+                                <div class="col-md-12">
+                                    {form_field form=$form field="module_id"}
+                                        <div class="form-group">
+                                            <label class="control-label" for="{$label_attr.for}">
+                                                {$label}
+                                                {if $required}<span class="required">*</span>{/if}
+                                            </label>
+
+                                            {form_error form=$form field="module_id"}{$message}{/form_error}
+
+                                                <input type="number" class="form-control" name="{$name}" id="{$label_attr.for}" value="{$MODULE_ID}" placeholder="{intl l='The StockOnOrderDecreaseOnCreation module_id'}" />
+                                        </div>
+                                    {/form_field}
+                                    {form_field form=$form field="decreased_on_order_creation"}
+                                        <div class="form-group">
+                                            <label class="control-label" for="{$label_attr.for}">
+                                                {$label}
+                                                {if $required}<span class="required">*</span>{/if}
+                                            </label>
+
+                                            {form_error form=$form field="decreased_on_order_creation"}{$message}{/form_error}
+
+                                                <input type="checkbox" class="form-control" name="{$name}" id="{$label_attr.for}" {if $DECREASED_ON_ORDER_CREATION}checked{/if} placeholder="{intl l='The StockOnOrderDecreaseOnCreation decreased_on_order_creation'}" />
+                                        </div>
+                                    {/form_field}
+
+                                    {include "includes/inner-form-toolbar.html"
+                                        hide_flags = true
+                                        close_url = {url path="/admin/module/StockOnOrder/stock_on_order_decrease_on_creation"}
+                                    }
+
+                                </div>
+                            </div>
+                        {/loop}
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    {/form}
+{/block}
+
+{block name="javascript-initialization"}
+{/block}

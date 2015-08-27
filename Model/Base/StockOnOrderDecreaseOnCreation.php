@@ -14,19 +14,17 @@ use Propel\Runtime\Exception\BadMethodCallException;
 use Propel\Runtime\Exception\PropelException;
 use Propel\Runtime\Map\TableMap;
 use Propel\Runtime\Parser\AbstractParser;
-use StockOnOrder\Model\StockOnOrderConfigQuery as ChildStockOnOrderConfigQuery;
-use StockOnOrder\Model\Map\StockOnOrderConfigTableMap;
+use StockOnOrder\Model\StockOnOrderDecreaseOnCreationQuery as ChildStockOnOrderDecreaseOnCreationQuery;
+use StockOnOrder\Model\Map\StockOnOrderDecreaseOnCreationTableMap;
 use Thelia\Model\Module as ChildModule;
-use Thelia\Model\OrderStatus as ChildOrderStatus;
 use Thelia\Model\ModuleQuery;
-use Thelia\Model\OrderStatusQuery;
 
-abstract class StockOnOrderConfig implements ActiveRecordInterface
+abstract class StockOnOrderDecreaseOnCreation implements ActiveRecordInterface
 {
     /**
      * TableMap class name
      */
-    const TABLE_MAP = '\\StockOnOrder\\Model\\Map\\StockOnOrderConfigTableMap';
+    const TABLE_MAP = '\\StockOnOrder\\Model\\Map\\StockOnOrderDecreaseOnCreationTableMap';
 
 
     /**
@@ -68,27 +66,15 @@ abstract class StockOnOrderConfig implements ActiveRecordInterface
     protected $module_id;
 
     /**
-     * The value for the status_id field.
-     * @var        int
+     * The value for the decrease_on_order_creation field.
+     * @var        boolean
      */
-    protected $status_id;
-
-    /**
-     * The value for the behavior field.
-     * Note: this column has a database default value of: 'default'
-     * @var        string
-     */
-    protected $behavior;
+    protected $decrease_on_order_creation;
 
     /**
      * @var        Module
      */
     protected $aModule;
-
-    /**
-     * @var        OrderStatus
-     */
-    protected $aOrderStatus;
 
     /**
      * Flag to prevent endless save loop, if this object is referenced
@@ -99,23 +85,10 @@ abstract class StockOnOrderConfig implements ActiveRecordInterface
     protected $alreadyInSave = false;
 
     /**
-     * Applies default values to this object.
-     * This method should be called from the object's constructor (or
-     * equivalent initialization method).
-     * @see __construct()
-     */
-    public function applyDefaultValues()
-    {
-        $this->behavior = 'default';
-    }
-
-    /**
-     * Initializes internal state of StockOnOrder\Model\Base\StockOnOrderConfig object.
-     * @see applyDefaults()
+     * Initializes internal state of StockOnOrder\Model\Base\StockOnOrderDecreaseOnCreation object.
      */
     public function __construct()
     {
-        $this->applyDefaultValues();
     }
 
     /**
@@ -207,9 +180,9 @@ abstract class StockOnOrderConfig implements ActiveRecordInterface
     }
 
     /**
-     * Compares this with another <code>StockOnOrderConfig</code> instance.  If
-     * <code>obj</code> is an instance of <code>StockOnOrderConfig</code>, delegates to
-     * <code>equals(StockOnOrderConfig)</code>.  Otherwise, returns <code>false</code>.
+     * Compares this with another <code>StockOnOrderDecreaseOnCreation</code> instance.  If
+     * <code>obj</code> is an instance of <code>StockOnOrderDecreaseOnCreation</code>, delegates to
+     * <code>equals(StockOnOrderDecreaseOnCreation)</code>.  Otherwise, returns <code>false</code>.
      *
      * @param  mixed   $obj The object to compare to.
      * @return boolean Whether equal to the object specified.
@@ -292,7 +265,7 @@ abstract class StockOnOrderConfig implements ActiveRecordInterface
      * @param string $name  The virtual column name
      * @param mixed  $value The value to give to the virtual column
      *
-     * @return StockOnOrderConfig The current object, for fluid interface
+     * @return StockOnOrderDecreaseOnCreation The current object, for fluid interface
      */
     public function setVirtualColumn($name, $value)
     {
@@ -324,7 +297,7 @@ abstract class StockOnOrderConfig implements ActiveRecordInterface
      *                       or a format name ('XML', 'YAML', 'JSON', 'CSV')
      * @param string $data The source data to import from
      *
-     * @return StockOnOrderConfig The current object, for fluid interface
+     * @return StockOnOrderDecreaseOnCreation The current object, for fluid interface
      */
     public function importFrom($parser, $data)
     {
@@ -392,32 +365,21 @@ abstract class StockOnOrderConfig implements ActiveRecordInterface
     }
 
     /**
-     * Get the [status_id] column value.
+     * Get the [decrease_on_order_creation] column value.
      *
-     * @return   int
+     * @return   boolean
      */
-    public function getStatusId()
+    public function getDecreaseOnOrderCreation()
     {
 
-        return $this->status_id;
-    }
-
-    /**
-     * Get the [behavior] column value.
-     *
-     * @return   string
-     */
-    public function getBehavior()
-    {
-
-        return $this->behavior;
+        return $this->decrease_on_order_creation;
     }
 
     /**
      * Set the value of [id] column.
      *
      * @param      int $v new value
-     * @return   \StockOnOrder\Model\StockOnOrderConfig The current object (for fluent API support)
+     * @return   \StockOnOrder\Model\StockOnOrderDecreaseOnCreation The current object (for fluent API support)
      */
     public function setId($v)
     {
@@ -427,7 +389,7 @@ abstract class StockOnOrderConfig implements ActiveRecordInterface
 
         if ($this->id !== $v) {
             $this->id = $v;
-            $this->modifiedColumns[StockOnOrderConfigTableMap::ID] = true;
+            $this->modifiedColumns[StockOnOrderDecreaseOnCreationTableMap::ID] = true;
         }
 
 
@@ -438,7 +400,7 @@ abstract class StockOnOrderConfig implements ActiveRecordInterface
      * Set the value of [module_id] column.
      *
      * @param      int $v new value
-     * @return   \StockOnOrder\Model\StockOnOrderConfig The current object (for fluent API support)
+     * @return   \StockOnOrder\Model\StockOnOrderDecreaseOnCreation The current object (for fluent API support)
      */
     public function setModuleId($v)
     {
@@ -448,7 +410,7 @@ abstract class StockOnOrderConfig implements ActiveRecordInterface
 
         if ($this->module_id !== $v) {
             $this->module_id = $v;
-            $this->modifiedColumns[StockOnOrderConfigTableMap::MODULE_ID] = true;
+            $this->modifiedColumns[StockOnOrderDecreaseOnCreationTableMap::MODULE_ID] = true;
         }
 
         if ($this->aModule !== null && $this->aModule->getId() !== $v) {
@@ -460,50 +422,33 @@ abstract class StockOnOrderConfig implements ActiveRecordInterface
     } // setModuleId()
 
     /**
-     * Set the value of [status_id] column.
+     * Sets the value of the [decrease_on_order_creation] column.
+     * Non-boolean arguments are converted using the following rules:
+     *   * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
+     *   * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
+     * Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
      *
-     * @param      int $v new value
-     * @return   \StockOnOrder\Model\StockOnOrderConfig The current object (for fluent API support)
+     * @param      boolean|integer|string $v The new value
+     * @return   \StockOnOrder\Model\StockOnOrderDecreaseOnCreation The current object (for fluent API support)
      */
-    public function setStatusId($v)
+    public function setDecreaseOnOrderCreation($v)
     {
         if ($v !== null) {
-            $v = (int) $v;
+            if (is_string($v)) {
+                $v = in_array(strtolower($v), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
+            } else {
+                $v = (boolean) $v;
+            }
         }
 
-        if ($this->status_id !== $v) {
-            $this->status_id = $v;
-            $this->modifiedColumns[StockOnOrderConfigTableMap::STATUS_ID] = true;
-        }
-
-        if ($this->aOrderStatus !== null && $this->aOrderStatus->getId() !== $v) {
-            $this->aOrderStatus = null;
+        if ($this->decrease_on_order_creation !== $v) {
+            $this->decrease_on_order_creation = $v;
+            $this->modifiedColumns[StockOnOrderDecreaseOnCreationTableMap::DECREASE_ON_ORDER_CREATION] = true;
         }
 
 
         return $this;
-    } // setStatusId()
-
-    /**
-     * Set the value of [behavior] column.
-     *
-     * @param      string $v new value
-     * @return   \StockOnOrder\Model\StockOnOrderConfig The current object (for fluent API support)
-     */
-    public function setBehavior($v)
-    {
-        if ($v !== null) {
-            $v = (string) $v;
-        }
-
-        if ($this->behavior !== $v) {
-            $this->behavior = $v;
-            $this->modifiedColumns[StockOnOrderConfigTableMap::BEHAVIOR] = true;
-        }
-
-
-        return $this;
-    } // setBehavior()
+    } // setDecreaseOnOrderCreation()
 
     /**
      * Indicates whether the columns in this object are only set to default values.
@@ -515,10 +460,6 @@ abstract class StockOnOrderConfig implements ActiveRecordInterface
      */
     public function hasOnlyDefaultValues()
     {
-            if ($this->behavior !== 'default') {
-                return false;
-            }
-
         // otherwise, everything was equal, so return TRUE
         return true;
     } // hasOnlyDefaultValues()
@@ -546,17 +487,14 @@ abstract class StockOnOrderConfig implements ActiveRecordInterface
         try {
 
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 0 + $startcol : StockOnOrderConfigTableMap::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 0 + $startcol : StockOnOrderDecreaseOnCreationTableMap::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)];
             $this->id = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 1 + $startcol : StockOnOrderConfigTableMap::translateFieldName('ModuleId', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 1 + $startcol : StockOnOrderDecreaseOnCreationTableMap::translateFieldName('ModuleId', TableMap::TYPE_PHPNAME, $indexType)];
             $this->module_id = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 2 + $startcol : StockOnOrderConfigTableMap::translateFieldName('StatusId', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->status_id = (null !== $col) ? (int) $col : null;
-
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 3 + $startcol : StockOnOrderConfigTableMap::translateFieldName('Behavior', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->behavior = (null !== $col) ? (string) $col : null;
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 2 + $startcol : StockOnOrderDecreaseOnCreationTableMap::translateFieldName('DecreaseOnOrderCreation', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->decrease_on_order_creation = (null !== $col) ? (boolean) $col : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -565,10 +503,10 @@ abstract class StockOnOrderConfig implements ActiveRecordInterface
                 $this->ensureConsistency();
             }
 
-            return $startcol + 4; // 4 = StockOnOrderConfigTableMap::NUM_HYDRATE_COLUMNS.
+            return $startcol + 3; // 3 = StockOnOrderDecreaseOnCreationTableMap::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
-            throw new PropelException("Error populating \StockOnOrder\Model\StockOnOrderConfig object", 0, $e);
+            throw new PropelException("Error populating \StockOnOrder\Model\StockOnOrderDecreaseOnCreation object", 0, $e);
         }
     }
 
@@ -589,9 +527,6 @@ abstract class StockOnOrderConfig implements ActiveRecordInterface
     {
         if ($this->aModule !== null && $this->module_id !== $this->aModule->getId()) {
             $this->aModule = null;
-        }
-        if ($this->aOrderStatus !== null && $this->status_id !== $this->aOrderStatus->getId()) {
-            $this->aOrderStatus = null;
         }
     } // ensureConsistency
 
@@ -616,13 +551,13 @@ abstract class StockOnOrderConfig implements ActiveRecordInterface
         }
 
         if ($con === null) {
-            $con = Propel::getServiceContainer()->getReadConnection(StockOnOrderConfigTableMap::DATABASE_NAME);
+            $con = Propel::getServiceContainer()->getReadConnection(StockOnOrderDecreaseOnCreationTableMap::DATABASE_NAME);
         }
 
         // We don't need to alter the object instance pool; we're just modifying this instance
         // already in the pool.
 
-        $dataFetcher = ChildStockOnOrderConfigQuery::create(null, $this->buildPkeyCriteria())->setFormatter(ModelCriteria::FORMAT_STATEMENT)->find($con);
+        $dataFetcher = ChildStockOnOrderDecreaseOnCreationQuery::create(null, $this->buildPkeyCriteria())->setFormatter(ModelCriteria::FORMAT_STATEMENT)->find($con);
         $row = $dataFetcher->fetch();
         $dataFetcher->close();
         if (!$row) {
@@ -633,7 +568,6 @@ abstract class StockOnOrderConfig implements ActiveRecordInterface
         if ($deep) {  // also de-associate any related objects?
 
             $this->aModule = null;
-            $this->aOrderStatus = null;
         } // if (deep)
     }
 
@@ -643,8 +577,8 @@ abstract class StockOnOrderConfig implements ActiveRecordInterface
      * @param      ConnectionInterface $con
      * @return void
      * @throws PropelException
-     * @see StockOnOrderConfig::setDeleted()
-     * @see StockOnOrderConfig::isDeleted()
+     * @see StockOnOrderDecreaseOnCreation::setDeleted()
+     * @see StockOnOrderDecreaseOnCreation::isDeleted()
      */
     public function delete(ConnectionInterface $con = null)
     {
@@ -653,12 +587,12 @@ abstract class StockOnOrderConfig implements ActiveRecordInterface
         }
 
         if ($con === null) {
-            $con = Propel::getServiceContainer()->getWriteConnection(StockOnOrderConfigTableMap::DATABASE_NAME);
+            $con = Propel::getServiceContainer()->getWriteConnection(StockOnOrderDecreaseOnCreationTableMap::DATABASE_NAME);
         }
 
         $con->beginTransaction();
         try {
-            $deleteQuery = ChildStockOnOrderConfigQuery::create()
+            $deleteQuery = ChildStockOnOrderDecreaseOnCreationQuery::create()
                 ->filterByPrimaryKey($this->getPrimaryKey());
             $ret = $this->preDelete($con);
             if ($ret) {
@@ -695,7 +629,7 @@ abstract class StockOnOrderConfig implements ActiveRecordInterface
         }
 
         if ($con === null) {
-            $con = Propel::getServiceContainer()->getWriteConnection(StockOnOrderConfigTableMap::DATABASE_NAME);
+            $con = Propel::getServiceContainer()->getWriteConnection(StockOnOrderDecreaseOnCreationTableMap::DATABASE_NAME);
         }
 
         $con->beginTransaction();
@@ -715,7 +649,7 @@ abstract class StockOnOrderConfig implements ActiveRecordInterface
                     $this->postUpdate($con);
                 }
                 $this->postSave($con);
-                StockOnOrderConfigTableMap::addInstanceToPool($this);
+                StockOnOrderDecreaseOnCreationTableMap::addInstanceToPool($this);
             } else {
                 $affectedRows = 0;
             }
@@ -757,13 +691,6 @@ abstract class StockOnOrderConfig implements ActiveRecordInterface
                 $this->setModule($this->aModule);
             }
 
-            if ($this->aOrderStatus !== null) {
-                if ($this->aOrderStatus->isModified() || $this->aOrderStatus->isNew()) {
-                    $affectedRows += $this->aOrderStatus->save($con);
-                }
-                $this->setOrderStatus($this->aOrderStatus);
-            }
-
             if ($this->isNew() || $this->isModified()) {
                 // persist changes
                 if ($this->isNew()) {
@@ -795,27 +722,24 @@ abstract class StockOnOrderConfig implements ActiveRecordInterface
         $modifiedColumns = array();
         $index = 0;
 
-        $this->modifiedColumns[StockOnOrderConfigTableMap::ID] = true;
+        $this->modifiedColumns[StockOnOrderDecreaseOnCreationTableMap::ID] = true;
         if (null !== $this->id) {
-            throw new PropelException('Cannot insert a value for auto-increment primary key (' . StockOnOrderConfigTableMap::ID . ')');
+            throw new PropelException('Cannot insert a value for auto-increment primary key (' . StockOnOrderDecreaseOnCreationTableMap::ID . ')');
         }
 
          // check the columns in natural order for more readable SQL queries
-        if ($this->isColumnModified(StockOnOrderConfigTableMap::ID)) {
+        if ($this->isColumnModified(StockOnOrderDecreaseOnCreationTableMap::ID)) {
             $modifiedColumns[':p' . $index++]  = 'ID';
         }
-        if ($this->isColumnModified(StockOnOrderConfigTableMap::MODULE_ID)) {
+        if ($this->isColumnModified(StockOnOrderDecreaseOnCreationTableMap::MODULE_ID)) {
             $modifiedColumns[':p' . $index++]  = 'MODULE_ID';
         }
-        if ($this->isColumnModified(StockOnOrderConfigTableMap::STATUS_ID)) {
-            $modifiedColumns[':p' . $index++]  = 'STATUS_ID';
-        }
-        if ($this->isColumnModified(StockOnOrderConfigTableMap::BEHAVIOR)) {
-            $modifiedColumns[':p' . $index++]  = 'BEHAVIOR';
+        if ($this->isColumnModified(StockOnOrderDecreaseOnCreationTableMap::DECREASE_ON_ORDER_CREATION)) {
+            $modifiedColumns[':p' . $index++]  = 'DECREASE_ON_ORDER_CREATION';
         }
 
         $sql = sprintf(
-            'INSERT INTO stock_on_order_config (%s) VALUES (%s)',
+            'INSERT INTO stock_on_order_decrease_on_creation (%s) VALUES (%s)',
             implode(', ', $modifiedColumns),
             implode(', ', array_keys($modifiedColumns))
         );
@@ -830,11 +754,8 @@ abstract class StockOnOrderConfig implements ActiveRecordInterface
                     case 'MODULE_ID':
                         $stmt->bindValue($identifier, $this->module_id, PDO::PARAM_INT);
                         break;
-                    case 'STATUS_ID':
-                        $stmt->bindValue($identifier, $this->status_id, PDO::PARAM_INT);
-                        break;
-                    case 'BEHAVIOR':
-                        $stmt->bindValue($identifier, $this->behavior, PDO::PARAM_STR);
+                    case 'DECREASE_ON_ORDER_CREATION':
+                        $stmt->bindValue($identifier, (int) $this->decrease_on_order_creation, PDO::PARAM_INT);
                         break;
                 }
             }
@@ -882,7 +803,7 @@ abstract class StockOnOrderConfig implements ActiveRecordInterface
      */
     public function getByName($name, $type = TableMap::TYPE_PHPNAME)
     {
-        $pos = StockOnOrderConfigTableMap::translateFieldName($name, $type, TableMap::TYPE_NUM);
+        $pos = StockOnOrderDecreaseOnCreationTableMap::translateFieldName($name, $type, TableMap::TYPE_NUM);
         $field = $this->getByPosition($pos);
 
         return $field;
@@ -905,10 +826,7 @@ abstract class StockOnOrderConfig implements ActiveRecordInterface
                 return $this->getModuleId();
                 break;
             case 2:
-                return $this->getStatusId();
-                break;
-            case 3:
-                return $this->getBehavior();
+                return $this->getDecreaseOnOrderCreation();
                 break;
             default:
                 return null;
@@ -933,16 +851,15 @@ abstract class StockOnOrderConfig implements ActiveRecordInterface
      */
     public function toArray($keyType = TableMap::TYPE_PHPNAME, $includeLazyLoadColumns = true, $alreadyDumpedObjects = array(), $includeForeignObjects = false)
     {
-        if (isset($alreadyDumpedObjects['StockOnOrderConfig'][$this->getPrimaryKey()])) {
+        if (isset($alreadyDumpedObjects['StockOnOrderDecreaseOnCreation'][$this->getPrimaryKey()])) {
             return '*RECURSION*';
         }
-        $alreadyDumpedObjects['StockOnOrderConfig'][$this->getPrimaryKey()] = true;
-        $keys = StockOnOrderConfigTableMap::getFieldNames($keyType);
+        $alreadyDumpedObjects['StockOnOrderDecreaseOnCreation'][$this->getPrimaryKey()] = true;
+        $keys = StockOnOrderDecreaseOnCreationTableMap::getFieldNames($keyType);
         $result = array(
             $keys[0] => $this->getId(),
             $keys[1] => $this->getModuleId(),
-            $keys[2] => $this->getStatusId(),
-            $keys[3] => $this->getBehavior(),
+            $keys[2] => $this->getDecreaseOnOrderCreation(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -952,9 +869,6 @@ abstract class StockOnOrderConfig implements ActiveRecordInterface
         if ($includeForeignObjects) {
             if (null !== $this->aModule) {
                 $result['Module'] = $this->aModule->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
-            }
-            if (null !== $this->aOrderStatus) {
-                $result['OrderStatus'] = $this->aOrderStatus->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
             }
         }
 
@@ -974,7 +888,7 @@ abstract class StockOnOrderConfig implements ActiveRecordInterface
      */
     public function setByName($name, $value, $type = TableMap::TYPE_PHPNAME)
     {
-        $pos = StockOnOrderConfigTableMap::translateFieldName($name, $type, TableMap::TYPE_NUM);
+        $pos = StockOnOrderDecreaseOnCreationTableMap::translateFieldName($name, $type, TableMap::TYPE_NUM);
 
         return $this->setByPosition($pos, $value);
     }
@@ -997,10 +911,7 @@ abstract class StockOnOrderConfig implements ActiveRecordInterface
                 $this->setModuleId($value);
                 break;
             case 2:
-                $this->setStatusId($value);
-                break;
-            case 3:
-                $this->setBehavior($value);
+                $this->setDecreaseOnOrderCreation($value);
                 break;
         } // switch()
     }
@@ -1024,12 +935,11 @@ abstract class StockOnOrderConfig implements ActiveRecordInterface
      */
     public function fromArray($arr, $keyType = TableMap::TYPE_PHPNAME)
     {
-        $keys = StockOnOrderConfigTableMap::getFieldNames($keyType);
+        $keys = StockOnOrderDecreaseOnCreationTableMap::getFieldNames($keyType);
 
         if (array_key_exists($keys[0], $arr)) $this->setId($arr[$keys[0]]);
         if (array_key_exists($keys[1], $arr)) $this->setModuleId($arr[$keys[1]]);
-        if (array_key_exists($keys[2], $arr)) $this->setStatusId($arr[$keys[2]]);
-        if (array_key_exists($keys[3], $arr)) $this->setBehavior($arr[$keys[3]]);
+        if (array_key_exists($keys[2], $arr)) $this->setDecreaseOnOrderCreation($arr[$keys[2]]);
     }
 
     /**
@@ -1039,12 +949,11 @@ abstract class StockOnOrderConfig implements ActiveRecordInterface
      */
     public function buildCriteria()
     {
-        $criteria = new Criteria(StockOnOrderConfigTableMap::DATABASE_NAME);
+        $criteria = new Criteria(StockOnOrderDecreaseOnCreationTableMap::DATABASE_NAME);
 
-        if ($this->isColumnModified(StockOnOrderConfigTableMap::ID)) $criteria->add(StockOnOrderConfigTableMap::ID, $this->id);
-        if ($this->isColumnModified(StockOnOrderConfigTableMap::MODULE_ID)) $criteria->add(StockOnOrderConfigTableMap::MODULE_ID, $this->module_id);
-        if ($this->isColumnModified(StockOnOrderConfigTableMap::STATUS_ID)) $criteria->add(StockOnOrderConfigTableMap::STATUS_ID, $this->status_id);
-        if ($this->isColumnModified(StockOnOrderConfigTableMap::BEHAVIOR)) $criteria->add(StockOnOrderConfigTableMap::BEHAVIOR, $this->behavior);
+        if ($this->isColumnModified(StockOnOrderDecreaseOnCreationTableMap::ID)) $criteria->add(StockOnOrderDecreaseOnCreationTableMap::ID, $this->id);
+        if ($this->isColumnModified(StockOnOrderDecreaseOnCreationTableMap::MODULE_ID)) $criteria->add(StockOnOrderDecreaseOnCreationTableMap::MODULE_ID, $this->module_id);
+        if ($this->isColumnModified(StockOnOrderDecreaseOnCreationTableMap::DECREASE_ON_ORDER_CREATION)) $criteria->add(StockOnOrderDecreaseOnCreationTableMap::DECREASE_ON_ORDER_CREATION, $this->decrease_on_order_creation);
 
         return $criteria;
     }
@@ -1059,8 +968,8 @@ abstract class StockOnOrderConfig implements ActiveRecordInterface
      */
     public function buildPkeyCriteria()
     {
-        $criteria = new Criteria(StockOnOrderConfigTableMap::DATABASE_NAME);
-        $criteria->add(StockOnOrderConfigTableMap::ID, $this->id);
+        $criteria = new Criteria(StockOnOrderDecreaseOnCreationTableMap::DATABASE_NAME);
+        $criteria->add(StockOnOrderDecreaseOnCreationTableMap::ID, $this->id);
 
         return $criteria;
     }
@@ -1101,7 +1010,7 @@ abstract class StockOnOrderConfig implements ActiveRecordInterface
      * If desired, this method can also make copies of all associated (fkey referrers)
      * objects.
      *
-     * @param      object $copyObj An object of \StockOnOrder\Model\StockOnOrderConfig (or compatible) type.
+     * @param      object $copyObj An object of \StockOnOrder\Model\StockOnOrderDecreaseOnCreation (or compatible) type.
      * @param      boolean $deepCopy Whether to also copy all rows that refer (by fkey) to the current row.
      * @param      boolean $makeNew Whether to reset autoincrement PKs and make the object new.
      * @throws PropelException
@@ -1109,8 +1018,7 @@ abstract class StockOnOrderConfig implements ActiveRecordInterface
     public function copyInto($copyObj, $deepCopy = false, $makeNew = true)
     {
         $copyObj->setModuleId($this->getModuleId());
-        $copyObj->setStatusId($this->getStatusId());
-        $copyObj->setBehavior($this->getBehavior());
+        $copyObj->setDecreaseOnOrderCreation($this->getDecreaseOnOrderCreation());
         if ($makeNew) {
             $copyObj->setNew(true);
             $copyObj->setId(NULL); // this is a auto-increment column, so set to default value
@@ -1126,7 +1034,7 @@ abstract class StockOnOrderConfig implements ActiveRecordInterface
      * objects.
      *
      * @param      boolean $deepCopy Whether to also copy all rows that refer (by fkey) to the current row.
-     * @return                 \StockOnOrder\Model\StockOnOrderConfig Clone of current object.
+     * @return                 \StockOnOrder\Model\StockOnOrderDecreaseOnCreation Clone of current object.
      * @throws PropelException
      */
     public function copy($deepCopy = false)
@@ -1143,7 +1051,7 @@ abstract class StockOnOrderConfig implements ActiveRecordInterface
      * Declares an association between this object and a ChildModule object.
      *
      * @param                  ChildModule $v
-     * @return                 \StockOnOrder\Model\StockOnOrderConfig The current object (for fluent API support)
+     * @return                 \StockOnOrder\Model\StockOnOrderDecreaseOnCreation The current object (for fluent API support)
      * @throws PropelException
      */
     public function setModule(ChildModule $v = null)
@@ -1159,7 +1067,7 @@ abstract class StockOnOrderConfig implements ActiveRecordInterface
         // Add binding for other direction of this n:n relationship.
         // If this object has already been added to the ChildModule object, it will not be re-added.
         if ($v !== null) {
-            $v->addStockOnOrderConfig($this);
+            $v->addStockOnOrderDecreaseOnCreation($this);
         }
 
 
@@ -1183,62 +1091,11 @@ abstract class StockOnOrderConfig implements ActiveRecordInterface
                 to this object.  This level of coupling may, however, be
                 undesirable since it could result in an only partially populated collection
                 in the referenced object.
-                $this->aModule->addStockOnOrderConfigs($this);
+                $this->aModule->addStockOnOrderDecreaseOnCreations($this);
              */
         }
 
         return $this->aModule;
-    }
-
-    /**
-     * Declares an association between this object and a ChildOrderStatus object.
-     *
-     * @param                  ChildOrderStatus $v
-     * @return                 \StockOnOrder\Model\StockOnOrderConfig The current object (for fluent API support)
-     * @throws PropelException
-     */
-    public function setOrderStatus(ChildOrderStatus $v = null)
-    {
-        if ($v === null) {
-            $this->setStatusId(NULL);
-        } else {
-            $this->setStatusId($v->getId());
-        }
-
-        $this->aOrderStatus = $v;
-
-        // Add binding for other direction of this n:n relationship.
-        // If this object has already been added to the ChildOrderStatus object, it will not be re-added.
-        if ($v !== null) {
-            $v->addStockOnOrderConfig($this);
-        }
-
-
-        return $this;
-    }
-
-
-    /**
-     * Get the associated ChildOrderStatus object
-     *
-     * @param      ConnectionInterface $con Optional Connection object.
-     * @return                 ChildOrderStatus The associated ChildOrderStatus object.
-     * @throws PropelException
-     */
-    public function getOrderStatus(ConnectionInterface $con = null)
-    {
-        if ($this->aOrderStatus === null && ($this->status_id !== null)) {
-            $this->aOrderStatus = OrderStatusQuery::create()->findPk($this->status_id, $con);
-            /* The following can be used additionally to
-                guarantee the related object contains a reference
-                to this object.  This level of coupling may, however, be
-                undesirable since it could result in an only partially populated collection
-                in the referenced object.
-                $this->aOrderStatus->addStockOnOrderConfigs($this);
-             */
-        }
-
-        return $this->aOrderStatus;
     }
 
     /**
@@ -1248,11 +1105,9 @@ abstract class StockOnOrderConfig implements ActiveRecordInterface
     {
         $this->id = null;
         $this->module_id = null;
-        $this->status_id = null;
-        $this->behavior = null;
+        $this->decrease_on_order_creation = null;
         $this->alreadyInSave = false;
         $this->clearAllReferences();
-        $this->applyDefaultValues();
         $this->resetModified();
         $this->setNew(true);
         $this->setDeleted(false);
@@ -1273,7 +1128,6 @@ abstract class StockOnOrderConfig implements ActiveRecordInterface
         } // if ($deep)
 
         $this->aModule = null;
-        $this->aOrderStatus = null;
     }
 
     /**
@@ -1283,7 +1137,7 @@ abstract class StockOnOrderConfig implements ActiveRecordInterface
      */
     public function __toString()
     {
-        return (string) $this->exportTo(StockOnOrderConfigTableMap::DEFAULT_STRING_FORMAT);
+        return (string) $this->exportTo(StockOnOrderDecreaseOnCreationTableMap::DEFAULT_STRING_FORMAT);
     }
 
     /**

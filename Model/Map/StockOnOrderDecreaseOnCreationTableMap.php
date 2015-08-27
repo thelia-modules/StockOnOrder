@@ -11,12 +11,12 @@ use Propel\Runtime\Exception\PropelException;
 use Propel\Runtime\Map\RelationMap;
 use Propel\Runtime\Map\TableMap;
 use Propel\Runtime\Map\TableMapTrait;
-use StockOnOrder\Model\StockOnOrderConfig;
-use StockOnOrder\Model\StockOnOrderConfigQuery;
+use StockOnOrder\Model\StockOnOrderDecreaseOnCreation;
+use StockOnOrder\Model\StockOnOrderDecreaseOnCreationQuery;
 
 
 /**
- * This class defines the structure of the 'stock_on_order_config' table.
+ * This class defines the structure of the 'stock_on_order_decrease_on_creation' table.
  *
  *
  *
@@ -26,14 +26,14 @@ use StockOnOrder\Model\StockOnOrderConfigQuery;
  * (i.e. if it's a text column type).
  *
  */
-class StockOnOrderConfigTableMap extends TableMap
+class StockOnOrderDecreaseOnCreationTableMap extends TableMap
 {
     use InstancePoolTrait;
     use TableMapTrait;
     /**
      * The (dot-path) name of this class
      */
-    const CLASS_NAME = 'StockOnOrder.Model.Map.StockOnOrderConfigTableMap';
+    const CLASS_NAME = 'StockOnOrder.Model.Map.StockOnOrderDecreaseOnCreationTableMap';
 
     /**
      * The default database name for this class
@@ -43,22 +43,22 @@ class StockOnOrderConfigTableMap extends TableMap
     /**
      * The table name for this class
      */
-    const TABLE_NAME = 'stock_on_order_config';
+    const TABLE_NAME = 'stock_on_order_decrease_on_creation';
 
     /**
      * The related Propel class for this table
      */
-    const OM_CLASS = '\\StockOnOrder\\Model\\StockOnOrderConfig';
+    const OM_CLASS = '\\StockOnOrder\\Model\\StockOnOrderDecreaseOnCreation';
 
     /**
      * A class that can be returned by this tableMap
      */
-    const CLASS_DEFAULT = 'StockOnOrder.Model.StockOnOrderConfig';
+    const CLASS_DEFAULT = 'StockOnOrder.Model.StockOnOrderDecreaseOnCreation';
 
     /**
      * The total number of columns
      */
-    const NUM_COLUMNS = 4;
+    const NUM_COLUMNS = 3;
 
     /**
      * The number of lazy-loaded columns
@@ -68,27 +68,22 @@ class StockOnOrderConfigTableMap extends TableMap
     /**
      * The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS)
      */
-    const NUM_HYDRATE_COLUMNS = 4;
+    const NUM_HYDRATE_COLUMNS = 3;
 
     /**
      * the column name for the ID field
      */
-    const ID = 'stock_on_order_config.ID';
+    const ID = 'stock_on_order_decrease_on_creation.ID';
 
     /**
      * the column name for the MODULE_ID field
      */
-    const MODULE_ID = 'stock_on_order_config.MODULE_ID';
+    const MODULE_ID = 'stock_on_order_decrease_on_creation.MODULE_ID';
 
     /**
-     * the column name for the STATUS_ID field
+     * the column name for the DECREASE_ON_ORDER_CREATION field
      */
-    const STATUS_ID = 'stock_on_order_config.STATUS_ID';
-
-    /**
-     * the column name for the BEHAVIOR field
-     */
-    const BEHAVIOR = 'stock_on_order_config.BEHAVIOR';
+    const DECREASE_ON_ORDER_CREATION = 'stock_on_order_decrease_on_creation.DECREASE_ON_ORDER_CREATION';
 
     /**
      * The default string format for model objects of the related table
@@ -102,12 +97,12 @@ class StockOnOrderConfigTableMap extends TableMap
      * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        self::TYPE_PHPNAME       => array('Id', 'ModuleId', 'StatusId', 'Behavior', ),
-        self::TYPE_STUDLYPHPNAME => array('id', 'moduleId', 'statusId', 'behavior', ),
-        self::TYPE_COLNAME       => array(StockOnOrderConfigTableMap::ID, StockOnOrderConfigTableMap::MODULE_ID, StockOnOrderConfigTableMap::STATUS_ID, StockOnOrderConfigTableMap::BEHAVIOR, ),
-        self::TYPE_RAW_COLNAME   => array('ID', 'MODULE_ID', 'STATUS_ID', 'BEHAVIOR', ),
-        self::TYPE_FIELDNAME     => array('id', 'module_id', 'status_id', 'behavior', ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, )
+        self::TYPE_PHPNAME       => array('Id', 'ModuleId', 'DecreaseOnOrderCreation', ),
+        self::TYPE_STUDLYPHPNAME => array('id', 'moduleId', 'decreaseOnOrderCreation', ),
+        self::TYPE_COLNAME       => array(StockOnOrderDecreaseOnCreationTableMap::ID, StockOnOrderDecreaseOnCreationTableMap::MODULE_ID, StockOnOrderDecreaseOnCreationTableMap::DECREASE_ON_ORDER_CREATION, ),
+        self::TYPE_RAW_COLNAME   => array('ID', 'MODULE_ID', 'DECREASE_ON_ORDER_CREATION', ),
+        self::TYPE_FIELDNAME     => array('id', 'module_id', 'decrease_on_order_creation', ),
+        self::TYPE_NUM           => array(0, 1, 2, )
     );
 
     /**
@@ -117,12 +112,12 @@ class StockOnOrderConfigTableMap extends TableMap
      * e.g. self::$fieldKeys[self::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        self::TYPE_PHPNAME       => array('Id' => 0, 'ModuleId' => 1, 'StatusId' => 2, 'Behavior' => 3, ),
-        self::TYPE_STUDLYPHPNAME => array('id' => 0, 'moduleId' => 1, 'statusId' => 2, 'behavior' => 3, ),
-        self::TYPE_COLNAME       => array(StockOnOrderConfigTableMap::ID => 0, StockOnOrderConfigTableMap::MODULE_ID => 1, StockOnOrderConfigTableMap::STATUS_ID => 2, StockOnOrderConfigTableMap::BEHAVIOR => 3, ),
-        self::TYPE_RAW_COLNAME   => array('ID' => 0, 'MODULE_ID' => 1, 'STATUS_ID' => 2, 'BEHAVIOR' => 3, ),
-        self::TYPE_FIELDNAME     => array('id' => 0, 'module_id' => 1, 'status_id' => 2, 'behavior' => 3, ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, )
+        self::TYPE_PHPNAME       => array('Id' => 0, 'ModuleId' => 1, 'DecreaseOnOrderCreation' => 2, ),
+        self::TYPE_STUDLYPHPNAME => array('id' => 0, 'moduleId' => 1, 'decreaseOnOrderCreation' => 2, ),
+        self::TYPE_COLNAME       => array(StockOnOrderDecreaseOnCreationTableMap::ID => 0, StockOnOrderDecreaseOnCreationTableMap::MODULE_ID => 1, StockOnOrderDecreaseOnCreationTableMap::DECREASE_ON_ORDER_CREATION => 2, ),
+        self::TYPE_RAW_COLNAME   => array('ID' => 0, 'MODULE_ID' => 1, 'DECREASE_ON_ORDER_CREATION' => 2, ),
+        self::TYPE_FIELDNAME     => array('id' => 0, 'module_id' => 1, 'decrease_on_order_creation' => 2, ),
+        self::TYPE_NUM           => array(0, 1, 2, )
     );
 
     /**
@@ -135,16 +130,15 @@ class StockOnOrderConfigTableMap extends TableMap
     public function initialize()
     {
         // attributes
-        $this->setName('stock_on_order_config');
-        $this->setPhpName('StockOnOrderConfig');
-        $this->setClassName('\\StockOnOrder\\Model\\StockOnOrderConfig');
+        $this->setName('stock_on_order_decrease_on_creation');
+        $this->setPhpName('StockOnOrderDecreaseOnCreation');
+        $this->setClassName('\\StockOnOrder\\Model\\StockOnOrderDecreaseOnCreation');
         $this->setPackage('StockOnOrder.Model');
         $this->setUseIdGenerator(true);
         // columns
         $this->addPrimaryKey('ID', 'Id', 'INTEGER', true, null, null);
         $this->addForeignKey('MODULE_ID', 'ModuleId', 'INTEGER', 'module', 'ID', true, null, null);
-        $this->addForeignKey('STATUS_ID', 'StatusId', 'INTEGER', 'order_status', 'ID', true, null, null);
-        $this->addColumn('BEHAVIOR', 'Behavior', 'VARCHAR', false, 255, 'default');
+        $this->addColumn('DECREASE_ON_ORDER_CREATION', 'DecreaseOnOrderCreation', 'BOOLEAN', true, 1, null);
     } // initialize()
 
     /**
@@ -153,7 +147,6 @@ class StockOnOrderConfigTableMap extends TableMap
     public function buildRelations()
     {
         $this->addRelation('Module', '\\Thelia\\Model\\Module', RelationMap::MANY_TO_ONE, array('module_id' => 'id', ), 'CASCADE', null);
-        $this->addRelation('OrderStatus', '\\Thelia\\Model\\OrderStatus', RelationMap::MANY_TO_ONE, array('status_id' => 'id', ), 'CASCADE', null);
     } // buildRelations()
 
     /**
@@ -212,7 +205,7 @@ class StockOnOrderConfigTableMap extends TableMap
      */
     public static function getOMClass($withPrefix = true)
     {
-        return $withPrefix ? StockOnOrderConfigTableMap::CLASS_DEFAULT : StockOnOrderConfigTableMap::OM_CLASS;
+        return $withPrefix ? StockOnOrderDecreaseOnCreationTableMap::CLASS_DEFAULT : StockOnOrderDecreaseOnCreationTableMap::OM_CLASS;
     }
 
     /**
@@ -226,21 +219,21 @@ class StockOnOrderConfigTableMap extends TableMap
      *
      * @throws PropelException Any exceptions caught during processing will be
      *         rethrown wrapped into a PropelException.
-     * @return array (StockOnOrderConfig object, last column rank)
+     * @return array (StockOnOrderDecreaseOnCreation object, last column rank)
      */
     public static function populateObject($row, $offset = 0, $indexType = TableMap::TYPE_NUM)
     {
-        $key = StockOnOrderConfigTableMap::getPrimaryKeyHashFromRow($row, $offset, $indexType);
-        if (null !== ($obj = StockOnOrderConfigTableMap::getInstanceFromPool($key))) {
+        $key = StockOnOrderDecreaseOnCreationTableMap::getPrimaryKeyHashFromRow($row, $offset, $indexType);
+        if (null !== ($obj = StockOnOrderDecreaseOnCreationTableMap::getInstanceFromPool($key))) {
             // We no longer rehydrate the object, since this can cause data loss.
             // See http://www.propelorm.org/ticket/509
             // $obj->hydrate($row, $offset, true); // rehydrate
-            $col = $offset + StockOnOrderConfigTableMap::NUM_HYDRATE_COLUMNS;
+            $col = $offset + StockOnOrderDecreaseOnCreationTableMap::NUM_HYDRATE_COLUMNS;
         } else {
-            $cls = StockOnOrderConfigTableMap::OM_CLASS;
+            $cls = StockOnOrderDecreaseOnCreationTableMap::OM_CLASS;
             $obj = new $cls();
             $col = $obj->hydrate($row, $offset, false, $indexType);
-            StockOnOrderConfigTableMap::addInstanceToPool($obj, $key);
+            StockOnOrderDecreaseOnCreationTableMap::addInstanceToPool($obj, $key);
         }
 
         return array($obj, $col);
@@ -263,8 +256,8 @@ class StockOnOrderConfigTableMap extends TableMap
         $cls = static::getOMClass(false);
         // populate the object(s)
         while ($row = $dataFetcher->fetch()) {
-            $key = StockOnOrderConfigTableMap::getPrimaryKeyHashFromRow($row, 0, $dataFetcher->getIndexType());
-            if (null !== ($obj = StockOnOrderConfigTableMap::getInstanceFromPool($key))) {
+            $key = StockOnOrderDecreaseOnCreationTableMap::getPrimaryKeyHashFromRow($row, 0, $dataFetcher->getIndexType());
+            if (null !== ($obj = StockOnOrderDecreaseOnCreationTableMap::getInstanceFromPool($key))) {
                 // We no longer rehydrate the object, since this can cause data loss.
                 // See http://www.propelorm.org/ticket/509
                 // $obj->hydrate($row, 0, true); // rehydrate
@@ -273,7 +266,7 @@ class StockOnOrderConfigTableMap extends TableMap
                 $obj = new $cls();
                 $obj->hydrate($row);
                 $results[] = $obj;
-                StockOnOrderConfigTableMap::addInstanceToPool($obj, $key);
+                StockOnOrderDecreaseOnCreationTableMap::addInstanceToPool($obj, $key);
             } // if key exists
         }
 
@@ -294,15 +287,13 @@ class StockOnOrderConfigTableMap extends TableMap
     public static function addSelectColumns(Criteria $criteria, $alias = null)
     {
         if (null === $alias) {
-            $criteria->addSelectColumn(StockOnOrderConfigTableMap::ID);
-            $criteria->addSelectColumn(StockOnOrderConfigTableMap::MODULE_ID);
-            $criteria->addSelectColumn(StockOnOrderConfigTableMap::STATUS_ID);
-            $criteria->addSelectColumn(StockOnOrderConfigTableMap::BEHAVIOR);
+            $criteria->addSelectColumn(StockOnOrderDecreaseOnCreationTableMap::ID);
+            $criteria->addSelectColumn(StockOnOrderDecreaseOnCreationTableMap::MODULE_ID);
+            $criteria->addSelectColumn(StockOnOrderDecreaseOnCreationTableMap::DECREASE_ON_ORDER_CREATION);
         } else {
             $criteria->addSelectColumn($alias . '.ID');
             $criteria->addSelectColumn($alias . '.MODULE_ID');
-            $criteria->addSelectColumn($alias . '.STATUS_ID');
-            $criteria->addSelectColumn($alias . '.BEHAVIOR');
+            $criteria->addSelectColumn($alias . '.DECREASE_ON_ORDER_CREATION');
         }
     }
 
@@ -315,7 +306,7 @@ class StockOnOrderConfigTableMap extends TableMap
      */
     public static function getTableMap()
     {
-        return Propel::getServiceContainer()->getDatabaseMap(StockOnOrderConfigTableMap::DATABASE_NAME)->getTable(StockOnOrderConfigTableMap::TABLE_NAME);
+        return Propel::getServiceContainer()->getDatabaseMap(StockOnOrderDecreaseOnCreationTableMap::DATABASE_NAME)->getTable(StockOnOrderDecreaseOnCreationTableMap::TABLE_NAME);
     }
 
     /**
@@ -323,16 +314,16 @@ class StockOnOrderConfigTableMap extends TableMap
      */
     public static function buildTableMap()
     {
-      $dbMap = Propel::getServiceContainer()->getDatabaseMap(StockOnOrderConfigTableMap::DATABASE_NAME);
-      if (!$dbMap->hasTable(StockOnOrderConfigTableMap::TABLE_NAME)) {
-        $dbMap->addTableObject(new StockOnOrderConfigTableMap());
+      $dbMap = Propel::getServiceContainer()->getDatabaseMap(StockOnOrderDecreaseOnCreationTableMap::DATABASE_NAME);
+      if (!$dbMap->hasTable(StockOnOrderDecreaseOnCreationTableMap::TABLE_NAME)) {
+        $dbMap->addTableObject(new StockOnOrderDecreaseOnCreationTableMap());
       }
     }
 
     /**
-     * Performs a DELETE on the database, given a StockOnOrderConfig or Criteria object OR a primary key value.
+     * Performs a DELETE on the database, given a StockOnOrderDecreaseOnCreation or Criteria object OR a primary key value.
      *
-     * @param mixed               $values Criteria or StockOnOrderConfig object or primary key or array of primary keys
+     * @param mixed               $values Criteria or StockOnOrderDecreaseOnCreation object or primary key or array of primary keys
      *              which is used to create the DELETE statement
      * @param ConnectionInterface $con the connection to use
      * @return int The number of affected rows (if supported by underlying database driver).  This includes CASCADE-related rows
@@ -343,25 +334,25 @@ class StockOnOrderConfigTableMap extends TableMap
      public static function doDelete($values, ConnectionInterface $con = null)
      {
         if (null === $con) {
-            $con = Propel::getServiceContainer()->getWriteConnection(StockOnOrderConfigTableMap::DATABASE_NAME);
+            $con = Propel::getServiceContainer()->getWriteConnection(StockOnOrderDecreaseOnCreationTableMap::DATABASE_NAME);
         }
 
         if ($values instanceof Criteria) {
             // rename for clarity
             $criteria = $values;
-        } elseif ($values instanceof \StockOnOrder\Model\StockOnOrderConfig) { // it's a model object
+        } elseif ($values instanceof \StockOnOrder\Model\StockOnOrderDecreaseOnCreation) { // it's a model object
             // create criteria based on pk values
             $criteria = $values->buildPkeyCriteria();
         } else { // it's a primary key, or an array of pks
-            $criteria = new Criteria(StockOnOrderConfigTableMap::DATABASE_NAME);
-            $criteria->add(StockOnOrderConfigTableMap::ID, (array) $values, Criteria::IN);
+            $criteria = new Criteria(StockOnOrderDecreaseOnCreationTableMap::DATABASE_NAME);
+            $criteria->add(StockOnOrderDecreaseOnCreationTableMap::ID, (array) $values, Criteria::IN);
         }
 
-        $query = StockOnOrderConfigQuery::create()->mergeWith($criteria);
+        $query = StockOnOrderDecreaseOnCreationQuery::create()->mergeWith($criteria);
 
-        if ($values instanceof Criteria) { StockOnOrderConfigTableMap::clearInstancePool();
+        if ($values instanceof Criteria) { StockOnOrderDecreaseOnCreationTableMap::clearInstancePool();
         } elseif (!is_object($values)) { // it's a primary key, or an array of pks
-            foreach ((array) $values as $singleval) { StockOnOrderConfigTableMap::removeInstanceFromPool($singleval);
+            foreach ((array) $values as $singleval) { StockOnOrderDecreaseOnCreationTableMap::removeInstanceFromPool($singleval);
             }
         }
 
@@ -369,20 +360,20 @@ class StockOnOrderConfigTableMap extends TableMap
     }
 
     /**
-     * Deletes all rows from the stock_on_order_config table.
+     * Deletes all rows from the stock_on_order_decrease_on_creation table.
      *
      * @param ConnectionInterface $con the connection to use
      * @return int The number of affected rows (if supported by underlying database driver).
      */
     public static function doDeleteAll(ConnectionInterface $con = null)
     {
-        return StockOnOrderConfigQuery::create()->doDeleteAll($con);
+        return StockOnOrderDecreaseOnCreationQuery::create()->doDeleteAll($con);
     }
 
     /**
-     * Performs an INSERT on the database, given a StockOnOrderConfig or Criteria object.
+     * Performs an INSERT on the database, given a StockOnOrderDecreaseOnCreation or Criteria object.
      *
-     * @param mixed               $criteria Criteria or StockOnOrderConfig object containing data that is used to create the INSERT statement.
+     * @param mixed               $criteria Criteria or StockOnOrderDecreaseOnCreation object containing data that is used to create the INSERT statement.
      * @param ConnectionInterface $con the ConnectionInterface connection to use
      * @return mixed           The new primary key.
      * @throws PropelException Any exceptions caught during processing will be
@@ -391,22 +382,22 @@ class StockOnOrderConfigTableMap extends TableMap
     public static function doInsert($criteria, ConnectionInterface $con = null)
     {
         if (null === $con) {
-            $con = Propel::getServiceContainer()->getWriteConnection(StockOnOrderConfigTableMap::DATABASE_NAME);
+            $con = Propel::getServiceContainer()->getWriteConnection(StockOnOrderDecreaseOnCreationTableMap::DATABASE_NAME);
         }
 
         if ($criteria instanceof Criteria) {
             $criteria = clone $criteria; // rename for clarity
         } else {
-            $criteria = $criteria->buildCriteria(); // build Criteria from StockOnOrderConfig object
+            $criteria = $criteria->buildCriteria(); // build Criteria from StockOnOrderDecreaseOnCreation object
         }
 
-        if ($criteria->containsKey(StockOnOrderConfigTableMap::ID) && $criteria->keyContainsValue(StockOnOrderConfigTableMap::ID) ) {
-            throw new PropelException('Cannot insert a value for auto-increment primary key ('.StockOnOrderConfigTableMap::ID.')');
+        if ($criteria->containsKey(StockOnOrderDecreaseOnCreationTableMap::ID) && $criteria->keyContainsValue(StockOnOrderDecreaseOnCreationTableMap::ID) ) {
+            throw new PropelException('Cannot insert a value for auto-increment primary key ('.StockOnOrderDecreaseOnCreationTableMap::ID.')');
         }
 
 
         // Set the correct dbName
-        $query = StockOnOrderConfigQuery::create()->mergeWith($criteria);
+        $query = StockOnOrderDecreaseOnCreationQuery::create()->mergeWith($criteria);
 
         try {
             // use transaction because $criteria could contain info
@@ -422,7 +413,7 @@ class StockOnOrderConfigTableMap extends TableMap
         return $pk;
     }
 
-} // StockOnOrderConfigTableMap
+} // StockOnOrderDecreaseOnCreationTableMap
 // This is the static code needed to register the TableMap for this table with the main Propel class.
 //
-StockOnOrderConfigTableMap::buildTableMap();
+StockOnOrderDecreaseOnCreationTableMap::buildTableMap();

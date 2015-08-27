@@ -15,7 +15,6 @@ CREATE TABLE `stock_on_order_config`
     `module_id` INTEGER NOT NULL,
     `status_id` INTEGER NOT NULL,
     `behavior` VARCHAR(255) DEFAULT 'default',
-    `decrease_on_order_creation` TINYINT(1) NOT NULL,
     PRIMARY KEY (`id`),
     UNIQUE INDEX `module_status_id` (`module_id`, `status_id`),
     INDEX `FI_status_id_stock_on_order_config` (`status_id`),
@@ -26,6 +25,25 @@ CREATE TABLE `stock_on_order_config`
     CONSTRAINT `fk_status_id_stock_on_order_config`
         FOREIGN KEY (`status_id`)
         REFERENCES `order_status` (`id`)
+        ON DELETE CASCADE
+) ENGINE=InnoDB;
+
+-- ---------------------------------------------------------------------
+-- stock_on_order_decrease_on_creation
+-- ---------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `stock_on_order_decrease_on_creation`;
+
+CREATE TABLE `stock_on_order_decrease_on_creation`
+(
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `module_id` INTEGER NOT NULL,
+    `decrease_on_order_creation` TINYINT(1) NOT NULL,
+    PRIMARY KEY (`id`),
+    INDEX `FI_module_id_stock_on_order_decrease_on_creation` (`module_id`),
+    CONSTRAINT `fk_module_id_stock_on_order_decrease_on_creation`
+        FOREIGN KEY (`module_id`)
+        REFERENCES `module` (`id`)
         ON DELETE CASCADE
 ) ENGINE=InnoDB;
 

@@ -20,7 +20,6 @@ class StockOnOrderConfigEvent extends ActionEvent
     protected $moduleId;
     protected $statusId;
     protected $behavior;
-    protected $decreaseOnOrderCreation;
     protected $stockOnOrderConfig;
 
     public function getId()
@@ -67,18 +66,6 @@ class StockOnOrderConfigEvent extends ActionEvent
     public function setBehavior($behavior)
     {
         $this->behavior = $behavior;
-
-        return $this;
-    }
-
-    public function getDecreaseOnOrderCreation()
-    {
-        return $this->decreaseOnOrderCreation;
-    }
-
-    public function setDecreaseOnOrderCreation($decreaseOnOrderCreation)
-    {
-        $this->decreaseOnOrderCreation = $decreaseOnOrderCreation;
 
         return $this;
     }

@@ -10,27 +10,27 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Thelia\Controller\Admin\AbstractCrudController;
 use Thelia\Core\Security\Resource\AdminResources;
 use Thelia\Tools\URL;
-use StockOnOrder\Event\StockOnOrderConfigEvent;
-use StockOnOrder\Event\StockOnOrderConfigEvents;
-use StockOnOrder\Model\StockOnOrderConfigQuery;
+use StockOnOrder\Event\StockOnOrderDecreaseOnCreationEvent;
+use StockOnOrder\Event\StockOnOrderDecreaseOnCreationEvents;
+use StockOnOrder\Model\StockOnOrderDecreaseOnCreationQuery;
 
 /**
- * Class StockOnOrderConfigController
+ * Class StockOnOrderDecreaseOnCreationController
  * @package StockOnOrder\Controller\Base
  * @author TheliaStudio
  */
-class StockOnOrderConfigController extends AbstractCrudController
+class StockOnOrderDecreaseOnCreationController extends AbstractCrudController
 {
     public function __construct()
     {
         parent::__construct(
-            "stock_on_order_config",
+            "stock_on_order_decrease_on_creation",
             "id",
             "order",
             AdminResources::MODULE,
-            StockOnOrderConfigEvents::CREATE,
-            StockOnOrderConfigEvents::UPDATE,
-            StockOnOrderConfigEvents::DELETE,
+            StockOnOrderDecreaseOnCreationEvents::CREATE,
+            StockOnOrderDecreaseOnCreationEvents::UPDATE,
+            StockOnOrderDecreaseOnCreationEvents::DELETE,
             null,
             null,
             "StockOnOrder"
@@ -42,7 +42,7 @@ class StockOnOrderConfigController extends AbstractCrudController
      */
     protected function getCreationForm()
     {
-        return $this->createForm("stock_on_order_config.create");
+        return $this->createForm("stock_on_order_decrease_on_creation.create");
     }
 
     /**
@@ -54,7 +54,7 @@ class StockOnOrderConfigController extends AbstractCrudController
             $data = array();
         }
 
-        return $this->createForm("stock_on_order_config.update", "form", $data);
+        return $this->createForm("stock_on_order_decrease_on_creation.update", "form", $data);
     }
 
     /**
@@ -67,8 +67,7 @@ class StockOnOrderConfigController extends AbstractCrudController
         $data = array(
             "id" => $object->getId(),
             "module_id" => $object->getModuleId(),
-            "status_id" => $object->getStatusId(),
-            "behavior" => $object->getBehavior(),
+            "decrease_on_order_creation" => (bool) $object->getDecreaseOnOrderCreation(),
         );
 
         return $this->getUpdateForm($data);
@@ -82,11 +81,10 @@ class StockOnOrderConfigController extends AbstractCrudController
      */
     protected function getCreationEvent($formData)
     {
-        $event = new StockOnOrderConfigEvent();
+        $event = new StockOnOrderDecreaseOnCreationEvent();
 
         $event->setModuleId($formData["module_id"]);
-        $event->setStatusId($formData["status_id"]);
-        $event->setBehavior($formData["behavior"]);
+        $event->setDecreaseOnOrderCreation($formData["decrease_on_order_creation"]);
 
         return $event;
     }
@@ -99,12 +97,11 @@ class StockOnOrderConfigController extends AbstractCrudController
      */
     protected function getUpdateEvent($formData)
     {
-        $event = new StockOnOrderConfigEvent();
+        $event = new StockOnOrderDecreaseOnCreationEvent();
 
         $event->setId($formData["id"]);
         $event->setModuleId($formData["module_id"]);
-        $event->setStatusId($formData["status_id"]);
-        $event->setBehavior($formData["behavior"]);
+        $event->setDecreaseOnOrderCreation($formData["decrease_on_order_creation"]);
 
         return $event;
     }
@@ -114,9 +111,9 @@ class StockOnOrderConfigController extends AbstractCrudController
      */
     protected function getDeleteEvent()
     {
-        $event = new StockOnOrderConfigEvent();
+        $event = new StockOnOrderDecreaseOnCreationEvent();
 
-        $event->setId($this->getRequest()->request->get("stock_on_order_config_id"));
+        $event->setId($this->getRequest()->request->get("stock_on_order_decrease_on_creation_id"));
 
         return $event;
     }
@@ -138,7 +135,7 @@ class StockOnOrderConfigController extends AbstractCrudController
      */
     protected function getObjectFromEvent($event)
     {
-        return $event->getStockOnOrderConfig();
+        return $event->getStockOnOrderDecreaseOnCreation();
     }
 
     /**
@@ -146,8 +143,8 @@ class StockOnOrderConfigController extends AbstractCrudController
      */
     protected function getExistingObject()
     {
-        return StockOnOrderConfigQuery::create()
-            ->findPk($this->getRequest()->query->get("stock_on_order_config_id"))
+        return StockOnOrderDecreaseOnCreationQuery::create()
+            ->findPk($this->getRequest()->query->get("stock_on_order_decrease_on_creation_id"))
         ;
     }
 
@@ -182,7 +179,7 @@ class StockOnOrderConfigController extends AbstractCrudController
             ->assign("order", $currentOrder)
         ;
 
-        return $this->render("stock-on-order-configs");
+        return $this->render("stock-on-order-decrease-on-creations");
     }
 
     /**
@@ -192,12 +189,12 @@ class StockOnOrderConfigController extends AbstractCrudController
     {
         $this->getParserContext()
             ->set(
-                "stock_on_order_config_id",
-                $this->getRequest()->query->get("stock_on_order_config_id")
+                "stock_on_order_decrease_on_creation_id",
+                $this->getRequest()->query->get("stock_on_order_decrease_on_creation_id")
             )
         ;
 
-        return $this->render("stock-on-order-config-edit");
+        return $this->render("stock-on-order-decrease-on-creation-edit");
     }
 
     /**
@@ -206,13 +203,13 @@ class StockOnOrderConfigController extends AbstractCrudController
      */
     protected function redirectToEditionTemplate()
     {
-        $id = $this->getRequest()->query->get("stock_on_order_config_id");
+        $id = $this->getRequest()->query->get("stock_on_order_decrease_on_creation_id");
 
         return new RedirectResponse(
             URL::getInstance()->absoluteUrl(
-                "/admin/module/StockOnOrder/stock_on_order_config/edit",
+                "/admin/module/StockOnOrder/stock_on_order_decrease_on_creation/edit",
                 [
-                    "stock_on_order_config_id" => $id,
+                    "stock_on_order_decrease_on_creation_id" => $id,
                 ]
             )
         );
@@ -225,7 +222,7 @@ class StockOnOrderConfigController extends AbstractCrudController
     protected function redirectToListTemplate()
     {
         return new RedirectResponse(
-            URL::getInstance()->absoluteUrl("/admin/module/StockOnOrder/stock_on_order_config")
+            URL::getInstance()->absoluteUrl("/admin/module/StockOnOrder/stock_on_order_decrease_on_creation")
         );
     }
 }

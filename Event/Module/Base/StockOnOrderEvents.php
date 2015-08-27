@@ -16,6 +16,9 @@ class StockOnOrderEvents
     const STOCK_ON_ORDER_CONFIG_CREATE = "action.stock_on_order_config.create";
     const STOCK_ON_ORDER_CONFIG_UPDATE = "action.stock_on_order_config.update";
     const STOCK_ON_ORDER_CONFIG_DELETE = "action.stock_on_order_config.delete";
+    const STOCK_ON_ORDER_DECREASE_ON_CREATION_CREATE = "action.stock_on_order_decrease_on_creation.create";
+    const STOCK_ON_ORDER_DECREASE_ON_CREATION_UPDATE = "action.stock_on_order_decrease_on_creation.update";
+    const STOCK_ON_ORDER_DECREASE_ON_CREATION_DELETE = "action.stock_on_order_decrease_on_creation.delete";
     const STOCK_ON_ORDER_CREATE = "action.stock_on_order.create";
     const STOCK_ON_ORDER_UPDATE = "action.stock_on_order.update";
     const STOCK_ON_ORDER_DELETE = "action.stock_on_order.delete";

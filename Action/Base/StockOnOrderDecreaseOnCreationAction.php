@@ -6,11 +6,11 @@
 
 namespace StockOnOrder\Action\Base;
 
-use StockOnOrder\Model\Map\StockOnOrderConfigTableMap;
-use StockOnOrder\Event\StockOnOrderConfigEvent;
-use StockOnOrder\Event\StockOnOrderConfigEvents;
-use StockOnOrder\Model\StockOnOrderConfigQuery;
-use StockOnOrder\Model\StockOnOrderConfig;
+use StockOnOrder\Model\Map\StockOnOrderDecreaseOnCreationTableMap;
+use StockOnOrder\Event\StockOnOrderDecreaseOnCreationEvent;
+use StockOnOrder\Event\StockOnOrderDecreaseOnCreationEvents;
+use StockOnOrder\Model\StockOnOrderDecreaseOnCreationQuery;
+use StockOnOrder\Model\StockOnOrderDecreaseOnCreation;
 use Thelia\Action\BaseAction;
 use Thelia\Core\Event\ToggleVisibilityEvent;
 use Thelia\Core\Event\UpdatePositionEvent;
@@ -20,32 +20,32 @@ use Thelia\Core\Event\TheliaEvents;
 use \Thelia\Core\Event\TheliaFormEvent;
 
 /**
- * Class StockOnOrderConfigAction
+ * Class StockOnOrderDecreaseOnCreationAction
  * @package StockOnOrder\Action
  * @author TheliaStudio
  */
-class StockOnOrderConfigAction extends BaseAction implements EventSubscriberInterface
+class StockOnOrderDecreaseOnCreationAction extends BaseAction implements EventSubscriberInterface
 {
-    public function create(StockOnOrderConfigEvent $event)
+    public function create(StockOnOrderDecreaseOnCreationEvent $event)
     {
-        $this->createOrUpdate($event, new StockOnOrderConfig());
+        $this->createOrUpdate($event, new StockOnOrderDecreaseOnCreation());
     }
 
-    public function update(StockOnOrderConfigEvent $event)
+    public function update(StockOnOrderDecreaseOnCreationEvent $event)
     {
-        $model = $this->getStockOnOrderConfig($event);
+        $model = $this->getStockOnOrderDecreaseOnCreation($event);
 
         $this->createOrUpdate($event, $model);
     }
 
-    public function delete(StockOnOrderConfigEvent $event)
+    public function delete(StockOnOrderDecreaseOnCreationEvent $event)
     {
-        $this->getStockOnOrderConfig($event)->delete();
+        $this->getStockOnOrderDecreaseOnCreation($event)->delete();
     }
 
-    protected function createOrUpdate(StockOnOrderConfigEvent $event, StockOnOrderConfig $model)
+    protected function createOrUpdate(StockOnOrderDecreaseOnCreationEvent $event, StockOnOrderDecreaseOnCreation $model)
     {
-        $con = Propel::getConnection(StockOnOrderConfigTableMap::DATABASE_NAME);
+        $con = Propel::getConnection(StockOnOrderDecreaseOnCreationTableMap::DATABASE_NAME);
         $con->beginTransaction();
 
         try {
@@ -57,12 +57,8 @@ class StockOnOrderConfigAction extends BaseAction implements EventSubscriberInte
                 $model->setModuleId($moduleId);
             }
 
-            if (null !== $statusId = $event->getStatusId()) {
-                $model->setStatusId($statusId);
-            }
-
-            if (null !== $behavior = $event->getBehavior()) {
-                $model->setBehavior($behavior);
+            if (null !== $decreaseOnOrderCreation = $event->getDecreaseOnOrderCreation()) {
+                $model->setDecreaseOnOrderCreation($decreaseOnOrderCreation);
             }
 
             $model->save($con);
@@ -74,16 +70,16 @@ class StockOnOrderConfigAction extends BaseAction implements EventSubscriberInte
             throw $e;
         }
 
-        $event->setStockOnOrderConfig($model);
+        $event->setStockOnOrderDecreaseOnCreation($model);
     }
 
-    protected function getStockOnOrderConfig(StockOnOrderConfigEvent $event)
+    protected function getStockOnOrderDecreaseOnCreation(StockOnOrderDecreaseOnCreationEvent $event)
     {
-        $model = StockOnOrderConfigQuery::create()->findPk($event->getId());
+        $model = StockOnOrderDecreaseOnCreationQuery::create()->findPk($event->getId());
 
         if (null === $model) {
             throw new \RuntimeException(sprintf(
-                "The 'stock_on_order_config' id '%d' doesn't exist",
+                "The 'stock_on_order_decrease_on_creation' id '%d' doesn't exist",
                 $event->getId()
             ));
         }
@@ -130,13 +126,13 @@ class StockOnOrderConfigAction extends BaseAction implements EventSubscriberInte
     public static function getSubscribedEvents()
     {
         return array(
-            StockOnOrderConfigEvents::CREATE => array("create", 128),
-            StockOnOrderConfigEvents::UPDATE => array("update", 128),
-            StockOnOrderConfigEvents::DELETE => array("delete", 128),
-            TheliaEvents::FORM_BEFORE_BUILD . ".stock_on_order_config_create" => array("beforeCreateFormBuild", 128),
-            TheliaEvents::FORM_BEFORE_BUILD . ".stock_on_order_config_update" => array("beforeUpdateFormBuild", 128),
-            TheliaEvents::FORM_AFTER_BUILD . ".stock_on_order_config_create" => array("afterCreateFormBuild", 128),
-            TheliaEvents::FORM_AFTER_BUILD . ".stock_on_order_config_update" => array("afterUpdateFormBuild", 128),
+            StockOnOrderDecreaseOnCreationEvents::CREATE => array("create", 128),
+            StockOnOrderDecreaseOnCreationEvents::UPDATE => array("update", 128),
+            StockOnOrderDecreaseOnCreationEvents::DELETE => array("delete", 128),
+            TheliaEvents::FORM_BEFORE_BUILD . ".stock_on_order_decrease_on_creation_create" => array("beforeCreateFormBuild", 128),
+            TheliaEvents::FORM_BEFORE_BUILD . ".stock_on_order_decrease_on_creation_update" => array("beforeUpdateFormBuild", 128),
+            TheliaEvents::FORM_AFTER_BUILD . ".stock_on_order_decrease_on_creation_create" => array("afterCreateFormBuild", 128),
+            TheliaEvents::FORM_AFTER_BUILD . ".stock_on_order_decrease_on_creation_update" => array("afterUpdateFormBuild", 128),
         );
     }
 }

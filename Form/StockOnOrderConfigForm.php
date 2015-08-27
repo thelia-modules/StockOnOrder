@@ -36,13 +36,6 @@ class StockOnOrderConfigForm extends BaseForm
                     ],
                 ]
             )
-            ->add(
-                'decrease_on_order_creation', 'checkbox',
-                [
-                    'constraints' => [new Constraints\NotBlank()],
-                    'label' => $this->translator->trans('Decrease stock on order creation', [], MESSAGE_DOMAIN)
-                ]
-            )
         ;
     }
 

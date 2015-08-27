@@ -1,0 +1,24 @@
+{javascripts file='assets/js/bootstrap-switch/bootstrap-switch.js'}
+    <script src="{$asset_url}"></script>
+{/javascripts}
+
+<script>
+    $(".decrease-on-creation").on('switch-change', function(event, data) {
+        var switchDiv = $(this);
+        $.ajax({
+            method : 'POST',
+            url : $(this).parents('form').attr('action'),
+            data : $(this).parents('form').serialize()
+        })
+        .fail(function() {
+            if (data['value']) {
+                switchDiv.children('div.switch-on').removeClass('switch-on');
+                switchDiv.children('div').addClass('switch-off');
+            } else if (!data['value']) {
+                switchDiv.children('div.switch-off').removeClass('switch-off');
+                switchDiv.children('div').addClass('switch-on');
+            }
+            alert("{intl l='Failed to update behavior' d='stockonorder'}");
+        });
+    });
+</script>

@@ -23,6 +23,7 @@
                         <form action="{url path="/admin/module/StockOnOrder/edit/$moduleId"}" {form_enctype form=$form} method="post">
 
                             {form_hidden_fields form=$form}
+                            {render_form_field form=$form field="success_url" value={url path="/admin/module/StockOnOrder/viewModule/$moduleId"}}
 
                             <table class="table table-striped table-condensed" id="stock_on_order_config-table">
                                 <caption class="clearfix">
@@ -104,15 +105,6 @@
                                     {/loop}
                                 </tbody>
                             </table>
-
-                            <div>
-                                {form_field form=$form field='decrease_on_order_creation'}
-                                <div class="make-switch switch-small" data-on="success" data-off="danger" data-on-label="<i class='glyphicon glyphicon-ok'></i>" data-off-label="<i class='glyphicon glyphicon-remove'></i>" >
-                                    <input type="checkbox" >
-                                </div>
-                                {/form_field}
-                            </div>
-
                         </form>
                     {/form}
                 </div>

@@ -11,13 +11,13 @@ use Thelia\Form\BaseForm;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
 /**
- * Class StockOnOrderConfigCreateForm
+ * Class StockOnOrderDecreaseOnCreationCreateForm
  * @package StockOnOrder\Form\Base
  * @author TheliaStudio
  */
-class StockOnOrderConfigCreateForm extends BaseForm
+class StockOnOrderDecreaseOnCreationCreateForm extends BaseForm
 {
-    const FORM_NAME = "stock_on_order_config_create";
+    const FORM_NAME = "stock_on_order_decrease_on_creation_create";
 
     public function buildForm()
     {
@@ -25,8 +25,7 @@ class StockOnOrderConfigCreateForm extends BaseForm
         $fieldsIdKeys = $this->getFieldsIdKeys();
 
         $this->addModuleIdField($translationKeys, $fieldsIdKeys);
-        $this->addStatusIdField($translationKeys, $fieldsIdKeys);
-        $this->addBehaviorField($translationKeys, $fieldsIdKeys);
+        $this->addDecreaseOnOrderCreationField($translationKeys, $fieldsIdKeys);
     }
 
     protected function addModuleIdField(array $translationKeys, array $fieldsIdKeys)
@@ -43,25 +42,11 @@ class StockOnOrderConfigCreateForm extends BaseForm
         ));
     }
 
-    protected function addStatusIdField(array $translationKeys, array $fieldsIdKeys)
+    protected function addDecreaseOnOrderCreationField(array $translationKeys, array $fieldsIdKeys)
     {
-        $this->formBuilder->add("status_id", "integer", array(
-            "label" => $this->translator->trans($this->readKey("status_id", $translationKeys), [], StockOnOrder::MESSAGE_DOMAIN),
-            "label_attr" => ["for" => $this->readKey("status_id", $fieldsIdKeys)],
-            "required" => true,
-            "constraints" => array(
-                new NotBlank(),
-            ),
-            "attr" => array(
-            )
-        ));
-    }
-
-    protected function addBehaviorField(array $translationKeys, array $fieldsIdKeys)
-    {
-        $this->formBuilder->add("behavior", "text", array(
-            "label" => $this->translator->trans($this->readKey("behavior", $translationKeys), [], StockOnOrder::MESSAGE_DOMAIN),
-            "label_attr" => ["for" => $this->readKey("behavior", $fieldsIdKeys)],
+        $this->formBuilder->add("decrease_on_order_creation", "checkbox", array(
+            "label" => $this->translator->trans($this->readKey("decrease_on_order_creation", $translationKeys), [], StockOnOrder::MESSAGE_DOMAIN),
+            "label_attr" => ["for" => $this->readKey("decrease_on_order_creation", $fieldsIdKeys)],
             "required" => false,
             "constraints" => array(
             ),
@@ -92,9 +77,8 @@ class StockOnOrderConfigCreateForm extends BaseForm
     public function getFieldsIdKeys()
     {
         return array(
-            "module_id" => "stock_on_order_config_module_id",
-            "status_id" => "stock_on_order_config_status_id",
-            "behavior" => "stock_on_order_config_behavior",
+            "module_id" => "stock_on_order_decrease_on_creation_module_id",
+            "decrease_on_order_creation" => "stock_on_order_decrease_on_creation_decrease_on_order_creation",
         );
     }
 }

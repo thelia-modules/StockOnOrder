@@ -27,13 +27,11 @@ use Thelia\Model\OrderStatus;
  * @method     ChildStockOnOrderConfigQuery orderByModuleId($order = Criteria::ASC) Order by the module_id column
  * @method     ChildStockOnOrderConfigQuery orderByStatusId($order = Criteria::ASC) Order by the status_id column
  * @method     ChildStockOnOrderConfigQuery orderByBehavior($order = Criteria::ASC) Order by the behavior column
- * @method     ChildStockOnOrderConfigQuery orderByDecreaseOnOrderCreation($order = Criteria::ASC) Order by the decrease_on_order_creation column
  *
  * @method     ChildStockOnOrderConfigQuery groupById() Group by the id column
  * @method     ChildStockOnOrderConfigQuery groupByModuleId() Group by the module_id column
  * @method     ChildStockOnOrderConfigQuery groupByStatusId() Group by the status_id column
  * @method     ChildStockOnOrderConfigQuery groupByBehavior() Group by the behavior column
- * @method     ChildStockOnOrderConfigQuery groupByDecreaseOnOrderCreation() Group by the decrease_on_order_creation column
  *
  * @method     ChildStockOnOrderConfigQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method     ChildStockOnOrderConfigQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
@@ -54,13 +52,11 @@ use Thelia\Model\OrderStatus;
  * @method     ChildStockOnOrderConfig findOneByModuleId(int $module_id) Return the first ChildStockOnOrderConfig filtered by the module_id column
  * @method     ChildStockOnOrderConfig findOneByStatusId(int $status_id) Return the first ChildStockOnOrderConfig filtered by the status_id column
  * @method     ChildStockOnOrderConfig findOneByBehavior(string $behavior) Return the first ChildStockOnOrderConfig filtered by the behavior column
- * @method     ChildStockOnOrderConfig findOneByDecreaseOnOrderCreation(boolean $decrease_on_order_creation) Return the first ChildStockOnOrderConfig filtered by the decrease_on_order_creation column
  *
  * @method     array findById(int $id) Return ChildStockOnOrderConfig objects filtered by the id column
  * @method     array findByModuleId(int $module_id) Return ChildStockOnOrderConfig objects filtered by the module_id column
  * @method     array findByStatusId(int $status_id) Return ChildStockOnOrderConfig objects filtered by the status_id column
  * @method     array findByBehavior(string $behavior) Return ChildStockOnOrderConfig objects filtered by the behavior column
- * @method     array findByDecreaseOnOrderCreation(boolean $decrease_on_order_creation) Return ChildStockOnOrderConfig objects filtered by the decrease_on_order_creation column
  *
  */
 abstract class StockOnOrderConfigQuery extends ModelCriteria
@@ -149,7 +145,7 @@ abstract class StockOnOrderConfigQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT ID, MODULE_ID, STATUS_ID, BEHAVIOR, DECREASE_ON_ORDER_CREATION FROM stock_on_order_config WHERE ID = :p0';
+        $sql = 'SELECT ID, MODULE_ID, STATUS_ID, BEHAVIOR FROM stock_on_order_config WHERE ID = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -392,33 +388,6 @@ abstract class StockOnOrderConfigQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(StockOnOrderConfigTableMap::BEHAVIOR, $behavior, $comparison);
-    }
-
-    /**
-     * Filter the query on the decrease_on_order_creation column
-     *
-     * Example usage:
-     * <code>
-     * $query->filterByDecreaseOnOrderCreation(true); // WHERE decrease_on_order_creation = true
-     * $query->filterByDecreaseOnOrderCreation('yes'); // WHERE decrease_on_order_creation = true
-     * </code>
-     *
-     * @param     boolean|string $decreaseOnOrderCreation The value to use as filter.
-     *              Non-boolean arguments are converted using the following rules:
-     *                * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
-     *                * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
-     *              Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return ChildStockOnOrderConfigQuery The current query, for fluid interface
-     */
-    public function filterByDecreaseOnOrderCreation($decreaseOnOrderCreation = null, $comparison = null)
-    {
-        if (is_string($decreaseOnOrderCreation)) {
-            $decrease_on_order_creation = in_array(strtolower($decreaseOnOrderCreation), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
-        }
-
-        return $this->addUsingAlias(StockOnOrderConfigTableMap::DECREASE_ON_ORDER_CREATION, $decreaseOnOrderCreation, $comparison);
     }
 
     /**
