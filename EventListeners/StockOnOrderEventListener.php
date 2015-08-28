@@ -12,6 +12,7 @@ use Thelia\Core\Event\Order\OrderEvent;
 use Thelia\Core\Event\TheliaEvents;
 use Thelia\Exception\TheliaProcessException;
 use Thelia\Model\ConfigQuery;
+use Thelia\Model\ModuleQuery;
 use Thelia\Model\Order;
 use Thelia\Model\OrderProduct;
 use Thelia\Model\ProductSaleElements;
@@ -50,12 +51,19 @@ class StockOnOrderEventListener implements EventSubscriberInterface
      */
     public function decreaseOnCreation(OrderEvent $event)
     {
+        // Get if the module must decrease stock on creation
         $decreaseOnCreation = StockOnOrderDecreaseOnCreationQuery::create()
             ->filterByModuleId($event->getOrder()->getPaymentModuleId())
             ->select('DecreaseOnOrderCreation')
             ->findOne();
 
-        if ($decreaseOnCreation) {
+        // Get if the decrease on order creation is managed by the payment module
+        $paymentModule = ModuleQuery::create()->findPk($event->getOrder()->getPaymentModuleId());
+        /** @var \Thelia\Module\PaymentModuleInterface $paymentModuleInstance */
+        $paymentModuleInstance = $paymentModule->createInstance();
+        $isModuleManagingStock = $paymentModuleInstance->manageStockOnCreation();
+
+        if ($decreaseOnCreation && !$isModuleManagingStock) {
             // Get order's product list
             $orderProductList = $event->getOrder()->getOrderProducts();
 
@@ -78,6 +86,12 @@ class StockOnOrderEventListener implements EventSubscriberInterface
             }
 
             // Save that stock has been decreased
+            (new StockOnOrderModel())
+                ->setOrderId($event->getOrder()->getId())
+                ->setIsStockDecreased(true)
+                ->save();
+        } elseif ($isModuleManagingStock) {
+            // Save that stock has been decreased (by Thelia because the payment module manages it)
             (new StockOnOrderModel())
                 ->setOrderId($event->getOrder()->getId())
                 ->setIsStockDecreased(true)
@@ -135,15 +149,15 @@ class StockOnOrderEventListener implements EventSubscriberInterface
             ->findOne();
 
         // Get if the order's PSEs' stocks have already been decreased
-        $stockOnOrder = StockOnOrderQuery::create()
-            ->findOneByOrderId($order->getId());
-
-        // If quantities have to be changed
-        if (($behavior === 'decrease' && !$stockOnOrder->getIsStockDecreased()) ||
-            ($behavior === 'increase' && $stockOnOrder->getIsStockDecreased())) {
-            $this->actionOnQuantities($order, $behavior, $stockOnOrder);
-        } else {
-            $this->actionOnQuantities($order, 'do_nothing', $stockOnOrder);
+        if (null != $stockOnOrder = StockOnOrderQuery::create()->findOneByOrderId($order->getId())) {
+            // If quantities have to be changed
+            if (($behavior === 'decrease' && !$stockOnOrder->getIsStockDecreased()) ||
+                ($behavior === 'increase' && $stockOnOrder->getIsStockDecreased())
+            ) {
+                $this->actionOnQuantities($order, $behavior, $stockOnOrder);
+            } else {
+                $this->actionOnQuantities($order, 'do_nothing', $stockOnOrder);
+            }
         }
     }
 

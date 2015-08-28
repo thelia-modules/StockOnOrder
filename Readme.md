@@ -24,6 +24,7 @@ The payment module list appears:
 - the module tells you if the stock behavior when updating an order status is modified or is still the default Thelia behavior
 - you can choose if the stock has to be decreased at the creation of an order
 - you can click a module name or the corresponding "Edit" button to configure stock behavior when an order status is changed
+
 Editing a payment module behavior shows you the list of order status. For each status, you can say what has to be done on stocks when you set it to an order:
 - do nothing on the stock of products of the order
 - decrease stock
