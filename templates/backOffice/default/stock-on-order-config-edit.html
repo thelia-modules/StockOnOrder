@@ -27,7 +27,7 @@
 
                             <table class="table table-striped table-condensed" id="stock_on_order_config-table">
                                 <caption class="clearfix">
-                                    {intl l="Configure stock action when you change status on orders with payment module: " d='stockonorder'}
+                                    {intl l="Configure stock action when you change status on orders with payment module: " d='stockonorder.bo.default'}
                                     {loop type='module' name='current-modules' module_type='3' id=$moduleId}
                                         {$CODE}
                                     {/loop}
@@ -51,7 +51,7 @@
                                             order='id'
                                             reverse_order='id-reverse'
                                             path={url path='/admin/module/StockOnOrder/stock_on_order_config_edit' target='stock_on_order_config_edit-table'}
-                                            label="{intl l='ID' d='stockonorder'}"
+                                            label={intl l='ID' d='stockonorder.bo.default'}
                                             }
                                         </th>
                                         <th>
@@ -60,20 +60,20 @@
                                             order='module_id'
                                             reverse_order='module_id-reverse'
                                             path={url path='/admin/module/StockOnOrder/stock_on_order_config_edit' target='stock_on_order_config_edit-table'}
-                                            label="{intl l='Status' d='stockonorder'}"
+                                            label="{intl l='Status' d='stockonorder.bo.default'}"
                                             }
                                         </th>
                                         <th>
-                                            {intl l='Do nothing' d='stockonorder'}
+                                            {intl l='Do nothing' d='stockonorder.bo.default'}
                                         </th>
                                         <th>
-                                            {intl l='Decrease stock' d='stockonorder'}
+                                            {intl l='Decrease stock' d='stockonorder.bo.default'}
                                         </th>
                                         <th>
-                                            {intl l='Increase stock' d='stockonorder'}
+                                            {intl l='Increase stock' d='stockonorder.bo.default'}
                                         </th>
                                         <th>
-                                            {intl l='Thelia default behavior' d='stockonorder'}
+                                            {intl l='Thelia default behavior' d='stockonorder.bo.default'}
                                         </th>
                                     </tr>
                                 </thead>

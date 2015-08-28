@@ -11,7 +11,7 @@
         <div class="table-responsive">
             <table class="table table-striped table-condensed" id="stock_on_order_config-table">
                 <caption class="clearfix">
-                    {intl l="Select a payment module to configure" d='stockonorder'}
+                    {intl l="Select a payment module to configure" d='stockonorder.bo.default'}
                 </caption>
 
                 <thead>
@@ -22,7 +22,7 @@
                             order='module_id'
                             reverse_order='module_id-reverse'
                             path={url path='/admin/module/StockOnOrder/stock_on_order_config' target='stock_on_order_config-table'}
-                            label="{intl l='ID' d='stockonorder'}"
+                            label="{intl l='ID' d='stockonorder.bo.default'}"
                             }
                         </th>
                         <th>
@@ -31,7 +31,7 @@
                             order='module_id'
                             reverse_order='module_id-reverse'
                             path={url path='/admin/module/StockOnOrder/stock_on_order_config' target='stock_on_order_config-table'}
-                            label="{intl l='Payment module' d='stockonorder'}"
+                            label="{intl l='Payment module' d='stockonorder.bo.default'}"
                             }
                         </th>
                         <th>
@@ -40,7 +40,7 @@
                             order='decreased_on_order_creation'
                             reverse_order='decreased_on_order_creation-reverse'
                             path={url path='/admin/module/StockOnOrder/stock_on_order_decrease_on_creation' target='stock_on_order_config-table'}
-                            label="{intl l='Decrease stock on order creation' d='stockonorder'}"
+                            label="{intl l='Decrease stock on order creation' d='stockonorder.bo.default'}"
                             }
                         </th>
                         <th>
@@ -49,11 +49,11 @@
                             order='is_default'
                             reverse_order='is_default-reverse'
                             path={url path='/admin/module/StockOnOrder/stock_on_order_config' target='stock_on_order_config-table'}
-                            label="{intl l='Behavior' d='stockonorder'}"
+                            label="{intl l='Behavior' d='stockonorder.bo.default'}"
                             }
                         </th>
                         <th>
-                            {intl l='Edit' d='stockonorder'}
+                            {intl l='Edit' d='stockonorder.bo.default'}
                         </th>
                     </tr>
                 </thead>
@@ -95,14 +95,14 @@
                             <td>
                                 {ifloop rel='stock-on-order-config-list'}
                                     {loop type='stock-on-order-config' name='stock-on-order-config-list' module_id=$ID exclude_behavior='default' order=$order}{/loop}
-                                    {intl l='modified' d='stockonorder'}
+                                    {intl l='modified' d='stockonorder.bo.default'}
                                 {/ifloop}
                                 {elseloop rel='stock-on-order-config-list'}
-                                    {intl l='default' d='stockonorder'}
+                                    {intl l='default' d='stockonorder.bo.default'}
                                 {/elseloop}
                             </td>
                             <td>
-                                <a class="btn btn-default btn-xs"  href="{url path='/admin/module/StockOnOrder/viewModule/%id' id=$ID}"><i class="glyphicon glyphicon-edit"></i></a>
+                                <a class="btn btn-default btn-xs" href="{url path='/admin/module/StockOnOrder/viewModule/%id' id=$ID}"><i class="glyphicon glyphicon-edit"></i></a>
                             </td>
                         </tr>
                     {/loop}
