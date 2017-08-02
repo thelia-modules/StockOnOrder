@@ -13,6 +13,8 @@
 namespace StockOnOrder;
 
 use StockOnOrder\Model\StockOnOrderConfig;
+use StockOnOrder\Model\StockOnOrderConfigQuery;
+use StockOnOrder\Model\Map\StockOnOrderConfigTableMap;
 use Thelia\Model\Module;
 use Thelia\Model\ModuleQuery;
 use Thelia\Model\OrderStatus;
@@ -33,9 +35,13 @@ class StockOnOrder extends BaseModule
 
     public function postActivation(ConnectionInterface $con = null)
     {
-        $database = new Database($con);
+        try {
+            StockOnOrderConfigQuery::create()->findOne();
+        } catch (\Exception $e) {
+            $database = new Database($con);
 
-        $database->insertSql(null, [__DIR__ . "/Config/create.sql", __DIR__ . "/Config/insert.sql"]);
+            $database->insertSql(null, [__DIR__ . "/Config/create.sql", __DIR__ . "/Config/insert.sql"]);
+        }
 
         // Inject default data for payment modules
         $paymentModuleList = ModuleQuery::create()
@@ -46,13 +52,21 @@ class StockOnOrder extends BaseModule
 
         /** @var Module $paymentModule */
         foreach ($paymentModuleList as $paymentModule) {
+            $paymentStockOnOrderConfig = StockOnOrderConfigQuery::create()
+                ->select(StockOnOrderConfigTableMap::STATUS_ID)
+                ->filterByModuleId($paymentModule->getId())
+                ->find()
+                ->toArray();
+
             /** @var OrderStatus $orderStatus */
             foreach ($orderStatusList as $orderStatus) {
-                (new StockOnOrderConfig)
-                    ->setModuleId($paymentModule->getId())
-                    ->setStatusId($orderStatus->getId())
-                    ->setBehavior('default')
-                    ->save();
+                if (!in_array($orderStatus->getId(), $paymentStockOnOrderConfig)) {
+                    (new StockOnOrderConfig)
+                        ->setModuleId($paymentModule->getId())
+                        ->setStatusId($orderStatus->getId())
+                        ->setBehavior('default')
+                        ->save();
+                }
             }
         }
     }
