@@ -15,6 +15,7 @@ namespace StockOnOrder;
 use StockOnOrder\Model\StockOnOrderConfig;
 use StockOnOrder\Model\StockOnOrderConfigQuery;
 use StockOnOrder\Model\Map\StockOnOrderConfigTableMap;
+use Symfony\Component\DependencyInjection\Loader\Configurator\ServicesConfigurator;
 use Thelia\Model\Module;
 use Thelia\Model\ModuleQuery;
 use Thelia\Model\OrderStatus;
@@ -33,7 +34,7 @@ class StockOnOrder extends BaseModule
     const MESSAGE_DOMAIN = "stockonorder";
     const ROUTER = "router.stockonorder";
 
-    public function postActivation(ConnectionInterface $con = null)
+    public function postActivation(ConnectionInterface $con = null): void
     {
         try {
             StockOnOrderConfigQuery::create()->findOne();
@@ -69,5 +70,13 @@ class StockOnOrder extends BaseModule
                 }
             }
         }
+    }
+
+    public static function configureServices(ServicesConfigurator $servicesConfigurator): void
+    {
+        $servicesConfigurator->load(self::getModuleCode().'\\', __DIR__)
+            ->exclude([THELIA_MODULE_DIR.ucfirst(self::getModuleCode()).'/I18n/*'])
+            ->autowire(true)
+            ->autoconfigure(true);
     }
 }

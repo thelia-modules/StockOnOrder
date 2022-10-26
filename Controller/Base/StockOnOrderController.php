@@ -7,8 +7,10 @@
 namespace StockOnOrder\Controller\Base;
 
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Thelia\Controller\Admin\AbstractCrudController;
 use Thelia\Core\Security\Resource\AdminResources;
+use Thelia\Core\Template\ParserContext;
 use Thelia\Tools\URL;
 use StockOnOrder\Event\StockOnOrderEvent;
 use StockOnOrder\Event\StockOnOrderEvents;
@@ -21,8 +23,14 @@ use StockOnOrder\Model\StockOnOrderQuery;
  */
 class StockOnOrderController extends AbstractCrudController
 {
-    public function __construct()
+    protected RequestStack $requestStack;
+    protected ParserContext $parserContext;
+
+    public function __construct(RequestStack $requestStack, ParserContext $parserContext)
     {
+        $this->requestStack = $requestStack;
+        $this->parserContext = $parserContext;
+
         parent::__construct(
             "stock_on_order",
             "id",
@@ -62,7 +70,7 @@ class StockOnOrderController extends AbstractCrudController
      *
      * @param mixed $object
      */
-    protected function hydrateObjectForm($object)
+    protected function hydrateObjectForm(ParserContext $parserContext, $object)
     {
         $data = array(
             "id" => $object->getId(),
@@ -113,7 +121,7 @@ class StockOnOrderController extends AbstractCrudController
     {
         $event = new StockOnOrderEvent();
 
-        $event->setId($this->getRequest()->request->get("stock_on_order_id"));
+        $event->setId($this->requestStack->getCurrentRequest()->request->get("stock_on_order_id"));
 
         return $event;
     }
@@ -144,7 +152,7 @@ class StockOnOrderController extends AbstractCrudController
     protected function getExistingObject()
     {
         return StockOnOrderQuery::create()
-            ->findPk($this->getRequest()->query->get("stock_on_order_id"))
+            ->findPk($this->requestStack->getCurrentRequest()->query->get("stock_on_order_id"))
         ;
     }
 
@@ -187,10 +195,10 @@ class StockOnOrderController extends AbstractCrudController
      */
     protected function renderEditionTemplate()
     {
-        $this->getParserContext()
+        $this->parserContext
             ->set(
                 "stock_on_order_id",
-                $this->getRequest()->query->get("stock_on_order_id")
+                $this->requestStack->getCurrentRequest()->query->get("stock_on_order_id")
             )
         ;
 
@@ -203,7 +211,7 @@ class StockOnOrderController extends AbstractCrudController
      */
     protected function redirectToEditionTemplate()
     {
-        $id = $this->getRequest()->query->get("stock_on_order_id");
+        $id = $this->requestStack->getCurrentRequest()->query->get("stock_on_order_id");
 
         return new RedirectResponse(
             URL::getInstance()->absoluteUrl(

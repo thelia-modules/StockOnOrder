@@ -2,6 +2,7 @@
 
 namespace StockOnOrder\Form;
 
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Validator\Constraints;
 use Thelia\Form\BaseForm;
 
@@ -16,7 +17,7 @@ class StockOnOrderConfigForm extends BaseForm
     {
         $this->formBuilder
             ->add(
-                'module_id', 'integer',
+                'module_id', IntegerType::class,
                 ['constraints' => [new Constraints\NotBlank()]]
             )
             ->add(
@@ -41,7 +42,7 @@ class StockOnOrderConfigForm extends BaseForm
     /**
      * @return string the name of you form. This name must be unique
      */
-    public function getName()
+    public static function getName()
     {
         return "stock_on_order_config";
     }

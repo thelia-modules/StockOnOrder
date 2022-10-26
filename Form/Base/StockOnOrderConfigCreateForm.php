@@ -7,6 +7,8 @@
 namespace StockOnOrder\Form\Base;
 
 use StockOnOrder\StockOnOrder;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Thelia\Form\BaseForm;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
@@ -31,7 +33,7 @@ class StockOnOrderConfigCreateForm extends BaseForm
 
     protected function addModuleIdField(array $translationKeys, array $fieldsIdKeys)
     {
-        $this->formBuilder->add("module_id", "integer", array(
+        $this->formBuilder->add("module_id", IntegerType::class, array(
             "label" => $this->translator->trans($this->readKey("module_id", $translationKeys), [], StockOnOrder::MESSAGE_DOMAIN),
             "label_attr" => ["for" => $this->readKey("module_id", $fieldsIdKeys)],
             "required" => true,
@@ -45,7 +47,7 @@ class StockOnOrderConfigCreateForm extends BaseForm
 
     protected function addStatusIdField(array $translationKeys, array $fieldsIdKeys)
     {
-        $this->formBuilder->add("status_id", "integer", array(
+        $this->formBuilder->add("status_id", IntegerType::class, array(
             "label" => $this->translator->trans($this->readKey("status_id", $translationKeys), [], StockOnOrder::MESSAGE_DOMAIN),
             "label_attr" => ["for" => $this->readKey("status_id", $fieldsIdKeys)],
             "required" => true,
@@ -59,7 +61,7 @@ class StockOnOrderConfigCreateForm extends BaseForm
 
     protected function addBehaviorField(array $translationKeys, array $fieldsIdKeys)
     {
-        $this->formBuilder->add("behavior", "text", array(
+        $this->formBuilder->add("behavior", TextType::class, array(
             "label" => $this->translator->trans($this->readKey("behavior", $translationKeys), [], StockOnOrder::MESSAGE_DOMAIN),
             "label_attr" => ["for" => $this->readKey("behavior", $fieldsIdKeys)],
             "required" => false,
@@ -70,7 +72,7 @@ class StockOnOrderConfigCreateForm extends BaseForm
         ));
     }
 
-    public function getName()
+    public static function getName()
     {
         return static::FORM_NAME;
     }

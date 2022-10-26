@@ -7,6 +7,8 @@
 namespace StockOnOrder\Form\Base;
 
 use StockOnOrder\StockOnOrder;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Thelia\Form\BaseForm;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
@@ -30,7 +32,7 @@ class StockOnOrderDecreaseOnCreationCreateForm extends BaseForm
 
     protected function addModuleIdField(array $translationKeys, array $fieldsIdKeys)
     {
-        $this->formBuilder->add("module_id", "integer", array(
+        $this->formBuilder->add("module_id", IntegerType::class, array(
             "label" => $this->translator->trans($this->readKey("module_id", $translationKeys), [], StockOnOrder::MESSAGE_DOMAIN),
             "label_attr" => ["for" => $this->readKey("module_id", $fieldsIdKeys)],
             "required" => true,
@@ -44,7 +46,7 @@ class StockOnOrderDecreaseOnCreationCreateForm extends BaseForm
 
     protected function addDecreaseOnOrderCreationField(array $translationKeys, array $fieldsIdKeys)
     {
-        $this->formBuilder->add("decrease_on_order_creation", "checkbox", array(
+        $this->formBuilder->add("decrease_on_order_creation", CheckboxType::class, array(
             "label" => $this->translator->trans($this->readKey("decrease_on_order_creation", $translationKeys), [], StockOnOrder::MESSAGE_DOMAIN),
             "label_attr" => ["for" => $this->readKey("decrease_on_order_creation", $fieldsIdKeys)],
             "required" => false,
@@ -55,7 +57,7 @@ class StockOnOrderDecreaseOnCreationCreateForm extends BaseForm
         ));
     }
 
-    public function getName()
+    public static function getName()
     {
         return static::FORM_NAME;
     }

@@ -7,8 +7,10 @@
 namespace StockOnOrder\Controller\Base;
 
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Thelia\Controller\Admin\AbstractCrudController;
 use Thelia\Core\Security\Resource\AdminResources;
+use Thelia\Core\Template\ParserContext;
 use Thelia\Tools\URL;
 use StockOnOrder\Event\StockOnOrderConfigEvent;
 use StockOnOrder\Event\StockOnOrderConfigEvents;
@@ -21,8 +23,14 @@ use StockOnOrder\Model\StockOnOrderConfigQuery;
  */
 class StockOnOrderConfigController extends AbstractCrudController
 {
-    public function __construct()
+    protected RequestStack $requestStack;
+    protected ParserContext $parserContext;
+
+    public function __construct(RequestStack $requestStack, ParserContext $parserContext)
     {
+        $this->requestStack = $requestStack;
+        $this->parserContext = $parserContext;
+
         parent::__construct(
             "stock_on_order_config",
             "id",
@@ -62,7 +70,7 @@ class StockOnOrderConfigController extends AbstractCrudController
      *
      * @param mixed $object
      */
-    protected function hydrateObjectForm($object)
+    protected function hydrateObjectForm(ParserContext $parserContext, $object)
     {
         $data = array(
             "id" => $object->getId(),
@@ -116,7 +124,7 @@ class StockOnOrderConfigController extends AbstractCrudController
     {
         $event = new StockOnOrderConfigEvent();
 
-        $event->setId($this->getRequest()->request->get("stock_on_order_config_id"));
+        $event->setId($this->requestStack->getCurrentRequest()->request->get("stock_on_order_config_id"));
 
         return $event;
     }
@@ -147,7 +155,7 @@ class StockOnOrderConfigController extends AbstractCrudController
     protected function getExistingObject()
     {
         return StockOnOrderConfigQuery::create()
-            ->findPk($this->getRequest()->query->get("stock_on_order_config_id"))
+            ->findPk($this->requestStack->getCurrentRequest()->query->get("stock_on_order_config_id"))
         ;
     }
 
@@ -190,10 +198,10 @@ class StockOnOrderConfigController extends AbstractCrudController
      */
     protected function renderEditionTemplate()
     {
-        $this->getParserContext()
+        $this->parserContext
             ->set(
                 "stock_on_order_config_id",
-                $this->getRequest()->query->get("stock_on_order_config_id")
+                $this->requestStack->getCurrentRequest()->query->get("stock_on_order_config_id")
             )
         ;
 
@@ -206,7 +214,7 @@ class StockOnOrderConfigController extends AbstractCrudController
      */
     protected function redirectToEditionTemplate()
     {
-        $id = $this->getRequest()->query->get("stock_on_order_config_id");
+        $id = $this->requestStack->getCurrentRequest()->query->get("stock_on_order_config_id");
 
         return new RedirectResponse(
             URL::getInstance()->absoluteUrl(
