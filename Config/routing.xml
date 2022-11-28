@@ -1,55 +1,55 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <routes xmlns="http://symfony.com/schema/routing" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://symfony.com/schema/routing http://symfony.com/schema/routing/routing-1.0.xsd">
   <route id="stockonorder.config.view" path="/admin/module/StockOnOrder/viewModule/{id}" methods="get">
-    <default key="_controller">StockOnOrder:StockOnOrderConfig:viewModule</default>
+    <default key="_controller">StockOnOrder\Controller\StockOnOrderConfigController::viewModuleAction</default>
     <requirement key="id">\d+</requirement>
   </route>
   <route id="stockonorder.config.edit" path="/admin/module/StockOnOrder/edit/{moduleId}" methods="post">
-    <default key="_controller">StockOnOrder:StockOnOrderConfig:edit</default>
+    <default key="_controller">StockOnOrder\Controller\StockOnOrderConfigController::editAction</default>
   </route>
   <route id="stockonorder.stock_on_order_config.list" path="/admin/module/StockOnOrder/stock_on_order_config" methods="get">
-    <default key="_controller">StockOnOrder:StockOnOrderConfig:default</default>
+    <default key="_controller">StockOnOrder\Controller\StockOnOrderConfigController::defaultAction</default>
   </route>
   <route id="stockonorder.stock_on_order_config.create" path="/admin/module/StockOnOrder/stock_on_order_config" methods="post">
-    <default key="_controller">StockOnOrder:StockOnOrderConfig:create</default>
+    <default key="_controller">StockOnOrder\Controller\StockOnOrderConfigController::createAction</default>
   </route>
   <route id="stockonorder.stock_on_order_config.view" path="/admin/module/StockOnOrder/stock_on_order_config/edit" methods="get">
-    <default key="_controller">StockOnOrder:StockOnOrderConfig:update</default>
+    <default key="_controller">StockOnOrder\Controller\StockOnOrderConfigController::updateAction</default>
   </route>
   <route id="stockonorder.stock_on_order_config.edit" path="/admin/module/StockOnOrder/stock_on_order_config/edit" methods="post">
-    <default key="_controller">StockOnOrder:StockOnOrderConfig:processUpdate</default>
+    <default key="_controller">StockOnOrder\Controller\StockOnOrderConfigController::processUpdateAction</default>
   </route>
   <route id="stockonorder.stock_on_order_config.delete" path="/admin/module/StockOnOrder/stock_on_order_config/delete" methods="post">
-    <default key="_controller">StockOnOrder:StockOnOrderConfig:delete</default>
+    <default key="_controller">StockOnOrder\Controller\StockOnOrderConfigController::deleteAction</default>
   </route>
   <route id="stockonorder.stock_on_order.list" path="/admin/module/StockOnOrder/stock_on_order" methods="get">
-    <default key="_controller">StockOnOrder:StockOnOrder:default</default>
+    <default key="_controller">StockOnOrder\Controller\StockOnOrderController:defaultAction</default>
   </route>
   <route id="stockonorder.stock_on_order.create" path="/admin/module/StockOnOrder/stock_on_order" methods="post">
-    <default key="_controller">StockOnOrder:StockOnOrder:create</default>
+    <default key="_controller">StockOnOrder\Controller\StockOnOrderController:createAction</default>
   </route>
   <route id="stockonorder.stock_on_order.view" path="/admin/module/StockOnOrder/stock_on_order/edit" methods="get">
-    <default key="_controller">StockOnOrder:StockOnOrder:update</default>
+    <default key="_controller">StockOnOrder\Controller\StockOnOrderController:updateAction</default>
   </route>
   <route id="stockonorder.stock_on_order.edit" path="/admin/module/StockOnOrder/stock_on_order/edit" methods="post">
-    <default key="_controller">StockOnOrder:StockOnOrder:processUpdate</default>
+    <default key="_controller">StockOnOrder\Controller\StockOnOrderController:processUpdateAction</default>
   </route>
   <route id="stockonorder.stock_on_order.delete" path="/admin/module/StockOnOrder/stock_on_order/delete" methods="post">
-    <default key="_controller">StockOnOrder:StockOnOrder:delete</default>
+    <default key="_controller">StockOnOrder\Controller\StockOnOrderController:deleteAction</default>
   </route>
   <route id="stockonorder.stock_on_order_decrease_on_creation.list" path="/admin/module/StockOnOrder/stock_on_order_decrease_on_creation" methods="get">
-    <default key="_controller">StockOnOrder:StockOnOrderDecreaseOnCreation:default</default>
+    <default key="_controller">StockOnOrder\Controller\StockOnOrderDecreaseOnCreationController::defaultAction</default>
   </route>
   <route id="stockonorder.stock_on_order_decrease_on_creation.create" path="/admin/module/StockOnOrder/stock_on_order_decrease_on_creation" methods="post">
-    <default key="_controller">StockOnOrder:StockOnOrderDecreaseOnCreation:create</default>
+    <default key="_controller">StockOnOrder\Controller\StockOnOrderDecreaseOnCreationController::createAction</default>
   </route>
   <route id="stockonorder.stock_on_order_decrease_on_creation.view" path="/admin/module/StockOnOrder/stock_on_order_decrease_on_creation/edit" methods="get">
-    <default key="_controller">StockOnOrder:StockOnOrderDecreaseOnCreation:update</default>
+    <default key="_controller">StockOnOrder\Controller\StockOnOrderDecreaseOnCreationController::updateAction</default>
   </route>
   <route id="stockonorder.stock_on_order_decrease_on_creation.edit" path="/admin/module/StockOnOrder/stock_on_order_decrease_on_creation/edit" methods="post">
-    <default key="_controller">StockOnOrder:StockOnOrderDecreaseOnCreation:processUpdate</default>
+    <default key="_controller">StockOnOrder\Controller\StockOnOrderDecreaseOnCreationController::processUpdateAction</default>
   </route>
   <route id="stockonorder.stock_on_order_decrease_on_creation.delete" path="/admin/module/StockOnOrder/stock_on_order_decrease_on_creation/delete" methods="post">
-    <default key="_controller">StockOnOrder:StockOnOrderDecreaseOnCreation:delete</default>
+    <default key="_controller">StockOnOrder\Controller\StockOnOrderDecreaseOnCreationController::deleteAction</default>
   </route>
 </routes>

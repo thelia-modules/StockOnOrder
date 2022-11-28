@@ -1,6 +1,7 @@
+{$order = $smarty.get.order|default:'id'}
 <div id="wrapper" class="container">
 
-    {if $general_error}
+    {if $general_error|default:''}
         <div class="alert alert-danger">
             {$general_error}
         </div>

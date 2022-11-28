@@ -6,6 +6,7 @@ use StockOnOrder\Controller\Base\StockOnOrderConfigController as BaseStockOnOrde
 use StockOnOrder\Model\StockOnOrderConfig;
 use StockOnOrder\Model\StockOnOrderConfigQuery;
 use Symfony\Component\Config\Definition\Exception\Exception;
+use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Thelia\Core\HttpFoundation\Request;
 use Thelia\Core\Security\AccessManager;
@@ -45,7 +46,7 @@ class StockOnOrderConfigController extends BaseStockOnOrderConfigController
         }
 
         // Fill and send form into the view
-        $form = $this->createForm('stock_on_order_config', 'form', [
+        $form = $this->createForm('stock_on_order_config', FormType::class, [
             'module_id' => $moduleId,
             'behavior' => $behaviorList]
         );

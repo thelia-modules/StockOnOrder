@@ -3,6 +3,7 @@
 namespace StockOnOrder\Form;
 
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Validator\Constraints;
 use Thelia\Form\BaseForm;
@@ -22,12 +23,12 @@ class StockOnOrderConfigForm extends BaseForm
                 ['constraints' => [new Constraints\NotBlank()]]
             )
             ->add(
-                'behavior', 'collection',
+                'behavior', CollectionType::class,
                 [
-                    'type' => ChoiceType::class,
+                    'entry_type' => ChoiceType::class,
                     'allow_add'    => true,
                     'allow_delete' => true,
-                    'options' => [
+                    'entry_options' => [
                         'choices' => [
                             'do_nothing' => 'Do nothing',
                             'decrease' => 'Decrease',

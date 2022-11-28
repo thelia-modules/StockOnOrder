@@ -14,7 +14,7 @@
 {block name="main-content"}
     <div id="wrapper" class="container">
 
-        {if $general_error}
+        {if $general_error|default:''}
             <div class="alert alert-danger">
                 {$general_error}
             </div>

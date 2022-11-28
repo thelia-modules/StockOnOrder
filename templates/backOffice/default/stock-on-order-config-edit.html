@@ -5,6 +5,7 @@
 {/block}
 
 {block name="main-content"}
+    {$order = $smarty.get.order|default:''}
 
     {*form name="stock_on_order_config.update"*}
         <div id="wrapper" class="container">
@@ -60,7 +61,7 @@
                                             order='module_id'
                                             reverse_order='module_id-reverse'
                                             path={url path='/admin/module/StockOnOrder/stock_on_order_config_edit' target='stock_on_order_config_edit-table'}
-                                            label="{intl l='Status' d='stockonorder.bo.default'}"
+                                            label={intl l='Status' d='stockonorder.bo.default'}
                                             }
                                         </th>
                                         <th>

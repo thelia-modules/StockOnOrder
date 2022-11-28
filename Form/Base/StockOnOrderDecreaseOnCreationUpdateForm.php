@@ -23,7 +23,7 @@ class StockOnOrderDecreaseOnCreationUpdateForm extends ChildStockOnOrderDecrease
         parent::buildForm();
 
         $this->formBuilder
-            ->add("id", StockOnOrderDecreaseOnCreationIdType::TYPE_NAME)
+            ->add("id", StockOnOrderDecreaseOnCreationIdType::class)
         ;
     }
 }

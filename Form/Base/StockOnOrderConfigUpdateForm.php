@@ -23,7 +23,7 @@ class StockOnOrderConfigUpdateForm extends ChildStockOnOrderConfigCreateForm
         parent::buildForm();
 
         $this->formBuilder
-            ->add("id", StockOnOrderConfigIdType::TYPE_NAME)
+            ->add("id", StockOnOrderConfigIdType::class)
         ;
     }
 }

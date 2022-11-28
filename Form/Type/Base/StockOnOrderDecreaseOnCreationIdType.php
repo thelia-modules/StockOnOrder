@@ -6,6 +6,7 @@
 
 namespace StockOnOrder\Form\Type\Base;
 
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Thelia\Core\Form\Type\Field\AbstractIdType;
 use StockOnOrder\Model\StockOnOrderDecreaseOnCreationQuery;
 
@@ -26,5 +27,10 @@ class StockOnOrderDecreaseOnCreationIdType extends AbstractIdType
     public function getName()
     {
         return static::TYPE_NAME;
+    }
+
+    public function getParent()
+    {
+        return IntegerType::class;
     }
 }
