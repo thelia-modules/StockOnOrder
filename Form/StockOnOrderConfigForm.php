@@ -15,7 +15,7 @@ use Thelia\Form\BaseForm;
  */
 class StockOnOrderConfigForm extends BaseForm
 {
-    protected function buildForm()
+    protected function buildForm(): void
     {
         $this->formBuilder
             ->add(
@@ -30,10 +30,10 @@ class StockOnOrderConfigForm extends BaseForm
                     'allow_delete' => true,
                     'entry_options' => [
                         'choices' => [
-                            'do_nothing' => 'Do nothing',
-                            'decrease' => 'Decrease',
-                            'increase' => 'Increase',
-                            'default' => 'Default'
+                            'Do nothing' => 'do_nothing',
+                            'Decrease' => 'decrease',
+                            'Increase' => 'increase',
+                            'Default' => 'default'
                         ]
                     ],
                 ]
@@ -44,7 +44,7 @@ class StockOnOrderConfigForm extends BaseForm
     /**
      * @return string the name of you form. This name must be unique
      */
-    public static function getName()
+    public static function getName(): string
     {
         return "stock_on_order_config";
     }

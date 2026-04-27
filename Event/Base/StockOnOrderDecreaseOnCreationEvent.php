@@ -26,7 +26,7 @@ class StockOnOrderDecreaseOnCreationEvent extends ActionEvent
         return $this->id;
     }
 
-    public function setId($id)
+    public function setId($id): static
     {
         $this->id = $id;
 
@@ -38,7 +38,7 @@ class StockOnOrderDecreaseOnCreationEvent extends ActionEvent
         return $this->moduleId;
     }
 
-    public function setModuleId($moduleId)
+    public function setModuleId($moduleId): static
     {
         $this->moduleId = $moduleId;
 
@@ -50,7 +50,7 @@ class StockOnOrderDecreaseOnCreationEvent extends ActionEvent
         return $this->decreaseOnOrderCreation;
     }
 
-    public function setDecreaseOnOrderCreation($decreaseOnOrderCreation)
+    public function setDecreaseOnOrderCreation($decreaseOnOrderCreation): static
     {
         $this->decreaseOnOrderCreation = $decreaseOnOrderCreation;
 
@@ -62,7 +62,7 @@ class StockOnOrderDecreaseOnCreationEvent extends ActionEvent
         return $this->stockOnOrderDecreaseOnCreation;
     }
 
-    public function setStockOnOrderDecreaseOnCreation(StockOnOrderDecreaseOnCreation $stockOnOrderDecreaseOnCreation)
+    public function setStockOnOrderDecreaseOnCreation(StockOnOrderDecreaseOnCreation $stockOnOrderDecreaseOnCreation): static
     {
         $this->stockOnOrderDecreaseOnCreation = $stockOnOrderDecreaseOnCreation;
 

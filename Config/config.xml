@@ -20,30 +20,4 @@
       <tag name="hook.event_listener" event="module.config-js" type="back" method="onModuleConfigJs"/>
     </hook>
   </hooks>
-  <services>
-    <service id="action.stockonorder.orderstatuschange" class="StockOnOrder\EventListeners\StockOnOrderEventListener" scope="request">
-      <tag name="kernel.event_subscriber"/>
-    </service>
-    <service id="action.stockonorder.stock_on_order_config_table" class="StockOnOrder\Action\StockOnOrderConfigAction">
-      <tag name="kernel.event_subscriber"/>
-    </service>
-    <service id="stockonorder.form.type.stock_on_order_config_id" class="StockOnOrder\Form\Type\StockOnOrderConfigIdType">
-      <argument id="thelia.translator" type="service"/>
-      <tag name="thelia.form.type"/>
-    </service>
-    <service id="action.stockonorder.stock_on_order_table" class="StockOnOrder\Action\StockOnOrderAction">
-      <tag name="kernel.event_subscriber"/>
-    </service>
-    <service id="stockonorder.form.type.stock_on_order_id" class="StockOnOrder\Form\Type\StockOnOrderIdType">
-      <argument id="thelia.translator" type="service"/>
-      <tag name="thelia.form.type"/>
-    </service>
-    <service id="action.stockonorder.stock_on_order_decrease_on_creation_table" class="StockOnOrder\Action\StockOnOrderDecreaseOnCreationAction">
-      <tag name="kernel.event_subscriber"/>
-    </service>
-    <service id="stockonorder.form.type.stock_on_order_decrease_on_creation_id" class="StockOnOrder\Form\Type\StockOnOrderDecreaseOnCreationIdType">
-      <argument id="thelia.translator" type="service"/>
-      <tag name="thelia.form.type"/>
-    </service>
-  </services>
 </config>

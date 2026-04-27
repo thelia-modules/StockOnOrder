@@ -7,19 +7,23 @@
 namespace StockOnOrder\Loop\Base;
 
 use Propel\Runtime\ActiveQuery\Criteria;
+use Propel\Runtime\ActiveQuery\ModelCriteria;
 use Thelia\Core\Template\Element\BaseLoop;
 use Thelia\Core\Template\Element\LoopResult;
 use Thelia\Core\Template\Element\LoopResultRow;
 use Thelia\Core\Template\Element\PropelSearchLoopInterface;
 use Thelia\Core\Template\Loop\Argument\Argument;
 use Thelia\Core\Template\Loop\Argument\ArgumentCollection;
-use Thelia\Type\BooleanOrBothType;
 use StockOnOrder\Model\StockOnOrderConfigQuery;
 
 /**
  * Class StockOnOrderConfig
  * @package StockOnOrder\Loop\Base
  * @author TheliaStudio
+ * @method getOrder()
+ * @method getModuleId()
+ * @method getStatusId()
+ * @method getBehavior()
  */
 class StockOnOrderConfig extends BaseLoop implements PropelSearchLoopInterface
 {
@@ -28,7 +32,7 @@ class StockOnOrderConfig extends BaseLoop implements PropelSearchLoopInterface
      *
      * @return LoopResult
      */
-    public function parseResults(LoopResult $loopResult)
+    public function parseResults(LoopResult $loopResult): LoopResult
     {
         /** @var \StockOnOrder\Model\StockOnOrderConfig $entry */
         foreach ($loopResult->getResultDataCollection() as $entry) {
@@ -71,9 +75,9 @@ class StockOnOrderConfig extends BaseLoop implements PropelSearchLoopInterface
      *   );
      * }
      *
-     * @return \Thelia\Core\Template\Loop\Argument\ArgumentCollection
+     * @return ArgumentCollection
      */
-    protected function getArgDefinitions()
+    protected function getArgDefinitions(): ArgumentCollection
     {
         return new ArgumentCollection(
             Argument::createIntListTypeArgument("id"),
@@ -100,9 +104,9 @@ class StockOnOrderConfig extends BaseLoop implements PropelSearchLoopInterface
     /**
      * this method returns a Propel ModelCriteria
      *
-     * @return \Propel\Runtime\ActiveQuery\ModelCriteria
+     * @return ModelCriteria
      */
-    public function buildModelCriteria()
+    public function buildModelCriteria(): ModelCriteria
     {
         $query = new StockOnOrderConfigQuery();
 

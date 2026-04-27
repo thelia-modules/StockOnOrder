@@ -14,7 +14,7 @@ use StockOnOrder\Form\Base\StockOnOrderCreateForm as BaseStockOnOrderCreateForm;
  */
 class StockOnOrderCreateForm extends BaseStockOnOrderCreateForm
 {
-    public function getTranslationKeys()
+    public function getTranslationKeys(): array
     {
         return array(
             "order_id" => "Order id",

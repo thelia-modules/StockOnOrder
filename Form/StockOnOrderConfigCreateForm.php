@@ -14,7 +14,7 @@ use StockOnOrder\Form\Base\StockOnOrderConfigCreateForm as BaseStockOnOrderConfi
  */
 class StockOnOrderConfigCreateForm extends BaseStockOnOrderConfigCreateForm
 {
-    public function getTranslationKeys()
+    public function getTranslationKeys(): array
     {
         return array(
             "module_id" => "Module id",

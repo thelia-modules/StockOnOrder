@@ -27,7 +27,7 @@ class StockOnOrderConfigEvent extends ActionEvent
         return $this->id;
     }
 
-    public function setId($id)
+    public function setId($id): static
     {
         $this->id = $id;
 
@@ -39,7 +39,7 @@ class StockOnOrderConfigEvent extends ActionEvent
         return $this->moduleId;
     }
 
-    public function setModuleId($moduleId)
+    public function setModuleId($moduleId): static
     {
         $this->moduleId = $moduleId;
 
@@ -51,7 +51,7 @@ class StockOnOrderConfigEvent extends ActionEvent
         return $this->statusId;
     }
 
-    public function setStatusId($statusId)
+    public function setStatusId($statusId): static
     {
         $this->statusId = $statusId;
 
@@ -63,7 +63,7 @@ class StockOnOrderConfigEvent extends ActionEvent
         return $this->behavior;
     }
 
-    public function setBehavior($behavior)
+    public function setBehavior($behavior): static
     {
         $this->behavior = $behavior;
 
@@ -75,7 +75,7 @@ class StockOnOrderConfigEvent extends ActionEvent
         return $this->stockOnOrderConfig;
     }
 
-    public function setStockOnOrderConfig(StockOnOrderConfig $stockOnOrderConfig)
+    public function setStockOnOrderConfig(StockOnOrderConfig $stockOnOrderConfig): static
     {
         $this->stockOnOrderConfig = $stockOnOrderConfig;
 

@@ -2,6 +2,7 @@
 
 namespace StockOnOrder\EventListeners;
 
+use Propel\Runtime\Exception\PropelException;
 use StockOnOrder\Model\StockOnOrder as StockOnOrderModel;
 use StockOnOrder\Model\StockOnOrder;
 use StockOnOrder\Model\StockOnOrderConfigQuery;
@@ -17,6 +18,7 @@ use Thelia\Model\Order;
 use Thelia\Model\OrderProduct;
 use Thelia\Model\ProductSaleElements;
 use Thelia\Model\ProductSaleElementsQuery;
+use Thelia\Module\PaymentModuleInterface;
 
 /**
  * Class StockOnOrderEventListener
@@ -34,7 +36,7 @@ class StockOnOrderEventListener implements EventSubscriberInterface
      *
      * @api
      */
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             TheliaEvents::ORDER_PRODUCT_AFTER_CREATE => ['decreaseOnCreation', 128],
@@ -47,9 +49,9 @@ class StockOnOrderEventListener implements EventSubscriberInterface
      *
      * @param OrderEvent $event
      * @throws \Exception
-     * @throws \Propel\Runtime\Exception\PropelException
+     * @throws PropelException
      */
-    public function decreaseOnCreation(OrderEvent $event)
+    public function decreaseOnCreation(OrderEvent $event): void
     {
         // Get if the module must decrease stock on creation
         $decreaseOnCreation = StockOnOrderDecreaseOnCreationQuery::create()
@@ -59,7 +61,7 @@ class StockOnOrderEventListener implements EventSubscriberInterface
 
         // Get if the decrease on order creation is managed by the payment module
         $paymentModule = ModuleQuery::create()->findPk($event->getOrder()->getPaymentModuleId());
-        /** @var \Thelia\Module\PaymentModuleInterface $paymentModuleInstance */
+        /** @var PaymentModuleInterface $paymentModuleInstance */
         $paymentModuleInstance = $paymentModule->createInstance();
         $isModuleManagingStock = $paymentModuleInstance->manageStockOnCreation();
 
@@ -113,8 +115,9 @@ class StockOnOrderEventListener implements EventSubscriberInterface
      * Get PSE stock before Thelia default behavior
      *
      * @param OrderEvent $event
+     * @throws PropelException
      */
-    public function getQuantities(OrderEvent $event)
+    public function getQuantities(OrderEvent $event): void
     {
         // Get order's product list
         $orderProductList = $event->getOrder()->getOrderProducts();
@@ -135,7 +138,10 @@ class StockOnOrderEventListener implements EventSubscriberInterface
      * 64 PRIORITY METHODS
      * ################### */
 
-    public function setQuantities(OrderEvent $event)
+    /**
+     * @throws PropelException
+     */
+    public function setQuantities(OrderEvent $event): void
     {
         // Get new status, order & product list
         $newStatus = $event->getStatus();
@@ -161,7 +167,10 @@ class StockOnOrderEventListener implements EventSubscriberInterface
         }
     }
 
-    public function actionOnQuantities(Order $order, $behavior, $stockOnOrder)
+    /**
+     * @throws PropelException
+     */
+    public function actionOnQuantities(Order $order, $behavior, $stockOnOrder): void
     {
         // Get order products
         $orderProductList = $order->getOrderProducts();
@@ -195,14 +204,20 @@ class StockOnOrderEventListener implements EventSubscriberInterface
         }
     }
 
-    public function doNothingOnQuantities(ProductSaleElements $pse)
+    /**
+     * @throws PropelException
+     */
+    public function doNothingOnQuantities(ProductSaleElements $pse): void
     {
         // Set quantity of before status update
         $pse->setQuantity(static::$stock[$pse->getId()]);
         $pse->save();
     }
 
-    public function decreaseStock(OrderProduct $orderProduct, ProductSaleElements $pse, StockOnOrder $stockOnOrder)
+    /**
+     * @throws PropelException
+     */
+    public function decreaseStock(OrderProduct $orderProduct, ProductSaleElements $pse, StockOnOrder $stockOnOrder): void
     {
         // Check if there is enough stock
         if ($orderProduct->getQuantity() > static::$stock[$pse->getId()] && true === ConfigQuery::checkAvailableStock()) {
@@ -220,7 +235,10 @@ class StockOnOrderEventListener implements EventSubscriberInterface
             ->save();
     }
 
-    public function increaseStock(OrderProduct $orderProduct, ProductSaleElements $pse, StockOnOrder $stockOnOrder)
+    /**
+     * @throws PropelException
+     */
+    public function increaseStock(OrderProduct $orderProduct, ProductSaleElements $pse, StockOnOrder $stockOnOrder): void
     {
         // Increase stock and save
         $pse

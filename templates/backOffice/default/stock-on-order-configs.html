@@ -38,8 +38,8 @@
                         <th>
                             {admin_sortable_header
                             current_order=$order
-                            order='decreased_on_order_creation'
-                            reverse_order='decreased_on_order_creation-reverse'
+                            order='decrease_on_order_creation'
+                            reverse_order='decrease_on_order_creation-reverse'
                             path={url path='/admin/module/StockOnOrder/stock_on_order_decrease_on_creation' target='stock_on_order_config-table'}
                             label="{intl l='Decrease stock on order creation' d='stockonorder.bo.default'}"
                             }
@@ -47,8 +47,8 @@
                         <th>
                             {admin_sortable_header
                             current_order=$order
-                            order='is_default'
-                            reverse_order='is_default-reverse'
+                            order='behavior'
+                            reverse_order='behavior-reverse'
                             path={url path='/admin/module/StockOnOrder/stock_on_order_config' target='stock_on_order_config-table'}
                             label="{intl l='Behavior' d='stockonorder.bo.default'}"
                             }

@@ -18,7 +18,7 @@ class StockOnOrderUpdateForm extends ChildStockOnOrderCreateForm
 {
     const FORM_NAME = "stock_on_order_update";
 
-    public function buildForm()
+    public function buildForm(): void
     {
         parent::buildForm();
 

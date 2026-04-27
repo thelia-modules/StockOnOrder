@@ -7,6 +7,7 @@
 namespace StockOnOrder\Loop\Base;
 
 use Propel\Runtime\ActiveQuery\Criteria;
+use Propel\Runtime\ActiveQuery\ModelCriteria;
 use Thelia\Core\Template\Element\BaseLoop;
 use Thelia\Core\Template\Element\LoopResult;
 use Thelia\Core\Template\Element\LoopResultRow;
@@ -20,6 +21,7 @@ use StockOnOrder\Model\StockOnOrderDecreaseOnCreationQuery;
  * Class StockOnOrderDecreaseOnCreation
  * @package StockOnOrder\Loop\Base
  * @author TheliaStudio
+ * @method getModuleId()
  */
 class StockOnOrderDecreaseOnCreation extends BaseLoop implements PropelSearchLoopInterface
 {
@@ -28,7 +30,7 @@ class StockOnOrderDecreaseOnCreation extends BaseLoop implements PropelSearchLoo
      *
      * @return LoopResult
      */
-    public function parseResults(LoopResult $loopResult)
+    public function parseResults(LoopResult $loopResult): LoopResult
     {
         /** @var \StockOnOrder\Model\StockOnOrderDecreaseOnCreation $entry */
         foreach ($loopResult->getResultDataCollection() as $entry) {
@@ -70,9 +72,9 @@ class StockOnOrderDecreaseOnCreation extends BaseLoop implements PropelSearchLoo
      *   );
      * }
      *
-     * @return \Thelia\Core\Template\Loop\Argument\ArgumentCollection
+     * @return ArgumentCollection
      */
-    protected function getArgDefinitions()
+    protected function getArgDefinitions(): ArgumentCollection
     {
         return new ArgumentCollection(
             Argument::createIntListTypeArgument("id"),
@@ -96,9 +98,9 @@ class StockOnOrderDecreaseOnCreation extends BaseLoop implements PropelSearchLoo
     /**
      * this method returns a Propel ModelCriteria
      *
-     * @return \Propel\Runtime\ActiveQuery\ModelCriteria
+     * @return ModelCriteria
      */
-    public function buildModelCriteria()
+    public function buildModelCriteria(): ModelCriteria
     {
         $query = new StockOnOrderDecreaseOnCreationQuery();
 

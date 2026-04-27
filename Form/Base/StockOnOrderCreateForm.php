@@ -21,7 +21,7 @@ class StockOnOrderCreateForm extends BaseForm
 {
     const FORM_NAME = "stock_on_order_create";
 
-    public function buildForm()
+    public function buildForm(): void
     {
         $translationKeys = $this->getTranslationKeys();
         $fieldsIdKeys = $this->getFieldsIdKeys();
@@ -30,7 +30,7 @@ class StockOnOrderCreateForm extends BaseForm
         $this->addIsStockDecreasedField($translationKeys, $fieldsIdKeys);
     }
 
-    protected function addOrderIdField(array $translationKeys, array $fieldsIdKeys)
+    protected function addOrderIdField(array $translationKeys, array $fieldsIdKeys): void
     {
         $this->formBuilder->add("order_id", IntegerType::class, array(
             "label" => $this->translator->trans($this->readKey("order_id", $translationKeys), [], StockOnOrder::MESSAGE_DOMAIN),
@@ -44,7 +44,7 @@ class StockOnOrderCreateForm extends BaseForm
         ));
     }
 
-    protected function addIsStockDecreasedField(array $translationKeys, array $fieldsIdKeys)
+    protected function addIsStockDecreasedField(array $translationKeys, array $fieldsIdKeys): void
     {
         $this->formBuilder->add("is_stock_decreased", CheckboxType::class, array(
             "label" => $this->translator->trans($this->readKey("is_stock_decreased", $translationKeys), [], StockOnOrder::MESSAGE_DOMAIN),
@@ -57,7 +57,7 @@ class StockOnOrderCreateForm extends BaseForm
         ));
     }
 
-    public static function getName()
+    public static function getName(): string
     {
         return static::FORM_NAME;
     }
@@ -71,12 +71,12 @@ class StockOnOrderCreateForm extends BaseForm
         return $default;
     }
 
-    public function getTranslationKeys()
+    public function getTranslationKeys(): array
     {
         return array();
     }
 
-    public function getFieldsIdKeys()
+    public function getFieldsIdKeys(): array
     {
         return array(
             "order_id" => "stock_on_order_order_id",

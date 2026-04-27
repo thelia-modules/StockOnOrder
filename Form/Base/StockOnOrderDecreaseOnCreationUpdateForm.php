@@ -18,7 +18,7 @@ class StockOnOrderDecreaseOnCreationUpdateForm extends ChildStockOnOrderDecrease
 {
     const FORM_NAME = "stock_on_order_decrease_on_creation_update";
 
-    public function buildForm()
+    public function buildForm(): void
     {
         parent::buildForm();
 

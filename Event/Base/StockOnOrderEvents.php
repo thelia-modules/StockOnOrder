@@ -6,6 +6,7 @@
 
 namespace StockOnOrder\Event\Base;
 
+use StockOnOrder\Event\Module\Base\StockOnOrderEvents as StockOnOrderEventsAlias;
 use StockOnOrder\Event\Module\StockOnOrderEvents as ChildStockOnOrderEvents;
 
 /*
@@ -15,7 +16,7 @@ use StockOnOrder\Event\Module\StockOnOrderEvents as ChildStockOnOrderEvents;
  */
 class StockOnOrderEvents
 {
-    const CREATE = ChildStockOnOrderEvents::STOCK_ON_ORDER_CREATE;
-    const UPDATE = ChildStockOnOrderEvents::STOCK_ON_ORDER_UPDATE;
-    const DELETE = ChildStockOnOrderEvents::STOCK_ON_ORDER_DELETE;
+    const CREATE = StockOnOrderEventsAlias::STOCK_ON_ORDER_CREATE;
+    const UPDATE = StockOnOrderEventsAlias::STOCK_ON_ORDER_UPDATE;
+    const DELETE = StockOnOrderEventsAlias::STOCK_ON_ORDER_DELETE;
 }

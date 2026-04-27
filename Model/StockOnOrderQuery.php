@@ -13,6 +13,12 @@ use StockOnOrder\Model\Base\StockOnOrderQuery as BaseStockOnOrderQuery;
  * application requirements.  This class will only be generated as
  * long as it does not already exist in the output directory.
  *
+ * @method filterById($id)
+ * @method filterByOrderId($order_id)
+ * @method filterByIsStockDecreased($is_stock_decreased)
+ * @method orderById()
+ * @method orderByOrderId()
+ * @method orderByIsStockDecreased()
  */
 class StockOnOrderQuery extends BaseStockOnOrderQuery
 {

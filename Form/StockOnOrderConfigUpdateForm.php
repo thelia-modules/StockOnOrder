@@ -14,7 +14,7 @@ use StockOnOrder\Form\Base\StockOnOrderConfigUpdateForm as BaseStockOnOrderConfi
  */
 class StockOnOrderConfigUpdateForm extends BaseStockOnOrderConfigUpdateForm
 {
-    public function getTranslationKeys()
+    public function getTranslationKeys(): array
     {
         return array(
             "id" => "id",

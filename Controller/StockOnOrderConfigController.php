@@ -3,11 +3,12 @@
 namespace StockOnOrder\Controller;
 
 use StockOnOrder\Controller\Base\StockOnOrderConfigController as BaseStockOnOrderConfigController;
+use StockOnOrder\Form\StockOnOrderConfigForm;
 use StockOnOrder\Model\StockOnOrderConfig;
 use StockOnOrder\Model\StockOnOrderConfigQuery;
-use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Response;
 use Thelia\Core\HttpFoundation\Request;
 use Thelia\Core\Security\AccessManager;
 use Thelia\Core\Security\Resource\AdminResources;
@@ -23,9 +24,9 @@ class StockOnOrderConfigController extends BaseStockOnOrderConfigController
      * Get payment module configuration to display it and return the view
      *
      * @param Request $request
-     * @return mixed|\Thelia\Core\HttpFoundation\Response
+     * @return Response|null
      */
-    public function viewModuleAction(Request $request)
+    public function viewModuleAction(Request $request): ?Response
     {
         if (null !== $response = $this->checkAuth(array(AdminResources::MODULE), 'StockOnOrder', AccessManager::VIEW)) {
             return $response;
@@ -45,7 +46,7 @@ class StockOnOrderConfigController extends BaseStockOnOrderConfigController
             $behaviorList[$stockOnOrderConfig->getStatusId()] = $stockOnOrderConfig->getBehavior();
         }
 
-        // Fill and send form into the view
+        // Fill and send the form into the view
         $form = $this->createForm('stock_on_order_config', FormType::class, [
             'module_id' => $moduleId,
             'behavior' => $behaviorList]
@@ -60,16 +61,15 @@ class StockOnOrderConfigController extends BaseStockOnOrderConfigController
      * Update payment module configuration for each order status
      *
      * @param $moduleId
-     * @return mixed|\Symfony\Component\HttpFoundation\Response|\Thelia\Core\HttpFoundation\Response
+     * @return mixed|Response
      */
-    public function editAction($moduleId)
+    public function editAction($moduleId): Response|RedirectResponse
     {
         if (null !== $response = $this->checkAuth(array(AdminResources::MODULE), 'StockOnOrder', AccessManager::UPDATE)) {
             return $response;
         }
 
-        // Validate form and get its data
-        $form = $this->createForm('stock_on_order_config');
+        $form = $this->createForm(StockOnOrderConfigForm::getName());
 
         try {
             $formEdit = $this->validateForm($form, 'POST');
@@ -91,7 +91,7 @@ class StockOnOrderConfigController extends BaseStockOnOrderConfigController
             }
         } catch (\Exception $e) {
             $this->setupFormErrorContext(
-                null,
+                StockOnOrderConfigForm::getName(),
                 $e->getMessage(),
                 $form
             );

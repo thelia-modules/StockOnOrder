@@ -14,7 +14,7 @@ use StockOnOrder\Form\Base\StockOnOrderUpdateForm as BaseStockOnOrderUpdateForm;
  */
 class StockOnOrderUpdateForm extends BaseStockOnOrderUpdateForm
 {
-    public function getTranslationKeys()
+    public function getTranslationKeys(): array
     {
         return array(
             "order_id" => "order_id",

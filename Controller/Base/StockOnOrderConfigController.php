@@ -6,14 +6,19 @@
 
 namespace StockOnOrder\Controller\Base;
 
+use Propel\Runtime\ActiveRecord\ActiveRecordInterface;
+use Propel\Runtime\Event\ActiveRecordEvent;
+use StockOnOrder\Event\Base\StockOnOrderConfigEvents as StockOnOrderConfigEventsAlias;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\HttpFoundation\Response;
 use Thelia\Controller\Admin\AbstractCrudController;
+use Thelia\Core\Event\ActionEvent;
 use Thelia\Core\Security\Resource\AdminResources;
 use Thelia\Core\Template\ParserContext;
+use Thelia\Form\BaseForm;
 use Thelia\Tools\URL;
 use StockOnOrder\Event\StockOnOrderConfigEvent;
-use StockOnOrder\Event\StockOnOrderConfigEvents;
 use StockOnOrder\Model\StockOnOrderConfigQuery;
 
 /**
@@ -23,8 +28,8 @@ use StockOnOrder\Model\StockOnOrderConfigQuery;
  */
 class StockOnOrderConfigController extends AbstractCrudController
 {
-    protected RequestStack $requestStack;
-    protected ParserContext $parserContext;
+    public RequestStack $requestStack;
+    public ParserContext $parserContext;
 
     public function __construct(RequestStack $requestStack, ParserContext $parserContext)
     {
@@ -36,9 +41,9 @@ class StockOnOrderConfigController extends AbstractCrudController
             "id",
             "order",
             AdminResources::MODULE,
-            StockOnOrderConfigEvents::CREATE,
-            StockOnOrderConfigEvents::UPDATE,
-            StockOnOrderConfigEvents::DELETE,
+            StockOnOrderConfigEventsAlias::CREATE,
+            StockOnOrderConfigEventsAlias::UPDATE,
+            StockOnOrderConfigEventsAlias::DELETE,
             null,
             null,
             "StockOnOrder"
@@ -48,7 +53,7 @@ class StockOnOrderConfigController extends AbstractCrudController
     /**
      * Return the creation form for this object
      */
-    protected function getCreationForm()
+    protected function getCreationForm(): ?BaseForm
     {
         return $this->createForm("stock_on_order_config.create");
     }
@@ -56,7 +61,7 @@ class StockOnOrderConfigController extends AbstractCrudController
     /**
      * Return the update form for this object
      */
-    protected function getUpdateForm($data = array())
+    protected function getUpdateForm($data = array()): ?BaseForm
     {
         if (!is_array($data)) {
             $data = array();
@@ -70,7 +75,7 @@ class StockOnOrderConfigController extends AbstractCrudController
      *
      * @param mixed $object
      */
-    protected function hydrateObjectForm(ParserContext $parserContext, $object)
+    protected function hydrateObjectForm(ParserContext $parserContext, $object): BaseForm
     {
         $data = array(
             "id" => $object->getId(),
@@ -86,9 +91,9 @@ class StockOnOrderConfigController extends AbstractCrudController
      * Creates the creation event with the provided form data
      *
      * @param mixed $formData
-     * @return \Thelia\Core\Event\ActionEvent
+     * @return ActionEvent|ActiveRecordEvent|null
      */
-    protected function getCreationEvent($formData)
+    protected function getCreationEvent($formData): ActionEvent|ActiveRecordEvent|null
     {
         $event = new StockOnOrderConfigEvent();
 
@@ -103,9 +108,9 @@ class StockOnOrderConfigController extends AbstractCrudController
      * Creates the update event with the provided form data
      *
      * @param mixed $formData
-     * @return \Thelia\Core\Event\ActionEvent
+     * @return ActionEvent|ActiveRecordEvent|null
      */
-    protected function getUpdateEvent($formData)
+    protected function getUpdateEvent($formData): ActionEvent|ActiveRecordEvent|null
     {
         $event = new StockOnOrderConfigEvent();
 
@@ -120,7 +125,7 @@ class StockOnOrderConfigController extends AbstractCrudController
     /**
      * Creates the delete event with the provided form data
      */
-    protected function getDeleteEvent()
+    protected function getDeleteEvent(): ActionEvent|ActiveRecordEvent|null
     {
         $event = new StockOnOrderConfigEvent();
 
@@ -134,7 +139,7 @@ class StockOnOrderConfigController extends AbstractCrudController
      *
      * @param mixed $event
      */
-    protected function eventContainsObject($event)
+    protected function eventContainsObject($event): bool
     {
         return null !== $this->getObjectFromEvent($event);
     }
@@ -144,7 +149,7 @@ class StockOnOrderConfigController extends AbstractCrudController
      *
      * @param mixed $event
      */
-    protected function getObjectFromEvent($event)
+    protected function getObjectFromEvent($event): mixed
     {
         return $event->getStockOnOrderConfig();
     }
@@ -152,7 +157,7 @@ class StockOnOrderConfigController extends AbstractCrudController
     /**
      * Load an existing object from the database
      */
-    protected function getExistingObject()
+    protected function getExistingObject(): ?ActiveRecordInterface
     {
         return StockOnOrderConfigQuery::create()
             ->findPk($this->requestStack->getCurrentRequest()->query->get("stock_on_order_config_id"))
@@ -164,7 +169,7 @@ class StockOnOrderConfigController extends AbstractCrudController
      *
      * @param mixed $object
      */
-    protected function getObjectLabel($object)
+    protected function getObjectLabel($object): ?string
     {
         return '';
     }
@@ -174,7 +179,7 @@ class StockOnOrderConfigController extends AbstractCrudController
      *
      * @param mixed $object
      */
-    protected function getObjectId($object)
+    protected function getObjectId($object): int
     {
         return $object->getId();
     }
@@ -184,7 +189,7 @@ class StockOnOrderConfigController extends AbstractCrudController
      *
      * @param mixed $currentOrder , if any, null otherwise.
      */
-    protected function renderListTemplate($currentOrder)
+    protected function renderListTemplate($currentOrder): Response
     {
         $this->getParser()
             ->assign("order", $currentOrder)
@@ -196,7 +201,7 @@ class StockOnOrderConfigController extends AbstractCrudController
     /**
      * Render the edition template
      */
-    protected function renderEditionTemplate()
+    protected function renderEditionTemplate(): Response
     {
         $this->parserContext
             ->set(
@@ -210,9 +215,9 @@ class StockOnOrderConfigController extends AbstractCrudController
 
     /**
      * Must return a RedirectResponse instance
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @return RedirectResponse|Response
      */
-    protected function redirectToEditionTemplate()
+    protected function redirectToEditionTemplate(): RedirectResponse|Response
     {
         $id = $this->requestStack->getCurrentRequest()->query->get("stock_on_order_config_id");
 
@@ -228,9 +233,9 @@ class StockOnOrderConfigController extends AbstractCrudController
 
     /**
      * Must return a RedirectResponse instance
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @return RedirectResponse|Response
      */
-    protected function redirectToListTemplate()
+    protected function redirectToListTemplate(): RedirectResponse|Response
     {
         return new RedirectResponse(
             URL::getInstance()->absoluteUrl("/admin/module/StockOnOrder/stock_on_order_config")
