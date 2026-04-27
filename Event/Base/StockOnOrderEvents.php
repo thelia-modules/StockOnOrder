@@ -7,7 +7,6 @@
 namespace StockOnOrder\Event\Base;
 
 use StockOnOrder\Event\Module\Base\StockOnOrderEvents as StockOnOrderEventsAlias;
-use StockOnOrder\Event\Module\StockOnOrderEvents as ChildStockOnOrderEvents;
 
 /*
  * Class StockOnOrderEvents

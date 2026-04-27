@@ -165,7 +165,7 @@
 
                 {form_error form=$form field="decrease_on_order_creation"}{$message|default:null}{/form_error}
 
-                <input type="checkbox" name="{$name}" id="{$label_attr.for}" {if $DECREASED_ON_ORDER_CREATION|default:null}checked{/if} placeholder="{intl l='The StockOnOrderDecreaseOnCreation decreased_on_order_creation'}" />
+                <input type="checkbox" name="{$name}" id="{$label_attr.for}" {if $DECREASE_ON_ORDER_CREATION}checked{/if} placeholder="{intl l='The StockOnOrderDecreaseOnCreation decrease_on_order_creation'}" />
             </div>
         {/form_field}
     {/capture}

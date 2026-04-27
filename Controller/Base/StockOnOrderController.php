@@ -10,7 +10,6 @@ use Propel\Runtime\ActiveRecord\ActiveRecordInterface;
 use Propel\Runtime\Event\ActiveRecordEvent;
 use StockOnOrder\Event\Base\StockOnOrderEvents as StockOnOrderEventsAlias;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Thelia\Controller\Admin\AbstractCrudController;
 use Thelia\Core\Event\ActionEvent;
@@ -28,14 +27,8 @@ use StockOnOrder\Model\StockOnOrderQuery;
  */
 class StockOnOrderController extends AbstractCrudController
 {
-    public RequestStack $requestStack;
-    public ParserContext $parserContext;
-
-    public function __construct(RequestStack $requestStack, ParserContext $parserContext)
+    public function __construct()
     {
-        $this->requestStack = $requestStack;
-        $this->parserContext = $parserContext;
-
         parent::__construct(
             "stock_on_order",
             "id",
