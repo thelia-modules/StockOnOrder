@@ -128,7 +128,7 @@ class StockOnOrderConfigController extends BaseStockOnOrderConfigController
             }
         } catch (\Exception $e) {
             $this->setupFormErrorContext(
-                StockOnOrderConfigForm::getName(),
+                get_class($form),
                 $e->getMessage(),
                 $form
             );
