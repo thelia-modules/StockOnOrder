@@ -14,6 +14,11 @@ use StockOnOrder\Form\Base\StockOnOrderDecreaseOnCreationUpdateForm as BaseStock
  */
 class StockOnOrderDecreaseOnCreationUpdateForm extends BaseStockOnOrderDecreaseOnCreationUpdateForm
 {
+    public static function getName(): string
+    {
+        return 'stock_on_order_decrease_on_creation.update';
+    }
+
     public function getTranslationKeys(): array
     {
         return array(

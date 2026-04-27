@@ -14,6 +14,11 @@ use StockOnOrder\Form\Base\StockOnOrderCreateForm as BaseStockOnOrderCreateForm;
  */
 class StockOnOrderCreateForm extends BaseStockOnOrderCreateForm
 {
+    public static function getName(): string
+    {
+        return 'stock_on_order.create';
+    }
+
     public function getTranslationKeys(): array
     {
         return array(

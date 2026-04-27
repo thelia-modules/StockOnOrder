@@ -12,6 +12,14 @@ use Thelia\Core\Hook\BaseHook;
  */
 class StockOnOrderHook extends BaseHook
 {
+    public static function getSubscribedHooks(): array
+    {
+        return [
+            'module.configuration' => ['type' => 'back', 'method' => 'onModuleConfig'],
+            'module.config-js'     => ['type' => 'back', 'method' => 'onModuleConfigJs'],
+        ];
+    }
+
     public function onModuleConfig(HookRenderEvent $event): void
     {
         $event->add($this->render('stock-on-order-configs.html'));

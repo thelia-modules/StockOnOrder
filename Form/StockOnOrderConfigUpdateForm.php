@@ -14,6 +14,11 @@ use StockOnOrder\Form\Base\StockOnOrderConfigUpdateForm as BaseStockOnOrderConfi
  */
 class StockOnOrderConfigUpdateForm extends BaseStockOnOrderConfigUpdateForm
 {
+    public static function getName(): string
+    {
+        return 'stock_on_order_config.update';
+    }
+
     public function getTranslationKeys(): array
     {
         return array(
