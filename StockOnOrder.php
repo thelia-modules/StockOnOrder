@@ -79,7 +79,15 @@ class StockOnOrder extends BaseModule
     public static function configureServices(ServicesConfigurator $servicesConfigurator): void
     {
         $servicesConfigurator->load(self::getModuleCode().'\\', __DIR__)
-            ->exclude([THELIA_MODULE_DIR.ucfirst(self::getModuleCode()).'/I18n/*'])
+            ->exclude([
+                THELIA_MODULE_DIR.ucfirst(self::getModuleCode()).'/I18n/*',
+                __DIR__.'/Action/Base/',
+                __DIR__.'/Controller/Base/',
+                __DIR__.'/Form/Base/',
+                __DIR__.'/Form/Type/Base/',
+                __DIR__.'/Loop/Base/',
+                __DIR__.'/Event/Base/',
+            ])
             ->autowire(true)
             ->autoconfigure(true);
     }
