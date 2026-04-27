@@ -7,6 +7,14 @@
 namespace StockOnOrder\Controller;
 
 use StockOnOrder\Controller\Base\StockOnOrderDecreaseOnCreationController as BaseStockOnOrderDecreaseOnCreationController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
+use Thelia\Core\HttpFoundation\Request;
+use Thelia\Core\Template\ParserContext;
+use Thelia\Tools\TokenProvider;
 
 /**
  * Class StockOnOrderDecreaseOnCreationController
@@ -14,4 +22,33 @@ use StockOnOrder\Controller\Base\StockOnOrderDecreaseOnCreationController as Bas
  */
 class StockOnOrderDecreaseOnCreationController extends BaseStockOnOrderDecreaseOnCreationController
 {
+    #[Route('/admin/module/StockOnOrder/stock_on_order_decrease_on_creation', name: 'stockonorder.stock_on_order_decrease_on_creation.list', methods: ['GET'])]
+    public function defaultAction(): Response
+    {
+        return parent::defaultAction();
+    }
+
+    #[Route('/admin/module/StockOnOrder/stock_on_order_decrease_on_creation', name: 'stockonorder.stock_on_order_decrease_on_creation.create', methods: ['POST'])]
+    public function createAction(EventDispatcherInterface $eventDispatcher, TranslatorInterface $translator): RedirectResponse|Response
+    {
+        return parent::createAction($eventDispatcher, $translator);
+    }
+
+    #[Route('/admin/module/StockOnOrder/stock_on_order_decrease_on_creation/edit', name: 'stockonorder.stock_on_order_decrease_on_creation.view', methods: ['GET'])]
+    public function updateAction(ParserContext $parserContext): Response
+    {
+        return parent::updateAction($parserContext);
+    }
+
+    #[Route('/admin/module/StockOnOrder/stock_on_order_decrease_on_creation/edit', name: 'stockonorder.stock_on_order_decrease_on_creation.edit', methods: ['POST'])]
+    public function processUpdateAction(Request $request, EventDispatcherInterface $eventDispatcher, TranslatorInterface $translator): Response|RedirectResponse
+    {
+        return parent::processUpdateAction($request, $eventDispatcher, $translator);
+    }
+
+    #[Route('/admin/module/StockOnOrder/stock_on_order_decrease_on_creation/delete', name: 'stockonorder.stock_on_order_decrease_on_creation.delete', methods: ['POST'])]
+    public function deleteAction(Request $request, TokenProvider $tokenProvider, EventDispatcherInterface $eventDispatcher, ParserContext $parserContext): Response|RedirectResponse
+    {
+        return parent::deleteAction($request, $tokenProvider, $eventDispatcher, $parserContext);
+    }
 }

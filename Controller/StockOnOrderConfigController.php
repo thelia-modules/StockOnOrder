@@ -9,9 +9,14 @@ use StockOnOrder\Model\StockOnOrderConfigQuery;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Thelia\Core\HttpFoundation\Request;
 use Thelia\Core\Security\AccessManager;
 use Thelia\Core\Security\Resource\AdminResources;
+use Thelia\Core\Template\ParserContext;
+use Thelia\Tools\TokenProvider;
 
 /**
  * Class StockOnOrderConfigController
@@ -20,12 +25,43 @@ use Thelia\Core\Security\Resource\AdminResources;
  */
 class StockOnOrderConfigController extends BaseStockOnOrderConfigController
 {
+    #[Route('/admin/module/StockOnOrder/stock_on_order_config', name: 'stockonorder.stock_on_order_config.list', methods: ['GET'])]
+    public function defaultAction(): Response
+    {
+        return parent::defaultAction();
+    }
+
+    #[Route('/admin/module/StockOnOrder/stock_on_order_config', name: 'stockonorder.stock_on_order_config.create', methods: ['POST'])]
+    public function createAction(EventDispatcherInterface $eventDispatcher, TranslatorInterface $translator): RedirectResponse|Response
+    {
+        return parent::createAction($eventDispatcher, $translator);
+    }
+
+    #[Route('/admin/module/StockOnOrder/stock_on_order_config/edit', name: 'stockonorder.stock_on_order_config.view', methods: ['GET'])]
+    public function updateAction(ParserContext $parserContext): Response
+    {
+        return parent::updateAction($parserContext);
+    }
+
+    #[Route('/admin/module/StockOnOrder/stock_on_order_config/edit', name: 'stockonorder.stock_on_order_config.edit', methods: ['POST'])]
+    public function processUpdateAction(Request $request, EventDispatcherInterface $eventDispatcher, TranslatorInterface $translator): Response|RedirectResponse
+    {
+        return parent::processUpdateAction($request, $eventDispatcher, $translator);
+    }
+
+    #[Route('/admin/module/StockOnOrder/stock_on_order_config/delete', name: 'stockonorder.stock_on_order_config.delete', methods: ['POST'])]
+    public function deleteAction(Request $request, TokenProvider $tokenProvider, EventDispatcherInterface $eventDispatcher, ParserContext $parserContext): Response|RedirectResponse
+    {
+        return parent::deleteAction($request, $tokenProvider, $eventDispatcher, $parserContext);
+    }
+
     /**
      * Get payment module configuration to display it and return the view
      *
      * @param Request $request
      * @return Response|null
      */
+    #[Route('/admin/module/StockOnOrder/viewModule/{id}', name: 'stockonorder.config.view', requirements: ['id' => '\d+'], methods: ['GET'])]
     public function viewModuleAction(Request $request): ?Response
     {
         if (null !== $response = $this->checkAuth(array(AdminResources::MODULE), 'StockOnOrder', AccessManager::VIEW)) {
@@ -63,6 +99,7 @@ class StockOnOrderConfigController extends BaseStockOnOrderConfigController
      * @param $moduleId
      * @return mixed|Response
      */
+    #[Route('/admin/module/StockOnOrder/edit/{moduleId}', name: 'stockonorder.config.edit', methods: ['POST'])]
     public function editAction($moduleId): Response|RedirectResponse
     {
         if (null !== $response = $this->checkAuth(array(AdminResources::MODULE), 'StockOnOrder', AccessManager::UPDATE)) {
