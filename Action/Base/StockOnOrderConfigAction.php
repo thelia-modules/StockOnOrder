@@ -6,18 +6,18 @@
 
 namespace StockOnOrder\Action\Base;
 
+use Exception;
+use Propel\Runtime\Exception\PropelException;
+use StockOnOrder\Event\Base\StockOnOrderConfigEvents as StockOnOrderConfigEventsAlias;
 use StockOnOrder\Model\Map\StockOnOrderConfigTableMap;
 use StockOnOrder\Event\StockOnOrderConfigEvent;
-use StockOnOrder\Event\StockOnOrderConfigEvents;
 use StockOnOrder\Model\StockOnOrderConfigQuery;
 use StockOnOrder\Model\StockOnOrderConfig;
 use Thelia\Action\BaseAction;
-use Thelia\Core\Event\ToggleVisibilityEvent;
-use Thelia\Core\Event\UpdatePositionEvent;
 use Propel\Runtime\Propel;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Thelia\Core\Event\TheliaEvents;
-use \Thelia\Core\Event\TheliaFormEvent;
+use Thelia\Core\Event\TheliaFormEvent;
 
 /**
  * Class StockOnOrderConfigAction
@@ -26,24 +26,36 @@ use \Thelia\Core\Event\TheliaFormEvent;
  */
 class StockOnOrderConfigAction extends BaseAction implements EventSubscriberInterface
 {
-    public function create(StockOnOrderConfigEvent $event)
+    /**
+     * @throws Exception
+     */
+    public function create(StockOnOrderConfigEvent $event): void
     {
         $this->createOrUpdate($event, new StockOnOrderConfig());
     }
 
-    public function update(StockOnOrderConfigEvent $event)
+    /**
+     * @throws Exception
+     */
+    public function update(StockOnOrderConfigEvent $event): void
     {
         $model = $this->getStockOnOrderConfig($event);
 
         $this->createOrUpdate($event, $model);
     }
 
-    public function delete(StockOnOrderConfigEvent $event)
+    /**
+     * @throws PropelException
+     */
+    public function delete(StockOnOrderConfigEvent $event): void
     {
         $this->getStockOnOrderConfig($event)->delete();
     }
 
-    protected function createOrUpdate(StockOnOrderConfigEvent $event, StockOnOrderConfig $model)
+    /**
+     * @throws PropelException
+     */
+    protected function createOrUpdate(StockOnOrderConfigEvent $event, StockOnOrderConfig $model): void
     {
         $con = Propel::getConnection(StockOnOrderConfigTableMap::DATABASE_NAME);
         $con->beginTransaction();
@@ -68,7 +80,7 @@ class StockOnOrderConfigAction extends BaseAction implements EventSubscriberInte
             $model->save($con);
 
             $con->commit();
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $con->rollback();
 
             throw $e;
@@ -127,12 +139,12 @@ class StockOnOrderConfigAction extends BaseAction implements EventSubscriberInte
      *
      * @api
      */
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return array(
-            StockOnOrderConfigEvents::CREATE => array("create", 128),
-            StockOnOrderConfigEvents::UPDATE => array("update", 128),
-            StockOnOrderConfigEvents::DELETE => array("delete", 128),
+            StockOnOrderConfigEventsAlias::CREATE => array("create", 128),
+            StockOnOrderConfigEventsAlias::UPDATE => array("update", 128),
+            StockOnOrderConfigEventsAlias::DELETE => array("delete", 128),
             TheliaEvents::FORM_BEFORE_BUILD . ".stock_on_order_config_create" => array("beforeCreateFormBuild", 128),
             TheliaEvents::FORM_BEFORE_BUILD . ".stock_on_order_config_update" => array("beforeUpdateFormBuild", 128),
             TheliaEvents::FORM_AFTER_BUILD . ".stock_on_order_config_create" => array("afterCreateFormBuild", 128),

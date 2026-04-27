@@ -12,17 +12,18 @@
 
 namespace StockOnOrder;
 
+use Propel\Runtime\Exception\PropelException;
 use StockOnOrder\Model\StockOnOrderConfig;
 use StockOnOrder\Model\StockOnOrderConfigQuery;
 use StockOnOrder\Model\Map\StockOnOrderConfigTableMap;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ServicesConfigurator;
+use Thelia\Core\Install\Database;
 use Thelia\Model\Module;
 use Thelia\Model\ModuleQuery;
 use Thelia\Model\OrderStatus;
 use Thelia\Model\OrderStatusQuery;
 use Thelia\Module\BaseModule;
 use Propel\Runtime\Connection\ConnectionInterface;
-use Thelia\Install\Database;
 
 /**
  * Class StockOnOrder
@@ -34,6 +35,9 @@ class StockOnOrder extends BaseModule
     const MESSAGE_DOMAIN = "stockonorder";
     const ROUTER = "router.stockonorder";
 
+    /**
+     * @throws PropelException
+     */
     public function postActivation(ConnectionInterface $con = null): void
     {
         try {
@@ -54,7 +58,7 @@ class StockOnOrder extends BaseModule
         /** @var Module $paymentModule */
         foreach ($paymentModuleList as $paymentModule) {
             $paymentStockOnOrderConfig = StockOnOrderConfigQuery::create()
-                ->select(StockOnOrderConfigTableMap::STATUS_ID)
+                ->select(StockOnOrderConfigTableMap::COL_STATUS_ID)
                 ->filterByModuleId($paymentModule->getId())
                 ->find()
                 ->toArray();
@@ -75,7 +79,15 @@ class StockOnOrder extends BaseModule
     public static function configureServices(ServicesConfigurator $servicesConfigurator): void
     {
         $servicesConfigurator->load(self::getModuleCode().'\\', __DIR__)
-            ->exclude([THELIA_MODULE_DIR.ucfirst(self::getModuleCode()).'/I18n/*'])
+            ->exclude([
+                THELIA_MODULE_DIR.ucfirst(self::getModuleCode()).'/I18n/*',
+                __DIR__.'/Action/Base/',
+                __DIR__.'/Controller/Base/',
+                __DIR__.'/Form/Base/',
+                __DIR__.'/Form/Type/Base/',
+                __DIR__.'/Loop/Base/',
+                __DIR__.'/Event/Base/',
+            ])
             ->autowire(true)
             ->autoconfigure(true);
     }

@@ -6,14 +6,20 @@
 
 namespace StockOnOrder\Controller\Base;
 
+use Propel\Runtime\ActiveRecord\ActiveRecordInterface;
+use Propel\Runtime\Event\ActiveRecordEvent;
+use StockOnOrder\Event\Base\StockOnOrderEvents as StockOnOrderEventsAlias;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\HttpFoundation\Response;
 use Thelia\Controller\Admin\AbstractCrudController;
+use Thelia\Core\Event\ActionEvent;
 use Thelia\Core\Security\Resource\AdminResources;
 use Thelia\Core\Template\ParserContext;
+use Thelia\Form\BaseForm;
 use Thelia\Tools\URL;
 use StockOnOrder\Event\StockOnOrderEvent;
-use StockOnOrder\Event\StockOnOrderEvents;
+use StockOnOrder\Form\StockOnOrderCreateForm;
+use StockOnOrder\Form\StockOnOrderUpdateForm;
 use StockOnOrder\Model\StockOnOrderQuery;
 
 /**
@@ -23,22 +29,16 @@ use StockOnOrder\Model\StockOnOrderQuery;
  */
 class StockOnOrderController extends AbstractCrudController
 {
-    protected RequestStack $requestStack;
-    protected ParserContext $parserContext;
-
-    public function __construct(RequestStack $requestStack, ParserContext $parserContext)
+    public function __construct()
     {
-        $this->requestStack = $requestStack;
-        $this->parserContext = $parserContext;
-
         parent::__construct(
             "stock_on_order",
             "id",
             "order",
             AdminResources::MODULE,
-            StockOnOrderEvents::CREATE,
-            StockOnOrderEvents::UPDATE,
-            StockOnOrderEvents::DELETE,
+            StockOnOrderEventsAlias::CREATE,
+            StockOnOrderEventsAlias::UPDATE,
+            StockOnOrderEventsAlias::DELETE,
             null,
             null,
             "StockOnOrder"
@@ -48,29 +48,29 @@ class StockOnOrderController extends AbstractCrudController
     /**
      * Return the creation form for this object
      */
-    protected function getCreationForm()
+    protected function getCreationForm(): ?BaseForm
     {
-        return $this->createForm("stock_on_order.create");
+        return $this->createForm(StockOnOrderCreateForm::getName());
     }
 
     /**
      * Return the update form for this object
      */
-    protected function getUpdateForm($data = array())
+    protected function getUpdateForm($data = array()): ?BaseForm
     {
         if (!is_array($data)) {
             $data = array();
         }
 
-        return $this->createForm("stock_on_order.update", "form", $data);
+        return $this->createForm(StockOnOrderUpdateForm::getName(), "form", $data);
     }
 
     /**
-     * Hydrate the update form for this object, before passing it to the update template
+     * Hydrate the update form for this object before passing it to the update template
      *
      * @param mixed $object
      */
-    protected function hydrateObjectForm(ParserContext $parserContext, $object)
+    protected function hydrateObjectForm(ParserContext $parserContext, $object): BaseForm
     {
         $data = array(
             "id" => $object->getId(),
@@ -85,9 +85,9 @@ class StockOnOrderController extends AbstractCrudController
      * Creates the creation event with the provided form data
      *
      * @param mixed $formData
-     * @return \Thelia\Core\Event\ActionEvent
+     * @return ActionEvent|ActiveRecordEvent|null
      */
-    protected function getCreationEvent($formData)
+    protected function getCreationEvent($formData): ActionEvent|ActiveRecordEvent|null
     {
         $event = new StockOnOrderEvent();
 
@@ -101,9 +101,9 @@ class StockOnOrderController extends AbstractCrudController
      * Creates the update event with the provided form data
      *
      * @param mixed $formData
-     * @return \Thelia\Core\Event\ActionEvent
+     * @return ActionEvent|ActiveRecordEvent|null
      */
-    protected function getUpdateEvent($formData)
+    protected function getUpdateEvent($formData): ActionEvent|ActiveRecordEvent|null
     {
         $event = new StockOnOrderEvent();
 
@@ -117,7 +117,7 @@ class StockOnOrderController extends AbstractCrudController
     /**
      * Creates the delete event with the provided form data
      */
-    protected function getDeleteEvent()
+    protected function getDeleteEvent(): ActionEvent|ActiveRecordEvent|null
     {
         $event = new StockOnOrderEvent();
 
@@ -131,7 +131,7 @@ class StockOnOrderController extends AbstractCrudController
      *
      * @param mixed $event
      */
-    protected function eventContainsObject($event)
+    protected function eventContainsObject($event): bool
     {
         return null !== $this->getObjectFromEvent($event);
     }
@@ -141,7 +141,7 @@ class StockOnOrderController extends AbstractCrudController
      *
      * @param mixed $event
      */
-    protected function getObjectFromEvent($event)
+    protected function getObjectFromEvent($event): mixed
     {
         return $event->getStockOnOrder();
     }
@@ -149,7 +149,7 @@ class StockOnOrderController extends AbstractCrudController
     /**
      * Load an existing object from the database
      */
-    protected function getExistingObject()
+    protected function getExistingObject(): ?ActiveRecordInterface
     {
         return StockOnOrderQuery::create()
             ->findPk($this->requestStack->getCurrentRequest()->query->get("stock_on_order_id"))
@@ -157,11 +157,11 @@ class StockOnOrderController extends AbstractCrudController
     }
 
     /**
-     * Returns the object label form the object event (name, title, etc.)
+     * Returns the object label from the object event (name, title, etc.)
      *
      * @param mixed $object
      */
-    protected function getObjectLabel($object)
+    protected function getObjectLabel($object): ?string
     {
         return '';
     }
@@ -171,7 +171,7 @@ class StockOnOrderController extends AbstractCrudController
      *
      * @param mixed $object
      */
-    protected function getObjectId($object)
+    protected function getObjectId($object): int
     {
         return $object->getId();
     }
@@ -181,7 +181,7 @@ class StockOnOrderController extends AbstractCrudController
      *
      * @param mixed $currentOrder , if any, null otherwise.
      */
-    protected function renderListTemplate($currentOrder)
+    protected function renderListTemplate($currentOrder): Response
     {
         $this->getParser()
             ->assign("order", $currentOrder)
@@ -193,7 +193,7 @@ class StockOnOrderController extends AbstractCrudController
     /**
      * Render the edition template
      */
-    protected function renderEditionTemplate()
+    protected function renderEditionTemplate(): Response
     {
         $this->parserContext
             ->set(
@@ -207,9 +207,9 @@ class StockOnOrderController extends AbstractCrudController
 
     /**
      * Must return a RedirectResponse instance
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @return RedirectResponse|Response
      */
-    protected function redirectToEditionTemplate()
+    protected function redirectToEditionTemplate(): RedirectResponse|Response
     {
         $id = $this->requestStack->getCurrentRequest()->query->get("stock_on_order_id");
 
@@ -225,9 +225,9 @@ class StockOnOrderController extends AbstractCrudController
 
     /**
      * Must return a RedirectResponse instance
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @return RedirectResponse|Response
      */
-    protected function redirectToListTemplate()
+    protected function redirectToListTemplate(): RedirectResponse|Response
     {
         return new RedirectResponse(
             URL::getInstance()->absoluteUrl("/admin/module/StockOnOrder/stock_on_order")

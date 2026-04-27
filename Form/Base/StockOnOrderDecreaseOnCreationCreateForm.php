@@ -21,7 +21,7 @@ class StockOnOrderDecreaseOnCreationCreateForm extends BaseForm
 {
     const FORM_NAME = "stock_on_order_decrease_on_creation_create";
 
-    public function buildForm()
+    public function buildForm(): void
     {
         $translationKeys = $this->getTranslationKeys();
         $fieldsIdKeys = $this->getFieldsIdKeys();
@@ -30,7 +30,7 @@ class StockOnOrderDecreaseOnCreationCreateForm extends BaseForm
         $this->addDecreaseOnOrderCreationField($translationKeys, $fieldsIdKeys);
     }
 
-    protected function addModuleIdField(array $translationKeys, array $fieldsIdKeys)
+    protected function addModuleIdField(array $translationKeys, array $fieldsIdKeys): void
     {
         $this->formBuilder->add("module_id", IntegerType::class, array(
             "label" => $this->translator->trans($this->readKey("module_id", $translationKeys), [], StockOnOrder::MESSAGE_DOMAIN),
@@ -44,7 +44,7 @@ class StockOnOrderDecreaseOnCreationCreateForm extends BaseForm
         ));
     }
 
-    protected function addDecreaseOnOrderCreationField(array $translationKeys, array $fieldsIdKeys)
+    protected function addDecreaseOnOrderCreationField(array $translationKeys, array $fieldsIdKeys): void
     {
         $this->formBuilder->add("decrease_on_order_creation", CheckboxType::class, array(
             "label" => $this->translator->trans($this->readKey("decrease_on_order_creation", $translationKeys), [], StockOnOrder::MESSAGE_DOMAIN),
@@ -57,7 +57,7 @@ class StockOnOrderDecreaseOnCreationCreateForm extends BaseForm
         ));
     }
 
-    public static function getName()
+    public static function getName(): string
     {
         return static::FORM_NAME;
     }
@@ -71,12 +71,12 @@ class StockOnOrderDecreaseOnCreationCreateForm extends BaseForm
         return $default;
     }
 
-    public function getTranslationKeys()
+    public function getTranslationKeys(): array
     {
         return array();
     }
 
-    public function getFieldsIdKeys()
+    public function getFieldsIdKeys(): array
     {
         return array(
             "module_id" => "stock_on_order_decrease_on_creation_module_id",

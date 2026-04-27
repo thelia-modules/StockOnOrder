@@ -18,12 +18,17 @@ class StockOnOrderConfigUpdateForm extends ChildStockOnOrderConfigCreateForm
 {
     const FORM_NAME = "stock_on_order_config_update";
 
-    public function buildForm()
+    public function buildForm(): void
     {
         parent::buildForm();
 
         $this->formBuilder
             ->add("id", StockOnOrderConfigIdType::class)
         ;
+    }
+
+    public static function getName(): string
+    {
+        return static::FORM_NAME;
     }
 }

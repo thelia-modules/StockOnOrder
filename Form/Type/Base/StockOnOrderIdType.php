@@ -6,6 +6,7 @@
 
 namespace StockOnOrder\Form\Type\Base;
 
+use Propel\Runtime\ActiveQuery\ModelCriteria;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Thelia\Core\Form\Type\Field\AbstractIdType;
 use StockOnOrder\Model\StockOnOrderQuery;
@@ -19,17 +20,17 @@ class StockOnOrderIdType extends AbstractIdType
 {
     const TYPE_NAME = "stock_on_order_id";
 
-    protected function getQuery()
+    protected function getQuery(): ModelCriteria
     {
         return new StockOnOrderQuery();
     }
 
-    public function getName()
+    public function getName(): string
     {
         return static::TYPE_NAME;
     }
 
-    public function getParent()
+    public function getParent(): ?string
     {
         return IntegerType::class;
     }

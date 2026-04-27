@@ -13,7 +13,7 @@
 
 {block name="main-content"}
 
-    {form name="stock_on_order_decrease_on_creation.update"}
+    {form name="stock_on_order_decrease_on_creation_update"}
         <div id="wrapper" class="container">
 
             {if $form_error}
@@ -51,21 +51,21 @@
                                                 {if $required}<span class="required">*</span>{/if}
                                             </label>
 
-                                            {form_error form=$form field="module_id"}{$message}{/form_error}
+                                            {form_error form=$form field="module_id"}{$message|default:null}{/form_error}
 
                                                 <input type="number" class="form-control" name="{$name}" id="{$label_attr.for}" value="{$MODULE_ID}" placeholder="{intl l='The StockOnOrderDecreaseOnCreation module_id'}" />
                                         </div>
                                     {/form_field}
-                                    {form_field form=$form field="decreased_on_order_creation"}
+                                    {form_field form=$form field="decrease_on_order_creation"}
                                         <div class="form-group">
                                             <label class="control-label" for="{$label_attr.for}">
                                                 {$label}
                                                 {if $required}<span class="required">*</span>{/if}
                                             </label>
 
-                                            {form_error form=$form field="decreased_on_order_creation"}{$message}{/form_error}
+                                            {form_error form=$form field="decrease_on_order_creation"}{$message|default:null}{/form_error}
 
-                                                <input type="checkbox" class="form-control" name="{$name}" id="{$label_attr.for}" {if $DECREASED_ON_ORDER_CREATION}checked{/if} placeholder="{intl l='The StockOnOrderDecreaseOnCreation decreased_on_order_creation'}" />
+                                                <input type="checkbox" class="form-control" name="{$name}" id="{$label_attr.for}" {if $DECREASE_ON_ORDER_CREATION}checked{/if} placeholder="{intl l='The StockOnOrderDecreaseOnCreation decrease_on_order_creation'}" />
                                         </div>
                                     {/form_field}
 

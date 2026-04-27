@@ -6,18 +6,17 @@
 
 namespace StockOnOrder\Action\Base;
 
+use Propel\Runtime\Exception\PropelException;
+use StockOnOrder\Event\Base\StockOnOrderEvents as StockOnOrderEventsAlias;
 use StockOnOrder\Model\Map\StockOnOrderTableMap;
 use StockOnOrder\Event\StockOnOrderEvent;
-use StockOnOrder\Event\StockOnOrderEvents;
 use StockOnOrder\Model\StockOnOrderQuery;
 use StockOnOrder\Model\StockOnOrder;
 use Thelia\Action\BaseAction;
-use Thelia\Core\Event\ToggleVisibilityEvent;
-use Thelia\Core\Event\UpdatePositionEvent;
 use Propel\Runtime\Propel;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Thelia\Core\Event\TheliaEvents;
-use \Thelia\Core\Event\TheliaFormEvent;
+use Thelia\Core\Event\TheliaFormEvent;
 
 /**
  * Class StockOnOrderAction
@@ -26,23 +25,35 @@ use \Thelia\Core\Event\TheliaFormEvent;
  */
 class StockOnOrderAction extends BaseAction implements EventSubscriberInterface
 {
-    public function create(StockOnOrderEvent $event)
+    /**
+     * @throws \Exception
+     */
+    public function create(StockOnOrderEvent $event): void
     {
         $this->createOrUpdate($event, new StockOnOrder());
     }
 
-    public function update(StockOnOrderEvent $event)
+    /**
+     * @throws \Exception
+     */
+    public function update(StockOnOrderEvent $event): void
     {
         $model = $this->getStockOnOrder($event);
 
         $this->createOrUpdate($event, $model);
     }
 
-    public function delete(StockOnOrderEvent $event)
+    /**
+     * @throws PropelException
+     */
+    public function delete(StockOnOrderEvent $event): void
     {
         $this->getStockOnOrder($event)->delete();
     }
 
+    /**
+     * @throws PropelException
+     */
     protected function createOrUpdate(StockOnOrderEvent $event, StockOnOrder $model)
     {
         $con = Propel::getConnection(StockOnOrderTableMap::DATABASE_NAME);
@@ -123,12 +134,12 @@ class StockOnOrderAction extends BaseAction implements EventSubscriberInterface
      *
      * @api
      */
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return array(
-            StockOnOrderEvents::CREATE => array("create", 128),
-            StockOnOrderEvents::UPDATE => array("update", 128),
-            StockOnOrderEvents::DELETE => array("delete", 128),
+            StockOnOrderEventsAlias::CREATE => array("create", 128),
+            StockOnOrderEventsAlias::UPDATE => array("update", 128),
+            StockOnOrderEventsAlias::DELETE => array("delete", 128),
             TheliaEvents::FORM_BEFORE_BUILD . ".stock_on_order_create" => array("beforeCreateFormBuild", 128),
             TheliaEvents::FORM_BEFORE_BUILD . ".stock_on_order_update" => array("beforeUpdateFormBuild", 128),
             TheliaEvents::FORM_AFTER_BUILD . ".stock_on_order_create" => array("afterCreateFormBuild", 128),

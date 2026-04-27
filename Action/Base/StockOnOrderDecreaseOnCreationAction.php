@@ -6,18 +6,17 @@
 
 namespace StockOnOrder\Action\Base;
 
+use Propel\Runtime\Exception\PropelException;
+use StockOnOrder\Event\Base\StockOnOrderDecreaseOnCreationEvents as StockOnOrderDecreaseOnCreationEventsAlias;
 use StockOnOrder\Model\Map\StockOnOrderDecreaseOnCreationTableMap;
 use StockOnOrder\Event\StockOnOrderDecreaseOnCreationEvent;
-use StockOnOrder\Event\StockOnOrderDecreaseOnCreationEvents;
 use StockOnOrder\Model\StockOnOrderDecreaseOnCreationQuery;
 use StockOnOrder\Model\StockOnOrderDecreaseOnCreation;
 use Thelia\Action\BaseAction;
-use Thelia\Core\Event\ToggleVisibilityEvent;
-use Thelia\Core\Event\UpdatePositionEvent;
 use Propel\Runtime\Propel;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Thelia\Core\Event\TheliaEvents;
-use \Thelia\Core\Event\TheliaFormEvent;
+use Thelia\Core\Event\TheliaFormEvent;
 
 /**
  * Class StockOnOrderDecreaseOnCreationAction
@@ -26,24 +25,36 @@ use \Thelia\Core\Event\TheliaFormEvent;
  */
 class StockOnOrderDecreaseOnCreationAction extends BaseAction implements EventSubscriberInterface
 {
-    public function create(StockOnOrderDecreaseOnCreationEvent $event)
+    /**
+     * @throws \Exception
+     */
+    public function create(StockOnOrderDecreaseOnCreationEvent $event): void
     {
         $this->createOrUpdate($event, new StockOnOrderDecreaseOnCreation());
     }
 
-    public function update(StockOnOrderDecreaseOnCreationEvent $event)
+    /**
+     * @throws \Exception
+     */
+    public function update(StockOnOrderDecreaseOnCreationEvent $event): void
     {
         $model = $this->getStockOnOrderDecreaseOnCreation($event);
 
         $this->createOrUpdate($event, $model);
     }
 
-    public function delete(StockOnOrderDecreaseOnCreationEvent $event)
+    /**
+     * @throws PropelException
+     */
+    public function delete(StockOnOrderDecreaseOnCreationEvent $event): void
     {
         $this->getStockOnOrderDecreaseOnCreation($event)->delete();
     }
 
-    protected function createOrUpdate(StockOnOrderDecreaseOnCreationEvent $event, StockOnOrderDecreaseOnCreation $model)
+    /**
+     * @throws PropelException
+     */
+    protected function createOrUpdate(StockOnOrderDecreaseOnCreationEvent $event, StockOnOrderDecreaseOnCreation $model): void
     {
         $con = Propel::getConnection(StockOnOrderDecreaseOnCreationTableMap::DATABASE_NAME);
         $con->beginTransaction();
@@ -123,12 +134,12 @@ class StockOnOrderDecreaseOnCreationAction extends BaseAction implements EventSu
      *
      * @api
      */
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return array(
-            StockOnOrderDecreaseOnCreationEvents::CREATE => array("create", 128),
-            StockOnOrderDecreaseOnCreationEvents::UPDATE => array("update", 128),
-            StockOnOrderDecreaseOnCreationEvents::DELETE => array("delete", 128),
+            StockOnOrderDecreaseOnCreationEventsAlias::CREATE => array("create", 128),
+            StockOnOrderDecreaseOnCreationEventsAlias::UPDATE => array("update", 128),
+            StockOnOrderDecreaseOnCreationEventsAlias::DELETE => array("delete", 128),
             TheliaEvents::FORM_BEFORE_BUILD . ".stock_on_order_decrease_on_creation_create" => array("beforeCreateFormBuild", 128),
             TheliaEvents::FORM_BEFORE_BUILD . ".stock_on_order_decrease_on_creation_update" => array("beforeUpdateFormBuild", 128),
             TheliaEvents::FORM_AFTER_BUILD . ".stock_on_order_decrease_on_creation_create" => array("afterCreateFormBuild", 128),

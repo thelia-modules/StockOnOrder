@@ -59,8 +59,8 @@
                         <th>
                             {admin_sortable_header
                                 current_order=$order
-                                order='decreased_on_order_creation'
-                                reverse_order='decreased_on_order_creation-reverse'
+                                order='decrease_on_order_creation'
+                                reverse_order='decrease_on_order_creation-reverse'
                                 path={url path='/admin/module/StockOnOrder/stock_on_order_decrease_on_creation' target='stock_on_order_decrease_on_creation-table'}
                                 label="{intl l='DecreasedOnOrderCreation' d='stockonorder.bo.default'}"
                             }
@@ -82,7 +82,7 @@
                             </td>
                             <td>
                                 <div class="make-switch switch-small" data-id="{$ID}" data-on="success" data-off="danger" data-on-label="<i class='glyphicon glyphicon-ok'></i>" data-off-label="<i class='glyphicon glyphicon-remove'></i>">
-                                    <input type="checkbox" disabled readonly {if $DECREASED_ON_ORDER_CREATION}checked="checked"{/if} />
+                                    <input type="checkbox" disabled readonly {if $DECREASE_ON_ORDER_CREATION}checked="checked"{/if} />
                                 </div>
                             </td>
                             {* Actions *}
@@ -137,7 +137,7 @@
 
     {* CREATE Modal *}
 
-    {form name="stock_on_order_decrease_on_creation.create"}
+    {form name="stock_on_order_decrease_on_creation_create"}
     {capture "stock_on_order_decrease_on_creation_create"}
         {form_hidden_fields form=$form}
 
@@ -151,21 +151,21 @@
                     {if $required}<span class="required">*</span>{/if}
                 </label>
 
-                {form_error form=$form field="module_id"}{$message}{/form_error}
+                {form_error form=$form field="module_id"}{$message|default:null}{/form_error}
 
-                <input type="integer" class="form-control" name="{$name}" id="{$label_attr.for}" value="{$MODULE_ID}" placeholder="{intl l='The StockOnOrderDecreaseOnCreation module_id'}" />
+                <input type="integer" class="form-control" name="{$name}" id="{$label_attr.for}" value="{$MODULE_ID|default:null}" placeholder="{intl l='The StockOnOrderDecreaseOnCreation module_id'}" />
             </div>
         {/form_field}
-        {form_field form=$form field="decreased_on_order_creation"}
+        {form_field form=$form field="decrease_on_order_creation"}
             <div class="form-group">
                 <label class="control-label" for="{$label_attr.for}">
                     {$label}
                     {if $required}<span class="required">*</span>{/if}
                 </label>
 
-                {form_error form=$form field="decreased_on_order_creation"}{$message}{/form_error}
+                {form_error form=$form field="decrease_on_order_creation"}{$message|default:null}{/form_error}
 
-                <input type="checkbox" name="{$name}" id="{$label_attr.for}" {if $DECREASED_ON_ORDER_CREATION}checked{/if} placeholder="{intl l='The StockOnOrderDecreaseOnCreation decreased_on_order_creation'}" />
+                <input type="checkbox" name="{$name}" id="{$label_attr.for}" {if $DECREASE_ON_ORDER_CREATION}checked{/if} placeholder="{intl l='The StockOnOrderDecreaseOnCreation decrease_on_order_creation'}" />
             </div>
         {/form_field}
     {/capture}
@@ -182,14 +182,14 @@
 
         form_action        = {$current_url}
         form_enctype       = {form_enctype form=$form}
+        form_content       = {$smarty.capture.stock_on_order_decrease_on_creation_create nofilter}
     }
     {/form}
 
 
     {* DELETE modal *}
 
-    {capture "stock_on_order_decrease_on_creation_delete"}
-        {intl l="Do you really want to delete this StockOnOrderDecreaseOnCreation entry ?" d="stockonorder.bo.default"}
+    {capture "stock_on_order_decrease_on_creation_delete_form"}
         <input type="hidden" name="stock_on_order_decrease_on_creation_id" id="stock_on_order_decrease_on_creation_delete_id" value="" />
     {/capture}
 
@@ -197,12 +197,13 @@
 
         dialog_id       = "stock_on_order_decrease_on_creation-delete"
         dialog_title    = {intl l="Delete an entry of StockOnOrderDecreaseOnCreation" d="stockonorder.bo.default"}
-        dialog_message  = {$smarty.capture.stock_on_order_decrease_on_creation_delete nofilter}
+        dialog_message  = {intl l="Do you really want to delete this StockOnOrderDecreaseOnCreation entry ?" d="stockonorder.bo.default"}
 
         dialog_ok_label     = {intl l="Delete"}
         dialog_cancel_label = {intl l="Cancel"}
 
         form_action         = {token_url path='/admin/module/StockOnOrder/stock_on_order_decrease_on_creation/delete'}
+        form_content       = {$smarty.capture.stock_on_order_decrease_on_creation_delete_form nofilter}
     }
 {/block}
 

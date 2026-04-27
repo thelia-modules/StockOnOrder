@@ -21,7 +21,7 @@ class StockOnOrderConfigCreateForm extends BaseForm
 {
     const FORM_NAME = "stock_on_order_config_create";
 
-    public function buildForm()
+    public function buildForm(): void
     {
         $translationKeys = $this->getTranslationKeys();
         $fieldsIdKeys = $this->getFieldsIdKeys();
@@ -31,7 +31,7 @@ class StockOnOrderConfigCreateForm extends BaseForm
         $this->addBehaviorField($translationKeys, $fieldsIdKeys);
     }
 
-    protected function addModuleIdField(array $translationKeys, array $fieldsIdKeys)
+    protected function addModuleIdField(array $translationKeys, array $fieldsIdKeys): void
     {
         $this->formBuilder->add("module_id", IntegerType::class, array(
             "label" => $this->translator->trans($this->readKey("module_id", $translationKeys), [], StockOnOrder::MESSAGE_DOMAIN),
@@ -45,7 +45,7 @@ class StockOnOrderConfigCreateForm extends BaseForm
         ));
     }
 
-    protected function addStatusIdField(array $translationKeys, array $fieldsIdKeys)
+    protected function addStatusIdField(array $translationKeys, array $fieldsIdKeys): void
     {
         $this->formBuilder->add("status_id", IntegerType::class, array(
             "label" => $this->translator->trans($this->readKey("status_id", $translationKeys), [], StockOnOrder::MESSAGE_DOMAIN),
@@ -59,7 +59,7 @@ class StockOnOrderConfigCreateForm extends BaseForm
         ));
     }
 
-    protected function addBehaviorField(array $translationKeys, array $fieldsIdKeys)
+    protected function addBehaviorField(array $translationKeys, array $fieldsIdKeys): void
     {
         $this->formBuilder->add("behavior", TextType::class, array(
             "label" => $this->translator->trans($this->readKey("behavior", $translationKeys), [], StockOnOrder::MESSAGE_DOMAIN),
@@ -72,7 +72,7 @@ class StockOnOrderConfigCreateForm extends BaseForm
         ));
     }
 
-    public static function getName()
+    public static function getName(): string
     {
         return static::FORM_NAME;
     }
@@ -86,12 +86,12 @@ class StockOnOrderConfigCreateForm extends BaseForm
         return $default;
     }
 
-    public function getTranslationKeys()
+    public function getTranslationKeys(): array
     {
         return array();
     }
 
-    public function getFieldsIdKeys()
+    public function getFieldsIdKeys(): array
     {
         return array(
             "module_id" => "stock_on_order_config_module_id",
