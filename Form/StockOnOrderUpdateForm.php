@@ -14,11 +14,6 @@ use StockOnOrder\Form\Base\StockOnOrderUpdateForm as BaseStockOnOrderUpdateForm;
  */
 class StockOnOrderUpdateForm extends BaseStockOnOrderUpdateForm
 {
-    public static function getName(): string
-    {
-        return 'stock_on_order.update';
-    }
-
     public function getTranslationKeys(): array
     {
         return array(

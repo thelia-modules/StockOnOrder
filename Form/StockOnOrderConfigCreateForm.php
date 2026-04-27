@@ -14,11 +14,6 @@ use StockOnOrder\Form\Base\StockOnOrderConfigCreateForm as BaseStockOnOrderConfi
  */
 class StockOnOrderConfigCreateForm extends BaseStockOnOrderConfigCreateForm
 {
-    public static function getName(): string
-    {
-        return 'stock_on_order_config.create';
-    }
-
     public function getTranslationKeys(): array
     {
         return array(

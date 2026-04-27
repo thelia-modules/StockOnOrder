@@ -83,7 +83,7 @@ class StockOnOrderConfigController extends BaseStockOnOrderConfigController
         }
 
         // Fill and send the form into the view
-        $form = $this->createForm('stock_on_order_config', FormType::class, [
+        $form = $this->createForm(StockOnOrderConfigForm::getName(), FormType::class, [
             'module_id' => $moduleId,
             'behavior' => $behaviorList]
         );

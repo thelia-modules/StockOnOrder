@@ -19,6 +19,8 @@ use Thelia\Core\Template\ParserContext;
 use Thelia\Form\BaseForm;
 use Thelia\Tools\URL;
 use StockOnOrder\Event\StockOnOrderConfigEvent;
+use StockOnOrder\Form\StockOnOrderConfigCreateForm;
+use StockOnOrder\Form\StockOnOrderConfigUpdateForm;
 use StockOnOrder\Model\StockOnOrderConfigQuery;
 
 /**
@@ -55,7 +57,7 @@ class StockOnOrderConfigController extends AbstractCrudController
      */
     protected function getCreationForm(): ?BaseForm
     {
-        return $this->createForm("stock_on_order_config.create");
+        return $this->createForm(StockOnOrderConfigCreateForm::getName());
     }
 
     /**
@@ -67,7 +69,7 @@ class StockOnOrderConfigController extends AbstractCrudController
             $data = array();
         }
 
-        return $this->createForm("stock_on_order_config.update", "form", $data);
+        return $this->createForm(StockOnOrderConfigUpdateForm::getName(), "form", $data);
     }
 
     /**
