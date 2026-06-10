@@ -1,0 +1,55 @@
+{% extends '@BackOfficeDefaultTwig/base.html.twig' %}
+
+{% block body_testid %}stock-on-order-config-edit-page{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="card">
+        <div class="card-body">
+            <form action="{{ path('stockonorder.config.edit', {moduleId: moduleId}) }}" method="post">
+                <input type="hidden" name="{{ form._token.vars.full_name }}" value="{{ form._token.vars.value }}">
+                <input type="hidden" name="{{ form.module_id.vars.full_name }}" value="{{ moduleId }}">
+                <input type="hidden" name="{{ form.success_url.vars.full_name }}" value="{{ path('stockonorder.config.view', {id: moduleId}) }}">
+
+                <table class="table table-striped" id="stock_on_order_config-table">
+                    <caption class="clearfix">
+                        {{ 'Configure stock action when you change status on orders with payment module: '|trans({}, 'stockonorder.bo.default') }}
+                        <strong>{{ moduleCode }}</strong>
+
+                        <span class="float-end">
+                            <button type="submit" name="save_mode" value="stay" class="btn btn-sm btn-success" title="{{ 'Save'|trans }}">{{ 'Save'|trans }} <i class="bi bi-check-lg"></i></button>
+                            <button type="submit" name="save_mode" value="close" class="btn btn-sm btn-info" title="{{ 'Save and close'|trans }}">{{ 'Save and close'|trans }} <i class="bi bi-check-lg"></i></button>
+                            <a href="{{ path('admin.module') }}" class="btn btn-sm btn-secondary">{{ 'Close'|trans }} <i class="bi bi-x-lg"></i></a>
+                        </span>
+                    </caption>
+
+                    <thead>
+                        <tr>
+                            <th>{{ 'ID'|trans({}, 'stockonorder.bo.default') }}</th>
+                            <th>{{ 'Status'|trans({}, 'stockonorder.bo.default') }}</th>
+                            <th>{{ 'Do nothing'|trans({}, 'stockonorder.bo.default') }}</th>
+                            <th>{{ 'Decrease stock'|trans({}, 'stockonorder.bo.default') }}</th>
+                            <th>{{ 'Increase stock'|trans({}, 'stockonorder.bo.default') }}</th>
+                            <th>{{ 'Thelia default behavior'|trans({}, 'stockonorder.bo.default') }}</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        {% for status in orderStatuses %}
+                            {% set fieldName = form.behavior.vars.full_name ~ '[' ~ status.id ~ ']' %}
+                            <tr>
+                                <td>{{ status.id }}</td>
+                                <td>{{ status.title }}</td>
+                                <td><input type="radio" name="{{ fieldName }}" value="do_nothing" {% if status.behavior == 'do_nothing' %}checked{% endif %}></td>
+                                <td><input type="radio" name="{{ fieldName }}" value="decrease" {% if status.behavior == 'decrease' %}checked{% endif %}></td>
+                                <td><input type="radio" name="{{ fieldName }}" value="increase" {% if status.behavior == 'increase' %}checked{% endif %}></td>
+                                <td><input type="radio" name="{{ fieldName }}" value="default" {% if status.behavior == 'default' %}checked{% endif %}></td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

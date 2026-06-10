@@ -1,0 +1,57 @@
+{# Config hook fragment: payment modules list #}
+<div class="card">
+    <div class="card-header">
+        <h3 class="card-title mb-0">{{ 'Select a payment module to configure'|trans({}, 'stockonorder.bo.default') }}</h3>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-striped" id="stock_on_order_config-table">
+                <thead>
+                    <tr>
+                        <th>{{ 'ID'|trans({}, 'stockonorder.bo.default') }}</th>
+                        <th>{{ 'Payment module'|trans({}, 'stockonorder.bo.default') }}</th>
+                        <th>{{ 'Decrease stock on order creation'|trans({}, 'stockonorder.bo.default') }}</th>
+                        <th>{{ 'Behavior'|trans({}, 'stockonorder.bo.default') }}</th>
+                        <th>{{ 'Edit'|trans({}, 'stockonorder.bo.default') }}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for row in rows %}
+                        <tr>
+                            <td>{{ row.id }}</td>
+                            <td>
+                                <a href="{{ path('stockonorder.config.view', {id: row.id}) }}">{{ row.code }}</a>
+                            </td>
+                            <td>
+                                {% if row.has_decrease_entry %}
+                                    <form action="{{ path('stockonorder.stock_on_order_decrease_on_creation.edit') }}" method="post" data-soo-decrease-form>
+                                        <input type="hidden" name="{{ row.form.module_id.vars.full_name }}" value="{{ row.id }}">
+                                        <input type="hidden" name="{{ row.form.id.vars.full_name }}" value="{{ row.form.id.vars.value }}">
+                                        <input type="hidden" name="{{ row.form._token.vars.full_name }}" value="{{ row.form._token.vars.value }}">
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input decrease-on-creation" type="checkbox"
+                                                   name="{{ row.form.decrease_on_order_creation.vars.full_name }}"
+                                                   role="switch"
+                                                   data-id="{{ row.id }}"
+                                                   {% if row.decrease_on_order_creation %}checked{% endif %}>
+                                        </div>
+                                    </form>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if row.is_modified %}
+                                    {{ 'modified'|trans({}, 'stockonorder.bo.default') }}
+                                {% else %}
+                                    {{ 'default'|trans({}, 'stockonorder.bo.default') }}
+                                {% endif %}
+                            </td>
+                            <td>
+                                <a class="btn btn-secondary btn-sm" href="{{ path('stockonorder.config.view', {id: row.id}) }}"><i class="bi bi-pencil"></i></a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

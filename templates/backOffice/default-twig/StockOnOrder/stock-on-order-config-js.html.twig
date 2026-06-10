@@ -1,0 +1,24 @@
+{# Config JS hook: submit the decrease-on-creation switch via fetch, revert on failure #}
+<script>
+    document.querySelectorAll('.decrease-on-creation').forEach(function (checkbox) {
+        checkbox.addEventListener('change', function () {
+            var form = checkbox.closest('form');
+            if (!form) {
+                return;
+            }
+            fetch(form.getAttribute('action'), {
+                method: 'POST',
+                body: new URLSearchParams(new FormData(form)),
+                headers: { 'X-Requested-With': 'XMLHttpRequest' }
+            }).catch(function () {
+                checkbox.checked = !checkbox.checked;
+                alert("{{ 'Failed to update behavior'|trans({}, 'stockonorder')|e('js') }}");
+            }).then(function (response) {
+                if (response && !response.ok) {
+                    checkbox.checked = !checkbox.checked;
+                    alert("{{ 'Failed to update behavior'|trans({}, 'stockonorder')|e('js') }}");
+                }
+            });
+        });
+    });
+</script>

@@ -6,6 +6,9 @@ use StockOnOrder\Controller\Base\StockOnOrderConfigController as BaseStockOnOrde
 use StockOnOrder\Form\StockOnOrderConfigForm;
 use StockOnOrder\Model\StockOnOrderConfig;
 use StockOnOrder\Model\StockOnOrderConfigQuery;
+use Thelia\Model\ModuleQuery;
+use Thelia\Model\OrderStatus;
+use Thelia\Model\OrderStatusQuery;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -68,7 +71,7 @@ class StockOnOrderConfigController extends BaseStockOnOrderConfigController
             return $response;
         }
 
-        $moduleId = $request->get('id');
+        $moduleId = $request->attributes->get('id');
 
         // Get current module's configuration
         $stockOnOrderConfigList = StockOnOrderConfigQuery::create()
@@ -90,7 +93,40 @@ class StockOnOrderConfigController extends BaseStockOnOrderConfigController
 
         $this->getParserContext()->addForm($form);
 
-        return $this->render('stock-on-order-config-edit', ['moduleId' => $moduleId]);
+        return $this->render(
+            'stock-on-order-config-edit',
+            $this->buildEditViewData($request, $moduleId, $behaviorList) + ['form' => $form->createView()->getView()]
+        );
+    }
+
+    /**
+     * Build the Twig view data for the config edit page (module code + order statuses + current behaviors).
+     */
+    private function buildEditViewData(Request $request, $moduleId, array $behaviorList): array
+    {
+        $locale = $request->getLocale();
+
+        $module = ModuleQuery::create()->findPk($moduleId);
+
+        $orderStatuses = [];
+        $statusList = OrderStatusQuery::create()
+            ->orderByPosition()
+            ->find();
+
+        /** @var OrderStatus $status */
+        foreach ($statusList as $status) {
+            $orderStatuses[] = [
+                'id'       => $status->getId(),
+                'title'    => $status->setLocale($locale)->getTitle(),
+                'behavior' => $behaviorList[$status->getId()] ?? 'default',
+            ];
+        }
+
+        return [
+            'moduleId'      => $moduleId,
+            'moduleCode'    => $module?->getCode(),
+            'orderStatuses' => $orderStatuses,
+        ];
     }
 
     /**
@@ -121,7 +157,7 @@ class StockOnOrderConfigController extends BaseStockOnOrderConfigController
             }
 
             // Redirect
-            if ($this->getRequest()->get('save_mode') == 'stay') {
+            if ($this->getRequest()->request->get('save_mode') == 'stay') {
                 return new RedirectResponse($form->getSuccessUrl());
             } else {
                 return $this->generateRedirect('/admin/module/StockOnOrder');
@@ -133,7 +169,20 @@ class StockOnOrderConfigController extends BaseStockOnOrderConfigController
                 $form
             );
 
-            return $this->render('stock-on-order-config-edit', ['moduleId' => $moduleId]);
+            $behaviorList = [];
+            $stockOnOrderConfigList = StockOnOrderConfigQuery::create()
+                ->findByModuleId($moduleId)
+                ->getData();
+            /** @var StockOnOrderConfig $stockOnOrderConfig */
+            foreach ($stockOnOrderConfigList as $stockOnOrderConfig) {
+                $behaviorList[$stockOnOrderConfig->getStatusId()] = $stockOnOrderConfig->getBehavior();
+            }
+
+            return $this->render(
+                'stock-on-order-config-edit',
+                $this->buildEditViewData($this->getRequest(), $moduleId, $behaviorList)
+                    + ['form' => $form->createView()->getView()]
+            );
         }
     }
 }
